@@ -43,6 +43,15 @@ public class MessageUtil {
 		} else if(typeMessage.equals("userExist")) {
 			messageResponse = "Người dùng không tồn tại. Thêm thất bại";
 			alert = "danger";
+		} else if(typeMessage.equals("phoneInvalid")) {
+			messageResponse = "Sai định dạng của số điện thoại";
+			alert = "danger";
+		} else if(typeMessage.equals("cidInvalid")) {
+			messageResponse = "Sai định dạng căn cước công dân";
+			alert = "danger";
+		} else if(typeMessage.equals("emailInvalid")) {
+			messageResponse = "Sai định dạng email";
+			alert = "danger";
 		}
 		request.setAttribute("message", messageResponse);
 		request.setAttribute("alert", alert);

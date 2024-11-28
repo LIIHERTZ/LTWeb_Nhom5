@@ -27,40 +27,40 @@
 								<div class="row">
 									<div class="col-md-6">
 											<div class="form-floating mb-3">
-												<input class="form-control" type="text" name="firstName" />
+												<input class="form-control" type="text" name="firstName" value="${firstName != null ? firstName : ''}" required />
 												<label>Tên</label>
 											</div>
 											<div class="form-floating mb-3">
-												<input class="form-control" type="text" name="lastName" />
+												<input class="form-control" type="text" name="lastName" value="${lastName != null ? lastName : ''}" required/>
 												<label>Họ</label>
 											</div>
 											<div class="form-floating mb-3">
-												<input class="form-control" type="text" name="address" /> <label>Địa chỉ</label>
+												<input class="form-control" type="text" name="address" value="${address != null ? address : ''}" required/> <label>Địa chỉ</label>
 											</div>
 											<div class="form-floating mb-3">
-												<select class="form-control" name="gender">
+												<select class="form-control" name="gender" required>
 													<option value="0" ${customer.gender == 0 ? 'selected' : ''}>Nam</option>
 													<option value="1" ${customer.gender == 1 ? 'selected' : ''}>Nữ</option>
 												</select> <label> Giới tính </label>
 											</div>
 											<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="email"
+											<input class="form-control" type="text" name="email" value="${email != null ? email : ''}" required
 												/> <label>Email</label>
 										</div>	
 										</div>
 										<div class="col-md-6">
 											<div class="form-floating mb-3">
-												<input class="form-control" type="text" name="phone" /> <label>Số điện thoại</label>
+												<input class="form-control" type="text" name="phone" value="${phone != null ? phone : ''}" required/> <label>Số điện thoại</label>
 											</div>
 											<div class="form-floating mb-3">
-												<input class="form-control" type="date" name="dob" /> <label>Ngày sinh</label>
+												<input class="form-control" type="date" name="dob" value="${dob != null ? dob : ''}" required/> <label>Ngày sinh</label>
 											</div>
 											<div class="form-floating mb-3">
-												<input class="form-control" type="text" name="cid" /> <label>Căn cước công dân</label>
+												<input class="form-control" type="text" name="cid" value="${cid != null ? cid : ''}" required /> <label>Căn cước công dân</label>
 											</div>
 											<div class="form-floating mb-3">
 												<input class="form-control" type="text" name="avatar"
-													value="https://storage.googleapis.com/web-budget/Image/Avatar/first.png" /> <label>Avatar</label>
+													value="https://storage.googleapis.com/web-budget/Image/Avatar/first.png" required /> <label>Avatar</label>
 											</div>
 										</div>
 									</div>

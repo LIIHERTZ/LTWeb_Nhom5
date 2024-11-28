@@ -97,7 +97,6 @@ public class CustomerController extends HttpServlet {
 		}
 		RequestDispatcher rd = req.getRequestDispatcher("adminCustomer");
 		rd.forward(req, resp);
-
 	}
 
 	private void getCustomerUpdate(HttpServletRequest req, HttpServletResponse resp)
@@ -123,6 +122,30 @@ public class CustomerController extends HttpServlet {
 			String cid = req.getParameter("cid");
 			String email = req.getParameter("email");
 			String dobString = req.getParameter("dob");
+			
+			// Kiểm tra số điện thoại và căn cước công dân
+	        String phonePattern = "^[0-9]+$"; // Chỉ chứa chữ số
+	        String cidPattern = "^[0-9]+$"; // Chỉ chứa chữ số
+	        String emailPattern = "^[A-Za-z0-9+_.-]+@(.+)$"; // Biểu thức chính quy kiểm tra email
+
+	        if (!phone.matches(phonePattern)) {
+	            MessageUtil.showMessage(req, "phoneInvalid");
+	            getCustomerUpdate(req, resp);
+	            return;
+	        }
+
+	        if (!cid.matches(cidPattern)) {
+	            MessageUtil.showMessage(req, "cidInvalid");
+	            getCustomerUpdate(req, resp);
+	            return;
+	        }
+
+	        if (!email.matches(emailPattern)) {
+	            MessageUtil.showMessage(req, "emailInvalid");
+	            getCustomerUpdate(req, resp);
+	            return;
+	        }
+					
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Định dạng của ngày tháng
 			Date dob = null;
 			try {
@@ -162,6 +185,57 @@ public class CustomerController extends HttpServlet {
 			String cid = req.getParameter("cid");
 			String email = req.getParameter("email");
 			String dobString = req.getParameter("dob");
+						
+			// Kiểm tra số điện thoại và căn cước công dân
+	        String phonePattern = "^[0-9]+$"; // Chỉ chứa chữ số
+	        String cidPattern = "^[0-9]+$"; // Chỉ chứa chữ số
+	        String emailPattern = "^[A-Za-z0-9+_.-]+@(.+)$"; // Biểu thức chính quy kiểm tra email
+
+	        if (!phone.matches(phonePattern)) {
+	            MessageUtil.showMessage(req, "phoneInvalid");
+	            req.setAttribute("firstName", firstName);
+	            req.setAttribute("lastName", lastName);
+	            req.setAttribute("address", address);
+	            req.setAttribute("gender", gender);
+	            req.setAttribute("phone", phone);
+	            req.setAttribute("avatar", avatar);
+	            req.setAttribute("cid", cid);
+	            req.setAttribute("email", email);
+	            req.setAttribute("dob", dobString);
+	            req.getRequestDispatcher("/views/admin/customer/customerInsert.jsp").forward(req, resp);
+	            return;
+	        }
+
+	        if (!cid.matches(cidPattern)) {
+	            MessageUtil.showMessage(req, "cidInvalid");
+	            req.setAttribute("firstName", firstName);
+	            req.setAttribute("lastName", lastName);
+	            req.setAttribute("address", address);
+	            req.setAttribute("gender", gender);
+	            req.setAttribute("phone", phone);
+	            req.setAttribute("avatar", avatar);
+	            req.setAttribute("cid", cid);
+	            req.setAttribute("email", email);
+	            req.setAttribute("dob", dobString);
+	            req.getRequestDispatcher("/views/admin/customer/customerInsert.jsp").forward(req, resp);
+	            return;
+	        }
+
+	        if (!email.matches(emailPattern)) {
+	            MessageUtil.showMessage(req, "emailInvalid");
+	            req.setAttribute("firstName", firstName);
+	            req.setAttribute("lastName", lastName);
+	            req.setAttribute("address", address);
+	            req.setAttribute("gender", gender);
+	            req.setAttribute("phone", phone);
+	            req.setAttribute("avatar", avatar);
+	            req.setAttribute("cid", cid);
+	            req.setAttribute("email", email);
+	            req.setAttribute("dob", dobString);
+	            req.getRequestDispatcher("/views/admin/customer/customerInsert.jsp").forward(req, resp);
+	            return;
+	        }
+								
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Định dạng của ngày tháng
 			Date dob = null;
 			try {

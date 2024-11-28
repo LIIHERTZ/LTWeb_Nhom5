@@ -30,20 +30,20 @@
 												value="${customer.userID}" readonly="readonly" /> <label>Mã khách hàng</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="firstName"
+											<input class="form-control" type="text" name="firstName" required
 												value="${customer.firstName}" /> <label>Tên khách hàng</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="lastName"
+											<input class="form-control" type="text" name="lastName" required
 												value="${customer.lastName}" /> <label>Họ</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="address"
+											<input class="form-control" type="text" name="address" required
 												value="${customer.address}" /> <label>Địa chỉ</label>
 										</div>
 										<div class="form-floating mb-3">
 											<div class="form-floating mb-3">
-												<select class="form-control" name="gender">
+												<select class="form-control" name="gender" required>
 													<option value="0" ${customer.gender == 0 ? 'selected' : ''}>Nam</option>
 													<option value="1" ${customer.gender == 1 ? 'selected' : ''}>Nữ</option>
 												</select> <label> Giới tính </label>
@@ -52,23 +52,23 @@
 									</div>
 									<div class="col-md-6">
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="phone"
+											<input class="form-control" type="text" name="phone" required
 												value="${customer.phone}" /> <label>Số điện thoại</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="date" name="dob"
+											<input class="form-control" type="date" name="dob" required
 												value="${customer.dob}" /> <label>Ngày sinh</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="cid"
+											<input class="form-control" type="text" name="cid" required
 												value="${customer.cid}" /> <label>Căn cước công dân</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="avatar"
+											<input class="form-control" type="text" name="avatar" required
 												value="${customer.avatar}" /> <label>ảnh đại diện</label>
 										</div>	
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="email"
+											<input class="form-control" type="text" name="email" required
 												value="${customer.email}" /> <label>Email</label>
 										</div>									
 									</div>
