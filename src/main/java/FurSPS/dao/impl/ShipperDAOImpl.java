@@ -16,7 +16,7 @@ public class ShipperDAOImpl implements IShipperDAO {
 	@Override
 	public List<UserModel> findAllShipper() {
 		Connection conn = null;
-		String sql = "Select UserID, FirstName, LastName, Address, Gender, Phone, DoB, CID, Avatar, Area, Email from AZShop.USER where Type=2";
+		String sql = "Select UserID, FirstName, LastName, Address, Gender, Phone, DoB, CID, Avatar, Area, Email from FurSPS.USER where Type=2";
 		List<UserModel> listShipper = new ArrayList<UserModel>();
 		try {
 			new DBConnection();
@@ -51,7 +51,7 @@ public class ShipperDAOImpl implements IShipperDAO {
 	@Override
 	public void updateShipper(UserModel model) {
 		Connection conn = null;
-		String sql = "Update AZShop.USER set FirstName=?, LastName=?, Address=?, Gender=?, Phone=?, DoB=?, CID=?, Avatar=?, Area=?, Email=? where UserID=?";
+		String sql = "Update FurSPS.USER set FirstName=?, LastName=?, Address=?, Gender=?, Phone=?, DoB=?, CID=?, Avatar=?, Area=?, Email=? where UserID=?";
 		try {
 			conn = DBConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -80,7 +80,7 @@ public class ShipperDAOImpl implements IShipperDAO {
 	@Override
 	public UserModel findOne(int id) {
 		Connection conn = null;
-		String sql = "Select * from AZShop.USER where UserID=?";
+		String sql = "Select * from FurSPS.USER where UserID=?";
 		UserModel shipper = new UserModel();
 
 		try {
@@ -112,7 +112,7 @@ public class ShipperDAOImpl implements IShipperDAO {
 	@Override
 	public void deleteShipper(int id) {
 		Connection conn = null;
-		String sql = "DELETE from AZShop.USER where UserID=?";
+		String sql = "DELETE from FurSPS.USER where UserID=?";
 		try {
 			conn = DBConnection.getConnection();// ket noi csdl
 			PreparedStatement ps = conn.prepareStatement(sql);// nem cau lenh sql bang phat bieu prepare
@@ -130,7 +130,7 @@ public class ShipperDAOImpl implements IShipperDAO {
 	@Override
 	public void insertShipper(UserModel model) {
 		Connection conn = null;
-		String sql = "Insert into AZShop.USER(UserID, FirstName, LastName, Address, Gender, Phone, DoB, CID, Avatar, Area, Email, Type) Values (?,?,?,?,?,?,?,?,?,?,?,2)";
+		String sql = "Insert into FurSPS.USER(UserID, FirstName, LastName, Address, Gender, Phone, DoB, CID, Avatar, Area, Email, Type) Values (?,?,?,?,?,?,?,?,?,?,?,2)";
 		try {
 			conn = DBConnection.getConnection();// ket noi csdl
 			PreparedStatement ps = conn.prepareStatement(sql);// nem cau lenh sql bang phat bieu prepare

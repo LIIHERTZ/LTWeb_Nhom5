@@ -27,7 +27,7 @@ public class OrderDAOImpl implements IOrderDAO {
 
 	@Override
 	public void updateOrder(OrderModel order) {
-		String sql = "UPDATE `AZShop`.`ORDER` SET `OrderDate` = ? , `Address` = ? , `Status` = ? , `TransportFee` = ? , `Discount` = ? , `TotalMoney` = ? , `Note` = ? , `DeliveryTime` = ? , `CustomerConfirmation` = ? , `CustomerID` = ? , `SellerID` = ? , `ShipperID` = ? WHERE (`OrderID` = ? )";
+		String sql = "UPDATE [ORDER] SET OrderDate = ? , Address = ? , Status = ? , TransportFee = ? , Discount = ? , TotalMoney = ? , Note = ? , DeliveryTime = ? , CustomerConfirmation = ? , CustomerID = ? , SellerID = ? , ShipperID = ? WHERE (OrderID = ? )";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();
@@ -40,10 +40,8 @@ public class OrderDAOImpl implements IOrderDAO {
 			ps.setInt(5, order.getDiscount());
 			ps.setInt(6, order.getTotalMoney());
 			ps.setString(7, order.getNote());
-			if(order.getDeliveryTime() != null)
-				ps.setString(8, formatter.format(order.getDeliveryTime()));
-			else
-				ps.setString(8,null);
+			if (order.getDeliveryTime() != null) ps.setString(8, formatter.format(order.getDeliveryTime()));
+			else ps.setString(8, null);
 			ps.setInt(9, order.getCustomerConfirmation());
 			ps.setInt(10, order.getCustomerID());
 			ps.setInt(11, order.getSellerID());
@@ -52,7 +50,7 @@ public class OrderDAOImpl implements IOrderDAO {
 			ps.executeUpdate();
 			conn.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+		    e.printStackTrace();
 		}
 	}
 
@@ -60,31 +58,23 @@ public class OrderDAOImpl implements IOrderDAO {
 	public List<OrderModel> findAllOrder() {
 		List<OrderModel> listOrder = new ArrayList<OrderModel>();
 		String sql = "SELECT DISTINCT k.*,p.Method as Method,p.Time as TimePay, p.Bank as Bank, p.CardOwner as CardOwner, p.AccountNumber as AccountNumber, p.Status as StatusPay "
-				+ "FROM PAYMENT AS p "
-				+ "INNER JOIN ( "
+				+ "FROM PAYMENT AS p " + "INNER JOIN ( "
 				+ "    SELECT DISTINCT o.*, c.FirstName AS FirstNameCustomer, c.LastName AS LastNameCustomer, c.Phone AS PhoneCustomer, c.CID AS CIDCustomer, "
 				+ "		 c.Email AS EmailCustomer,  c.Avatar AS AvatarCustomer, "
 				+ "        se.FirstName AS FirstNameSeller, se.LastName AS LastNameSeller, se.Phone AS PhoneSeller, se.CID AS CIDSeller, "
 				+ "		 se.Email AS EmailSeller, se.Avatar as AvatarSeller, "
 				+ "        sh.FirstName AS FirstNameShipper, sh.LastName AS LastNameShipper, sh.Phone AS PhoneShipper, sh.CID AS CIDShipper, "
-				+ "		 sh.Email AS EmailShipper, sh.Avatar AS AvatarShipper "
-				+ "    FROM AZShop.`ORDER` o "
+				+ "		 sh.Email AS EmailShipper, sh.Avatar AS AvatarShipper " + "    FROM FurSPS.`ORDER` o "
 				+ "    LEFT JOIN ( "
 				+ "        SELECT DISTINCT USER.UserID, USER.FirstName, USER.LastName , USER.Phone, USER.CID, USER.Email, USER.Avatar "
-				+ "        FROM AZShop.`ORDER` "
-				+ "        INNER JOIN USER ON `ORDER`.CustomerID = USER.UserID "
-				+ "    ) AS c ON o.CustomerID = c.UserID "
-				+ "    LEFT JOIN ( "
+				+ "        FROM FurSPS.`ORDER` " + "        INNER JOIN USER ON `ORDER`.CustomerID = USER.UserID "
+				+ "    ) AS c ON o.CustomerID = c.UserID " + "    LEFT JOIN ( "
 				+ "        SELECT DISTINCT USER.UserID, USER.FirstName, USER.LastName, USER.Phone, USER.CID, USER.Email, USER.Avatar "
-				+ "        FROM AZShop.`ORDER` "
-				+ "        INNER JOIN USER ON `ORDER`.SellerID = USER.UserID "
-				+ "    ) AS se ON o.SellerID = se.UserID "
-				+ "    LEFT JOIN ( "
+				+ "        FROM FurSPS.`ORDER` " + "        INNER JOIN USER ON `ORDER`.SellerID = USER.UserID "
+				+ "    ) AS se ON o.SellerID = se.UserID " + "    LEFT JOIN ( "
 				+ "        SELECT DISTINCT USER.UserID, USER.FirstName, USER.LastName, USER.Phone, USER.CID, USER.Email, USER.Avatar "
-				+ "        FROM AZShop.`ORDER` "
-				+ "        INNER JOIN USER ON `ORDER`.ShipperID = USER.UserID "
-				+ "    ) AS sh ON o.ShipperID = sh.UserID "
-				+ ") AS k ON p.OrderID = k.OrderID;";
+				+ "        FROM FurSPS.`ORDER` " + "        INNER JOIN USER ON `ORDER`.ShipperID = USER.UserID "
+				+ "    ) AS sh ON o.ShipperID = sh.UserID " + ") AS k ON p.OrderID = k.OrderID;";
 		try {
 			new DBConnection();
 			conn = DBConnection.getConnection();
@@ -109,7 +99,7 @@ public class OrderDAOImpl implements IOrderDAO {
 				order.setCustomerID(rs.getInt("CustomerID"));
 				order.setSellerID(rs.getInt("SellerID"));
 				order.setShipperID(rs.getInt("ShipperID"));
-customer.setLastName(rs.getString("LastNameCustomer"));
+				customer.setLastName(rs.getString("LastNameCustomer"));
 				customer.setFirstName(rs.getString("FirstNameCustomer"));
 				customer.setCid(rs.getString("CIDCustomer"));
 				customer.setPhone(rs.getString("PhoneCustomer"));
@@ -152,7 +142,7 @@ customer.setLastName(rs.getString("LastNameCustomer"));
 
 	@Override
 	public void deleteOrder(int orderID) {
-		String sql = "DELETE FROM `AZShop`.`ORDER` WHERE (`OrderID` = ? )";
+		String sql = "DELETE FROM `FurSPS`.`ORDER` WHERE (`OrderID` = ? )";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();
@@ -172,7 +162,7 @@ customer.setLastName(rs.getString("LastNameCustomer"));
 			new DBConnection();
 			conn = DBConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
-			
+
 			ps.setInt(1, status);
 			ps.setInt(2, orderID);
 			ps.executeUpdate();
@@ -234,7 +224,7 @@ customer.setLastName(rs.getString("LastNameCustomer"));
 	public OrderModel getOrderByOrderID(int orderID) {
 		OrderModel order = new OrderModel();
 		String sql = "SELECT o.*, FirstName, LastName, Phone, p.CardOwner,p.Bank,p.AccountNumber,p.Time as TimePay,	 p.Method, p.Status as PayStatus    "
-				+ " FROM AZShop.ORDER as o   LEFT JOIN PAYMENT as p ON o.OrderID = p.OrderID INNER JOIN USER as c ON  o.CustomerID = c.UserID  "
+				+ " FROM FurSPS.ORDER as o   LEFT JOIN PAYMENT as p ON o.OrderID = p.OrderID INNER JOIN USER as c ON  o.CustomerID = c.UserID  "
 				+ " WHERE o.OrderID=?";
 		try {
 			new DBConnection();
@@ -257,7 +247,7 @@ customer.setLastName(rs.getString("LastNameCustomer"));
 				order.getCustomer().setFirstName(rs.getString("FirstName"));
 				order.getCustomer().setLastName(rs.getString("LastName"));
 				order.getCustomer().setPhone(rs.getString("Phone"));
-				
+
 				order.getPayment().setMethod(rs.getInt("Method"));
 				order.getPayment().setStatus(rs.getInt("PayStatus"));
 				order.getPayment().setBank(rs.getString("Bank"));
@@ -274,7 +264,7 @@ customer.setLastName(rs.getString("LastNameCustomer"));
 	public List<OrderModel> findHisOrder(int sellerID) {
 		List<OrderModel> listOrder = new ArrayList<OrderModel>();
 		String sql = "SELECT o.*, FirstName, LastName, Phone, " + "	   p.Method, p.Status as PayStatus "
-				+ "	   FROM AZShop.ORDER as o " + "    LEFT JOIN PAYMENT as p ON o.OrderID = p.OrderID "
+				+ "	   FROM FurSPS.ORDER as o " + "    LEFT JOIN PAYMENT as p ON o.OrderID = p.OrderID "
 				+ "    INNER JOIN USER as c ON  o.CustomerID = c.UserID " + "WHERE o.Status <> 0 AND SellerID=?;";
 		try {
 			new DBConnection();
@@ -314,7 +304,7 @@ customer.setLastName(rs.getString("LastNameCustomer"));
 	public List<OrderModel> findOrderBySeller() {
 		List<OrderModel> listOrder = new ArrayList<OrderModel>();
 		String sql = "SELECT o.*, FirstName, LastName, Phone, " + "	   p.Method, p.Status as PayStatus "
-				+ "	   FROM AZShop.ORDER as o " + "    LEFT JOIN PAYMENT as p ON o.OrderID = p.OrderID "
+				+ "	   FROM FurSPS.ORDER as o " + "    LEFT JOIN PAYMENT as p ON o.OrderID = p.OrderID "
 				+ "    INNER JOIN USER as c ON  o.CustomerID = c.UserID " + "WHERE o.Status = 0 or o.Status=1;";
 		try {
 			new DBConnection();
@@ -368,7 +358,7 @@ customer.setLastName(rs.getString("LastNameCustomer"));
 
 	@Override
 	public OrderModel findByOrderID(int orderID) {
-		String sql = "SELECT * FROM AZShop.`ORDER` where orderID = ? ";
+		String sql = "SELECT * FROM FurSPS.`ORDER` where orderID = ? ";
 		OrderModel order = new OrderModel();
 		try {
 			new DBConnection();
@@ -400,9 +390,8 @@ customer.setLastName(rs.getString("LastNameCustomer"));
 	@Override
 	public OrderModel getOrderByID(int orderID) {
 		OrderModel order = new OrderModel();
-		String sql =  "SELECT O.OrderID, O.CustomerID, O.OrderDate, O.`Status`, O.CustomerConfirmation, O.Discount, O.TotalMoney, O.SellerID, O.ShipperID, O.TransportFee "
-					+ "FROM `ORDER` O "
-					+ "WHERE O.OrderID = ?";
+		String sql = "SELECT O.OrderID, O.CustomerID, O.OrderDate, O.`Status`, O.CustomerConfirmation, O.Discount, O.TotalMoney, O.SellerID, O.ShipperID, O.TransportFee "
+				+ "FROM `ORDER` O " + "WHERE O.OrderID = ?";
 		try {
 			new DBConnection();
 			conn = DBConnection.getConnection();
@@ -429,9 +418,8 @@ customer.setLastName(rs.getString("LastNameCustomer"));
 
 	@Override
 	public OrderModel insertOrder(OrderModel order) {
-		String sql = "INSERT INTO AZShop.ORDER " + "(OrderDate, Address, City, Status, TransportFee, "
+		String sql = "INSERT INTO FurSPS.ORDER " + "(OrderDate, Address, City, Status, TransportFee, "
 				+ "Discount, TotalMoney, Note, DeliveryTime, CustomerConfirmation, CustomerID) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
-
 
 		try {
 			new DBConnection();
@@ -487,10 +475,16 @@ customer.setLastName(rs.getString("LastNameCustomer"));
 
 	@Override
 	public List<OrderModel> findNeedShipByArea(String area) {
-		//String condition = " WHERE o.Status = 2 AND ShipperID IS NULL AND ?;";
-		String condition = " WHERE o.Status = 2 AND ?;";
+		// Điều kiện SQL
+		// String condition = " WHERE o.Status = 2 AND ShipperID IS NULL AND ?;";
+//		String condition = " WHERE o.Status = 2 AND ?;";
+//		List<String> citys = Assignment.getAssign().get(area);
+//		return findDeliveryByCondition(condition, 1).stream()
+//				.filter(order -> order.getCity().equals("none") || citys.contains(order.getCity())).toList();
+
+		String condition = "	WHERE o.Status = 2 AND ShipperID IS NULL";
 		List<String> citys = Assignment.getAssign().get(area);
-		return findDeliveryByCondition(condition, 1).stream().filter(order -> order.getCity().equals("none") || citys.contains(order.getCity())).toList();
+		return findDeliveryByCondition(condition, null).stream().filter(order -> order.getCity().equals("none") || citys.contains(order.getCity())).toList();
 	}
 
 	@Override
@@ -508,17 +502,27 @@ customer.setLastName(rs.getString("LastNameCustomer"));
 
 	@Override
 	public OrderModel findShipByID(int OrderID) {
-		String condition = "	WHERE o.OrderID = " + OrderID + " AND ?";
-		return findDeliveryByCondition(condition, 1).get(0);
+		//String condition = "	WHERE o.OrderID = " + OrderID + " AND ?";
+		String condition = "	WHERE o.OrderID = " + OrderID;
+		return findDeliveryByCondition(condition, null).get(0);
 	}
 
-	private final String sqltemp = "SELECT o.*, FirstName, LastName, Phone, \r\n"
-			+ "	   p.Method, p.Status as PayStatus\r\n" 
-			+ "	   FROM AZShop.ORDER as o\r\n"
-			+ "    LEFT JOIN AZShop.PAYMENT as p ON o.OrderID = p.OrderID\r\n"
-			+ "    INNER JOIN USER as c ON  o.CustomerID = c.UserID\r\n";
+//	private final String sqltemp = "SELECT o.*, FirstName, LastName, Phone, \r\n"
+//			+ "	   p.Method, p.Status as PayStatus\r\n" 
+//			+ "	   FROM FurSPS.ORDER as o\r\n"
+//			+ "    LEFT JOIN FurSPS.PAYMENT as p ON o.OrderID = p.OrderID\r\n"
+//			+ "    INNER JOIN USER as c ON  o.CustomerID = c.UserID\r\n";
 
-	private List<OrderModel> findDeliveryByCondition(String condition, int ShipperID) {
+	private final String sqltemp = "SELECT o.*, c.FirstName, c.LastName, c.Phone, "
+			+ "       p.Method, p.Status AS PayStatus " + "FROM [ORDER] AS o "
+			+ "LEFT JOIN [PAYMENT] AS p ON o.OrderID = p.OrderID "
+			+ "INNER JOIN [USER] AS c ON o.CustomerID = c.UserID";
+
+//	private final String sqltemp = "SELECT o.*, FirstName, LastName, Phone, " + "	   p.Method, p.Status as PayStatus "
+//			+ "	   FROM ORDER as o" + "    LEFT JOIN PAYMENT as p ON o.OrderID = p.OrderID"
+//			+ "    INNER JOIN USER as c ON  o.CustomerID = c.UserID";
+
+	private List<OrderModel> findDeliveryByCondition(String condition, Integer ShipperID) {
 		List<OrderModel> listOrder = new ArrayList<OrderModel>();
 		String sql = sqltemp + condition;
 		try {
@@ -526,7 +530,13 @@ customer.setLastName(rs.getString("LastNameCustomer"));
 			Connection conn;
 			conn = DBConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, ShipperID);
+			
+			// Nếu cần tham số ShipperID, set giá trị vào preparedStatement
+	        if (ShipperID != null) {
+	            ps.setInt(1, ShipperID); // set giá trị ShipperID vào vị trí tham số đầu tiên (?)
+	        }
+			
+			//ps.setInt(1, ShipperID);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				OrderModel order = new OrderModel();
@@ -560,22 +570,22 @@ customer.setLastName(rs.getString("LastNameCustomer"));
 	public Object[] findKPIByShipper(int ShipperID) {
 		String sql = "SELECT o.DeliveryTime, s.KPI,\r\n"
 				+ "Count(*) as Oall, SUM(o.Status = 4) as Complete, SUM(o.Status = 5) as Cancel, SUM(o.Status  < 4) as Doing\r\n"
-				+ "	FROM AZShop.ORDER as o\r\n"
-				+ "		JOIN (SELECT * FROM AZShop.USER as u WHERE u.userID = ? ) as s\r\n"
+				+ "	FROM FurSPS.ORDER as o\r\n"
+				+ "		JOIN (SELECT * FROM FurSPS.USER as u WHERE u.userID = ? ) as s\r\n"
 				+ "        ON s.UserID = o.ShipperID\r\n" + " WHERE MONTH(o.DeliveryTime) = MONTH(current_date()) \r\n"
 				+ "		AND YEAR(o.DeliveryTime) = YEAR(current_date()) " + "	GROUP BY o.DeliveryTime "
 				+ " ORDER BY o.DeliveryTime ASC";
-		
+
 		Date curday = new Date();
-		
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-        	curday = dateFormat.parse(dateFormat.format(curday));
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			curday = dateFormat.parse(dateFormat.format(curday));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
-		
+		}
+
 		List<Integer> listdate = getDatesInNowMonth(new Date());
 		List<Integer> listkpi = new ArrayList<>(Collections.nCopies(listdate.size(), 0));
 		List<Integer> listall = new ArrayList<>(Collections.nCopies(listdate.size(), 0));
@@ -583,8 +593,6 @@ customer.setLastName(rs.getString("LastNameCustomer"));
 		List<Integer> listcancel = new ArrayList<>(Collections.nCopies(listdate.size(), 0));
 		List<Integer> listdoing = new ArrayList<>(Collections.nCopies(listdate.size(), 0));
 		int kpi = 0;
-				
-		
 
 		// list
 		try {
@@ -601,13 +609,12 @@ customer.setLastName(rs.getString("LastNameCustomer"));
 				listcomplete.set(day, rs.getInt("Complete"));
 				listcancel.set(day, rs.getInt("Cancel"));
 				listdoing.set(day, rs.getInt("Doing"));
-				//listdate.set(day, rs.getDate("DeliveryTime"));
-				
+				// listdate.set(day, rs.getDate("DeliveryTime"));
+
 			}
-			
-		listkpi = new ArrayList<>(Collections.nCopies(listdate.size(), kpi));
-		
-		
+
+			listkpi = new ArrayList<>(Collections.nCopies(listdate.size(), kpi));
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -638,7 +645,7 @@ customer.setLastName(rs.getString("LastNameCustomer"));
 		List<Integer> datesInMonth = new ArrayList<>();
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(date.getYear(), date.getMonth(), 1); // Tháng trong Java bắt đầu từ 0
-		while (calendar.get(Calendar.MONTH) == (date.getMonth())) {	
+		while (calendar.get(Calendar.MONTH) == (date.getMonth())) {
 			datesInMonth.add(calendar.getTime().getDate());
 			calendar.add(Calendar.DAY_OF_MONTH, 1);
 		}
@@ -647,11 +654,11 @@ customer.setLastName(rs.getString("LastNameCustomer"));
 	}
 
 	public List<Object[]> findCateForShipper(int ShipperID) {
-		String sql = "SELECT c.CategoryName, Sum(d.Quantity) as Num\r\n" + "	FROM AZShop.DETAIL as d\r\n"
-				+ "	JOIN AZShop.ORDER as o ON d.OrderID = o.OrderID\r\n"
-				+ "    JOIN AZShop.ITEM as i ON d.ItemID = i.ItemID\r\n"
-				+ "    JOIN AZShop.PRODUCT p ON i.ProductID = p.ProductID\r\n"
-				+ "    JOIN AZShop.CATEGORY as c ON p.CategoryID = c.CategoryID\r\n" + "    WHERE o.ShipperID = ? \r\n"
+		String sql = "SELECT c.CategoryName, Sum(d.Quantity) as Num\r\n" + "	FROM FurSPS.DETAIL as d\r\n"
+				+ "	JOIN FurSPS.ORDER as o ON d.OrderID = o.OrderID\r\n"
+				+ "    JOIN FurSPS.ITEM as i ON d.ItemID = i.ItemID\r\n"
+				+ "    JOIN FurSPS.PRODUCT p ON i.ProductID = p.ProductID\r\n"
+				+ "    JOIN FurSPS.CATEGORY as c ON p.CategoryID = c.CategoryID\r\n" + "    WHERE o.ShipperID = ? \r\n"
 				+ "    GROUP BY c.CategoryName";
 		List<Object[]> list = new ArrayList<Object[]>();
 		Object[] row = { "'Loai hang'", "'SL'" };
