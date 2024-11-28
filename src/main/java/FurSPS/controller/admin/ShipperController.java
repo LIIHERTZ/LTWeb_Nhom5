@@ -19,12 +19,16 @@ import FurSPS.service.IShipperService;
 import FurSPS.service.impl.ShipperServiceImpl;
 import FurSPS.utils.MessageUtil;
 
+import FurSPS.models.AccountModel;
+import FurSPS.service.IAccountService;
+import FurSPS.service.impl.AccountServiceImpl;
 @WebServlet(urlPatterns = { "/adminShipper", "/adminUpdateShipper", "/adminDeleteShipper", "/adminInsertShipper",
 		"/adminInformationShipper" })
 public class ShipperController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	IShipperService shipperService = new ShipperServiceImpl();
+	IAccountService accountService = new AccountServiceImpl();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -124,6 +128,63 @@ public class ShipperController extends HttpServlet {
 			String area = req.getParameter("area");
 			String email = req.getParameter("email");
 			String dobString = req.getParameter("dob");
+			
+			// Biểu thức chính quy để kiểm tra dữ liệu
+	        String phonePattern = "^[0-9]+$"; // Chỉ chứa chữ số
+	        String cidPattern = "^[0-9]+$"; // Chỉ chứa chữ số
+	        String emailPattern = "^[A-Za-z0-9+_.-]+@(.+)$"; // Kiểm tra email
+
+	        // Kiểm tra số điện thoại
+	        if (!phone.matches(phonePattern)) {
+	            MessageUtil.showMessage(req, "phoneInvalid");
+	            req.setAttribute("firstName", firstName);
+	            req.setAttribute("lastName", lastName);
+	            req.setAttribute("address", address);
+	            req.setAttribute("gender", gender);
+	            req.setAttribute("phone", phone);
+	            req.setAttribute("avatar", avatar);
+	            req.setAttribute("cid", cid);
+	            req.setAttribute("email", email);
+	            req.setAttribute("dob", dobString);
+	            req.setAttribute("area", area);
+	            req.getRequestDispatcher("/views/admin/shipper/addShipper.jsp").forward(req, resp);
+	            return;
+	        }
+
+	        // Kiểm tra căn cước công dân
+	        if (!cid.matches(cidPattern)) {
+	            MessageUtil.showMessage(req, "cidInvalid");
+	            req.setAttribute("firstName", firstName);
+	            req.setAttribute("lastName", lastName);
+	            req.setAttribute("address", address);
+	            req.setAttribute("gender", gender);
+	            req.setAttribute("phone", phone);
+	            req.setAttribute("avatar", avatar);
+	            req.setAttribute("cid", cid);
+	            req.setAttribute("email", email);
+	            req.setAttribute("dob", dobString);
+	            req.setAttribute("area", area);
+	            req.getRequestDispatcher("/views/admin/shipper/addShipper.jsp").forward(req, resp);
+	            return;
+	        }
+
+	        // Kiểm tra email
+	        if (!email.matches(emailPattern)) {
+	            MessageUtil.showMessage(req, "emailInvalid");
+	            req.setAttribute("firstName", firstName);
+	            req.setAttribute("lastName", lastName);
+	            req.setAttribute("address", address);
+	            req.setAttribute("gender", gender);
+	            req.setAttribute("phone", phone);
+	            req.setAttribute("avatar", avatar);
+	            req.setAttribute("cid", cid);
+	            req.setAttribute("email", email);
+	            req.setAttribute("dob", dobString);
+	            req.setAttribute("area", area);
+	            req.getRequestDispatcher("/views/admin/shipper/addShipper.jsp").forward(req, resp);
+	            return;
+	        }
+			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Định dạng của ngày tháng
 			Date dob = null;
 			try {
@@ -143,10 +204,15 @@ public class ShipperController extends HttpServlet {
 			newUser.setPhone(phone);
 			newUser.setDob(dob);
 			newUser.setCid(cid);
+			newUser.setType(2);
 			newUser.setArea(area);
 			newUser.setEmail(email);
 			// goi pt insert trong service
-			shipperService.insertShipper(newUser);
+			boolean checkInsertSeller = shipperService.insertShipper(newUser);
+			if (checkInsertSeller) {
+				AccountModel accountMd = new AccountModel(id, "Shipper" + id, "123");  // Đặt tên tài khoản theo định dạng Seller + ID
+				accountService.insertAccount(accountMd);
+			}
 			MessageUtil.showMessage(req, "addSuccess");
 		} catch (Exception ex) {
 			MessageUtil.showMessage(req, "addFail");
@@ -171,6 +237,34 @@ public class ShipperController extends HttpServlet {
 			String area = req.getParameter("area");
 			String email = req.getParameter("email");
 			String dobString = req.getParameter("dob");
+			
+			// Biểu thức chính quy để kiểm tra dữ liệu
+	        String phonePattern = "^[0-9]+$"; // Chỉ chứa chữ số
+	        String cidPattern = "^[0-9]+$"; // Chỉ chứa chữ số
+	        String emailPattern = "^[A-Za-z0-9+_.-]+@(.+)$"; // Biểu thức chính quy kiểm tra email
+
+	        // Kiểm tra số điện thoại
+	        if (!phone.matches(phonePattern)) {
+	            MessageUtil.showMessage(req, "phoneInvalid");
+	            getInforShipper(req, resp);
+	            return;
+	        }
+
+	        // Kiểm tra căn cước công dân
+	        if (!cid.matches(cidPattern)) {
+	            MessageUtil.showMessage(req, "cidInvalid");
+	            getInforShipper(req, resp);
+	            return;
+	        }
+
+	        // Kiểm tra email
+	        if (!email.matches(emailPattern)) {
+	            MessageUtil.showMessage(req, "emailInvalid");
+	            getInforShipper(req, resp);
+	            return;
+	        }
+			
+			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Định dạng của ngày tháng
 			Date dob = null;
 			try {

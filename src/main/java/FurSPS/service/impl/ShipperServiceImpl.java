@@ -7,9 +7,13 @@ import FurSPS.dao.impl.ShipperDAOImpl;
 import FurSPS.models.UserModel;
 import FurSPS.service.IShipperService;
 
+import FurSPS.dao.IUserDAO;
+import FurSPS.dao.impl.UserDAOImpl;
+
 public class ShipperServiceImpl implements IShipperService {
 
 	IShipperDAO shipperDAO = new ShipperDAOImpl();
+	IUserDAO userDAO = new UserDAOImpl();
 
 	@Override
 	public List<UserModel> findAllShipper() {
@@ -34,15 +38,15 @@ public class ShipperServiceImpl implements IShipperService {
 	}
 
 	@Override
-	public void insertShipper(UserModel model) {
-		shipperDAO.insertShipper(model);
+	public boolean insertShipper(UserModel model) {
+		return shipperDAO.insertShipper(model);
 
 	}
 
 	@Override
 	public int createShipperID() {
-		List<UserModel> listShipper = shipperDAO.findAllShipper();
-		int id = listShipper.get(listShipper.size() - 1).getUserID();
+		List<UserModel> listUser = userDAO.findAllUser();
+		int id = listUser.get(listUser.size() - 1).getUserID();
 		return id + 1;
 	}
 

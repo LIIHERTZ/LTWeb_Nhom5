@@ -13,5 +13,5 @@ public interface IShipperDAO {
 
 	void deleteShipper(int id);
 
-	void insertShipper(UserModel model);
+	boolean insertShipper(UserModel model);
 }

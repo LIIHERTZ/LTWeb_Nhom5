@@ -27,27 +27,27 @@
 									<div class="col-md-6">
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="userID"
-												value="${shipper.userID}" readonly="readonly" /> <label>Mã</label>
+												value="${shipper.userID}" readonly="readonly" required/> <label>Mã</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="firstName"
-												value="${shipper.firstName}" /> <label>Họ</label>
+												value="${shipper.firstName}" required/> <label>Họ</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="lastName"
-												value="${shipper.lastName}" /> <label>Tên</label>
+												value="${shipper.lastName}" required/> <label>Tên</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="address"
-												value="${shipper.address}" /> <label>Địa chỉ</label>
+												value="${shipper.address}" required/> <label>Địa chỉ</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="email"
-												value="${shipper.email}" /> <label>Email</label>
+												value="${shipper.email}" required/> <label>Email</label>
 										</div>
 										<div class="form-floating mb-3">
 											<div class="form-floating mb-3">
-												<select class="form-control" name="gender">
+												<select class="form-control" name="gender" required>
 													<option value="0" ${shipper.gender == 0 ? 'selected' : ''}>Nam</option>
 													<option value="1" ${shipper.gender == 1 ? 'selected' : ''}>Nữ</option>
 												</select> <label> Giới tính </label>
@@ -57,23 +57,31 @@
 									<div class="col-md-6">
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="phone"
-												value="${shipper.phone}" /> <label>Số điện thoại</label>
+												value="${shipper.phone}" required/> <label>Số điện thoại</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="date" name="dob"
-												value="${shipper.dob}" /> <label>Ngày sinh</label>
+												value="${shipper.dob}" required/> <label>Ngày sinh</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="cid"
-												value="${shipper.cid}" /> <label>CCCD</label>
+												value="${shipper.cid}" required/> <label>CCCD</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="avatar"
-												value="${shipper.avatar}" /> <label>Ảnh đại diện</label>
+												value="${shipper.avatar}" required/> <label>Ảnh đại diện</label>
 										</div>
+<!-- 										<div class="form-floating mb-3"> -->
+<!-- 											<input class="form-control" type="text" name="area" -->
+<%-- 												value="${shipper.area}" required/> <label>Khu vực</label> --%>
+<!-- 										</div> -->
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="area"
-												value="${shipper.area}" /> <label>Khu vực</label>
+										    <select class="form-control" name="area" required>
+										        <option value="Miền Bắc" ${shipper.area == 'Miền Bắc' ? 'selected' : ''}>Miền Bắc</option>
+										        <option value="Miền Trung" ${shipper.area == 'Miền Trung' ? 'selected' : ''}>Miền Trung</option>
+										        <option value="Miền Nam" ${shipper.area == 'Miền Nam' ? 'selected' : ''}>Miền Nam</option>
+										    </select>
+										    <label>Khu vực</label>
 										</div>
 									</div>
 								</div>

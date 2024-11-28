@@ -82,7 +82,7 @@ a{
 <div class="seller-profile">
 	<div class="seller-info">
 		<p>
-			<strong>Họ tên:</strong> ${user.lastName} ${user.firstName}
+			<strong>Họ tên:</strong> ${user.firstName} ${user.lastName}
 		</p>
 		<p>
 			<strong>Địa chỉ:</strong> ${user.address}
