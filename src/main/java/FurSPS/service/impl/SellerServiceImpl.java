@@ -7,9 +7,13 @@ import FurSPS.dao.impl.SellerDAOImpl;
 import FurSPS.models.UserModel;
 import FurSPS.service.ISellerService;
 
+import FurSPS.dao.IUserDAO;
+import FurSPS.dao.impl.UserDAOImpl;
+
 public class SellerServiceImpl implements ISellerService {
 
 	ISellerDAO sellerDAO = new SellerDAOImpl();
+	IUserDAO userDAO = new UserDAOImpl();
 
 	@Override
 	public List<UserModel> findAllSeller() {
@@ -33,15 +37,15 @@ public class SellerServiceImpl implements ISellerService {
 	}
 
 	@Override
-	public void insertSeller(UserModel model) {
-		sellerDAO.insertSeller(model);
-
+	public boolean insertSeller(UserModel model) {
+		//Bên customer có tạo avatar....
+		return sellerDAO.insertSeller(model);
 	}
 
 	@Override
 	public int createSellerID() {
-		List<UserModel> listSeller = sellerDAO.findAllSeller();
-		int id = listSeller.get(listSeller.size() - 1).getUserID();
+		List<UserModel> listUser = userDAO.findAllUser();
+		int id = listUser.get(listUser.size() - 1).getUserID();
 		return id + 1;
 	}
 

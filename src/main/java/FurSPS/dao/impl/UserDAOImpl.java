@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import FurSPS.configs.DBConnection;
 import FurSPS.dao.IUserDAO;
@@ -120,6 +122,37 @@ public class UserDAOImpl implements IUserDAO {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public List<UserModel> findAllUser() {
+		String sql = "SELECT * FROM [USER]";
+	    List<UserModel> listUser = new ArrayList<>();
+	    try {
+	        Connection conn = DBConnection.getConnection();
+	        PreparedStatement ps = conn.prepareStatement(sql);
+	        ResultSet rs = ps.executeQuery();
+	        while (rs.next()) {
+	            UserModel user = new UserModel();
+	            user.setUserID(rs.getInt("UserID"));
+	            user.setFirstName(rs.getString("FirstName"));
+	            user.setLastName(rs.getString("LastName"));
+	            user.setAddress(rs.getString("Address"));
+	            user.setGender(rs.getInt("Gender"));
+	            user.setPhone(rs.getString("Phone"));
+	            user.setDob(rs.getDate("DoB"));
+	            user.setCid(rs.getString("CID"));
+	            user.setAvatar(rs.getString("Avatar"));
+	            user.setKpi(rs.getInt("KPI"));
+	            user.setEmail(rs.getString("Email"));
+	            user.setType(rs.getInt("Type"));
+	            listUser.add(user);
+	        }
+	        conn.close();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return listUser;
 	}
 
 	

@@ -27,26 +27,26 @@
 									<div class="col-md-6">
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="userID"
-												value="${seller.userID}" readonly="readonly" /> <label>Mã</label>
+												value="${seller.userID}" readonly="readonly" required/> <label>Mã</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="firstName"
-												value="${seller.firstName}" /> <label>Họ</label>
+												value="${seller.firstName}" required/> <label>Họ</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="lastName"
-												value="${seller.lastName}" /> <label>Tên</label>
+												value="${seller.lastName}" required/> <label>Tên</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="address"
-												value="${seller.address}" /> <label>Địa chỉ</label>
+												value="${seller.address}" required/> <label>Địa chỉ</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="email"
-												value="${seller.email}" /> <label>Email</label>
+												value="${seller.email}" required/> <label>Email</label>
 										</div>
 										<div class="form-floating mb-3">
-											<select class="form-control" name="gender">
+											<select class="form-control" name="gender" required>
 												<option value="0" ${seller.gender == 0 ? 'selected' : ''}>Nam</option>
 												<option value="1" ${seller.gender == 1 ? 'selected' : ''}>Nữ</option>
 											</select> <label> Giới tính </label>
@@ -55,23 +55,23 @@
 									<div class="col-md-6">
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="phone"
-												value="${seller.phone}" /> <label>Số điện thoại</label>
+												value="${seller.phone}" required/> <label>Số điện thoại</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="date" name="dob"
-												value="${seller.dob}" /> <label>Ngày sinh</label>
+												value="${seller.dob}" required/> <label>Ngày sinh</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="cid"
-												value="${seller.cid}" /> <label>CCCD</label>
+												value="${seller.cid}" required/> <label>CCCD</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="avatar"
-												value="${seller.avatar}" /> <label>Ảnh đại diện</label>
+												value="${seller.avatar}" required/> <label>Ảnh đại diện</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="kpi"
-												value="${seller.kpi}" /> <label>KPI</label>
+												value="${seller.kpi}" required/> <label>KPI</label>
 										</div>
 									</div>
 								</div>

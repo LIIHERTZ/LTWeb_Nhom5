@@ -19,11 +19,16 @@ import FurSPS.service.ISellerService;
 import FurSPS.service.impl.SellerServiceImpl;
 import FurSPS.utils.MessageUtil;
 
+import FurSPS.models.AccountModel;
+import FurSPS.service.IAccountService;
+import FurSPS.service.impl.AccountServiceImpl;
+
 @WebServlet(urlPatterns = { "/adminSeller", "/adminUpdateSeller", "/adminDeleteSeller", "/adminInsertSeller",
 		"/adminInformationSeller" })
 public class SellerController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	ISellerService sellerService = new SellerServiceImpl();
+	IAccountService accountService = new AccountServiceImpl();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -110,10 +115,93 @@ public class SellerController extends HttpServlet {
 			int gender = Integer.parseInt(req.getParameter("gender"));
 			String phone = req.getParameter("phone");
 			String avatar = req.getParameter("avatar");
-			String cid = req.getParameter("cid");
-			int kpi = Integer.parseInt(req.getParameter("kpi"));
+			String cid = req.getParameter("cid");		
+			String kpiStr = req.getParameter("kpi"); // Nhận giá trị KPI dạng chuỗi
+			int kpi = 0;
 			String email = req.getParameter("email");
 			String dobString = req.getParameter("dob");
+			
+			// Biểu thức chính quy để kiểm tra dữ liệu
+	        String phonePattern = "^[0-9]+$"; // Chỉ chứa chữ số
+	        String cidPattern = "^[0-9]+$"; // Chỉ chứa chữ số
+	        String emailPattern = "^[A-Za-z0-9+_.-]+@(.+)$"; // Biểu thức chính quy kiểm tra email
+	        String kpiPattern = "^[0-9]+$"; // Chỉ chứa chữ số cho KPI
+
+	        // Kiểm tra số điện thoại
+	        if (!phone.matches(phonePattern)) {
+	            MessageUtil.showMessage(req, "phoneInvalid");
+	            req.setAttribute("firstName", firstName);
+	            req.setAttribute("lastName", lastName);
+	            req.setAttribute("address", address);
+	            req.setAttribute("gender", gender);
+	            req.setAttribute("phone", phone);
+	            req.setAttribute("avatar", avatar);
+	            req.setAttribute("cid", cid);
+	            req.setAttribute("email", email);
+	            req.setAttribute("dob", dobString);
+	            req.setAttribute("kpi", kpi);
+	            
+	            req.getRequestDispatcher("/views/admin/seller/addSeller.jsp").forward(req, resp);
+	            return;
+	        }
+
+	        // Kiểm tra căn cước công dân
+	        if (!cid.matches(cidPattern)) {
+	            MessageUtil.showMessage(req, "cidInvalid");
+	            req.setAttribute("firstName", firstName);
+	            req.setAttribute("lastName", lastName);
+	            req.setAttribute("address", address);
+	            req.setAttribute("gender", gender);
+	            req.setAttribute("phone", phone);
+	            req.setAttribute("avatar", avatar);
+	            req.setAttribute("cid", cid);
+	            req.setAttribute("email", email);
+	            req.setAttribute("dob", dobString);
+	            req.setAttribute("kpi", kpi);
+	            
+	            req.getRequestDispatcher("/views/admin/seller/addSeller.jsp").forward(req, resp);
+	            return;
+	        }
+
+	        // Kiểm tra email
+	        if (!email.matches(emailPattern)) {
+	            MessageUtil.showMessage(req, "emailInvalid");
+	            req.setAttribute("firstName", firstName);
+	            req.setAttribute("lastName", lastName);
+	            req.setAttribute("address", address);
+	            req.setAttribute("gender", gender);
+	            req.setAttribute("phone", phone);
+	            req.setAttribute("avatar", avatar);
+	            req.setAttribute("cid", cid);
+	            req.setAttribute("email", email);
+	            req.setAttribute("dob", dobString);
+	            req.setAttribute("kpi", kpi);
+	            
+	            req.getRequestDispatcher("/views/admin/seller/addSeller.jsp").forward(req, resp);
+	            return;
+	        }
+	        
+	     // Kiểm tra KPI
+	        if (!kpiStr.matches(kpiPattern)) {
+	            MessageUtil.showMessage(req, "kpiInvalid");
+	            req.setAttribute("firstName", firstName);
+	            req.setAttribute("lastName", lastName);
+	            req.setAttribute("address", address);
+	            req.setAttribute("gender", gender);
+	            req.setAttribute("phone", phone);
+	            req.setAttribute("avatar", avatar);
+	            req.setAttribute("cid", cid);
+	            req.setAttribute("email", email);
+	            req.setAttribute("dob", dobString);
+	            req.setAttribute("kpi", kpi);
+	            
+	            req.getRequestDispatcher("/views/admin/seller/addSeller.jsp").forward(req, resp);
+	            return;
+	        } else {
+	            kpi = Integer.parseInt(kpiStr); // Chuyển đổi KPI thành kiểu int
+	        }
+	        
+			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Định dạng của ngày tháng
 			Date dob = null;
 			try {
@@ -133,10 +221,16 @@ public class SellerController extends HttpServlet {
 			newUser.setPhone(phone);
 			newUser.setDob(dob);
 			newUser.setCid(cid);
+			newUser.setType(1);
 			newUser.setKpi(kpi);
 			newUser.setEmail(email);
 			// goi pt insert trong service
-			sellerService.insertSeller(newUser);
+			boolean checkInsertSeller = sellerService.insertSeller(newUser);
+			if (checkInsertSeller) {
+	        AccountModel accountMd = new AccountModel(id, "Seller" + id, "12345");  // Đặt tên tài khoản theo định dạng Seller + ID
+	        accountService.insertAccount(accountMd);
+			}
+	        
 			MessageUtil.showMessage(req, "addSuccess");
 		} catch (Exception ex) {
 			MessageUtil.showMessage(req, "addFail");
@@ -157,9 +251,49 @@ public class SellerController extends HttpServlet {
 			String phone = req.getParameter("phone");
 			String avatar = req.getParameter("avatar");
 			String cid = req.getParameter("cid");
-			int kpi = Integer.parseInt(req.getParameter("kpi"));
+			String kpiStr = req.getParameter("kpi"); // Nhận giá trị KPI dạng chuỗi
+			int kpi = 0;
 			String dobString = req.getParameter("dob");
 			String email = req.getParameter("email");
+			
+			
+			// Biểu thức chính quy để kiểm tra dữ liệu
+	        String phonePattern = "^[0-9]+$"; // Chỉ chứa chữ số
+	        String cidPattern = "^[0-9]+$"; // Chỉ chứa chữ số
+	        String emailPattern = "^[A-Za-z0-9+_.-]+@(.+)$"; // Biểu thức chính quy kiểm tra email
+	        String kpiPattern = "^[0-9]+$"; // Chỉ chứa chữ số cho KPI
+
+	        // Kiểm tra số điện thoại
+	        if (!phone.matches(phonePattern)) {
+	            MessageUtil.showMessage(req, "phoneInvalid");
+	            getInforSeller(req, resp);
+	            return;
+	        }
+
+	        // Kiểm tra căn cước công dân
+	        if (!cid.matches(cidPattern)) {
+	            MessageUtil.showMessage(req, "cidInvalid");
+	            getInforSeller(req, resp);
+	            return;
+	        }
+
+	        // Kiểm tra email
+	        if (!email.matches(emailPattern)) {
+	            MessageUtil.showMessage(req, "emailInvalid");
+	            getInforSeller(req, resp);
+	            return;
+	        }
+	        
+	     // Kiểm tra KPI
+	        if (!kpiStr.matches(kpiPattern)) {
+	            MessageUtil.showMessage(req, "kpiInvalid");
+	            getInforSeller(req, resp);
+	            return;
+	        } else {
+	            kpi = Integer.parseInt(kpiStr); // Chuyển đổi KPI thành kiểu int
+	        }
+			
+			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Định dạng của ngày tháng
 			Date dob = null;
 			try {

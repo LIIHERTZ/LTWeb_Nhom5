@@ -9,7 +9,7 @@ public interface ISellerService {
 	void updateSeller(UserModel model);
 	UserModel findOne(int id);
 	void deleteSeller(int id);
-	void insertSeller(UserModel model);
+	boolean insertSeller(UserModel model);
 	int createSellerID();
 	List<UserModel> findBestSeller();
 }

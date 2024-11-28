@@ -52,6 +52,9 @@ public class MessageUtil {
 		} else if(typeMessage.equals("emailInvalid")) {
 			messageResponse = "Sai định dạng email";
 			alert = "danger";
+		} else if(typeMessage.equals("kpiInvalid")) {
+			messageResponse = "Sai định dạng KPI";
+			alert = "danger";
 		}
 		request.setAttribute("message", messageResponse);
 		request.setAttribute("alert", alert);
