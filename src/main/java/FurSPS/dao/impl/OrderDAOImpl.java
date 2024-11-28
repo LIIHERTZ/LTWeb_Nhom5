@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.time.LocalDate;
 
 import FurSPS.configs.DBConnection;
 import FurSPS.dao.IDetailDAO;
@@ -568,13 +569,27 @@ public class OrderDAOImpl implements IOrderDAO {
 	}
 
 	public Object[] findKPIByShipper(int ShipperID) {
-		String sql = "SELECT o.DeliveryTime, s.KPI,\r\n"
-				+ "Count(*) as Oall, SUM(o.Status = 4) as Complete, SUM(o.Status = 5) as Cancel, SUM(o.Status  < 4) as Doing\r\n"
-				+ "	FROM FurSPS.ORDER as o\r\n"
-				+ "		JOIN (SELECT * FROM FurSPS.USER as u WHERE u.userID = ? ) as s\r\n"
-				+ "        ON s.UserID = o.ShipperID\r\n" + " WHERE MONTH(o.DeliveryTime) = MONTH(current_date()) \r\n"
-				+ "		AND YEAR(o.DeliveryTime) = YEAR(current_date()) " + "	GROUP BY o.DeliveryTime "
-				+ " ORDER BY o.DeliveryTime ASC";
+//		String sql = "SELECT o.DeliveryTime, s.KPI,\r\n"
+//				+ "Count(*) as Oall, SUM(o.Status = 4) as Complete, SUM(o.Status = 5) as Cancel, SUM(o.Status  < 4) as Doing\r\n"
+//				+ "	FROM FurSPS.ORDER as o\r\n"
+//				+ "		JOIN (SELECT * FROM FurSPS.USER as u WHERE u.userID = ? ) as s\r\n"
+//				+ "        ON s.UserID = o.ShipperID\r\n" + " WHERE MONTH(o.DeliveryTime) = MONTH(current_date()) \r\n"
+//				+ "		AND YEAR(o.DeliveryTime) = YEAR(current_date()) " + "	GROUP BY o.DeliveryTime "
+//				+ " ORDER BY o.DeliveryTime ASC";
+		
+	
+		String sql = "SELECT o.DeliveryTime, s.KPI, " +
+                "COUNT(*) AS Oall, " +
+                "SUM(CASE WHEN o.Status = 4 THEN 1 ELSE 0 END) AS Complete, " +
+                "SUM(CASE WHEN o.Status = 5 THEN 1 ELSE 0 END) AS Cancel, " +
+                "SUM(CASE WHEN o.Status < 4 THEN 1 ELSE 0 END) AS Doing " +
+                "FROM [ORDER] AS o " +
+                "JOIN [USER] AS s ON s.UserID = o.ShipperID " +
+                "WHERE MONTH(o.DeliveryTime) = MONTH(GETDATE()) " +
+                "AND YEAR(o.DeliveryTime) = YEAR(GETDATE()) " +
+                "AND o.ShipperID = ? " +
+                "GROUP BY o.DeliveryTime, s.KPI " +
+                "ORDER BY o.DeliveryTime ASC";
 
 		Date curday = new Date();
 
@@ -582,7 +597,6 @@ public class OrderDAOImpl implements IOrderDAO {
 		try {
 			curday = dateFormat.parse(dateFormat.format(curday));
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -603,7 +617,13 @@ public class OrderDAOImpl implements IOrderDAO {
 			ps.setInt(1, ShipperID);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				int day = rs.getDate("DeliveryTime").getDate() - 1;
+				//int day = rs.getDate("DeliveryTime").getDate() - 1;
+				
+				// Lấy ngày từ DeliveryTime và chuyển thành LocalDate
+			    LocalDate deliveryDate = rs.getDate("DeliveryTime").toLocalDate();  // Chuyển đổi thành LocalDate
+			    int day = deliveryDate.getDayOfMonth() - 1;
+				
+				
 				kpi = rs.getInt("KPI");
 				listall.set(day, rs.getInt("Oall"));
 				listcomplete.set(day, rs.getInt("Complete"));
@@ -616,6 +636,7 @@ public class OrderDAOImpl implements IOrderDAO {
 			listkpi = new ArrayList<>(Collections.nCopies(listdate.size(), kpi));
 
 		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -650,16 +671,25 @@ public class OrderDAOImpl implements IOrderDAO {
 			calendar.add(Calendar.DAY_OF_MONTH, 1);
 		}
 
-		return datesInMonth;
+		return datesInMonth;				
 	}
 
 	public List<Object[]> findCateForShipper(int ShipperID) {
-		String sql = "SELECT c.CategoryName, Sum(d.Quantity) as Num\r\n" + "	FROM FurSPS.DETAIL as d\r\n"
-				+ "	JOIN FurSPS.ORDER as o ON d.OrderID = o.OrderID\r\n"
-				+ "    JOIN FurSPS.ITEM as i ON d.ItemID = i.ItemID\r\n"
-				+ "    JOIN FurSPS.PRODUCT p ON i.ProductID = p.ProductID\r\n"
-				+ "    JOIN FurSPS.CATEGORY as c ON p.CategoryID = c.CategoryID\r\n" + "    WHERE o.ShipperID = ? \r\n"
+//		String sql = "SELECT c.CategoryName, Sum(d.Quantity) as Num\r\n" + "	FROM FurSPS.DETAIL as d\r\n"
+//				+ "	JOIN FurSPS.ORDER as o ON d.OrderID = o.OrderID\r\n"
+//				+ "    JOIN FurSPS.ITEM as i ON d.ItemID = i.ItemID\r\n"
+//				+ "    JOIN FurSPS.PRODUCT p ON i.ProductID = p.ProductID\r\n"
+//				+ "    JOIN FurSPS.CATEGORY as c ON p.CategoryID = c.CategoryID\r\n" + "    WHERE o.ShipperID = ? \r\n"
+//				+ "    GROUP BY c.CategoryName";
+		
+		
+		String sql = "SELECT c.CategoryName, Sum(d.Quantity) as Num\r\n" + "	FROM [DETAIL] as d\r\n"
+				+ "	JOIN [ORDER] as o ON d.OrderID = o.OrderID\r\n"
+				+ "    JOIN [ITEM] as i ON d.ItemID = i.ItemID\r\n"
+				+ "    JOIN [PRODUCT] p ON i.ProductID = p.ProductID\r\n"
+				+ "    JOIN [CATEGORY] as c ON p.CategoryID = c.CategoryID\r\n" + "    WHERE o.ShipperID = ? \r\n"
 				+ "    GROUP BY c.CategoryName";
+		
 		List<Object[]> list = new ArrayList<Object[]>();
 		Object[] row = { "'Loai hang'", "'SL'" };
 		list.add(row);

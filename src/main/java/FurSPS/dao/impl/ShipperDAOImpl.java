@@ -51,7 +51,7 @@ public class ShipperDAOImpl implements IShipperDAO {
 	@Override
 	public void updateShipper(UserModel model) {
 		Connection conn = null;
-		String sql = "Update FurSPS.USER set FirstName=?, LastName=?, Address=?, Gender=?, Phone=?, DoB=?, CID=?, Avatar=?, Area=?, Email=? where UserID=?";
+		String sql = "Update [USER] set FirstName=?, LastName=?, Address=?, Gender=?, Phone=?, DoB=?, CID=?, Avatar=?, Area=?, Email=? where UserID=?";
 		try {
 			conn = DBConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);

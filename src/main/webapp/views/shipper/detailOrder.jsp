@@ -249,6 +249,9 @@ a {
 												href="${pageContext.request.contextPath}/shipper-list-${
 													(order.status == 4 || order.status == 5)?'history-ship':
 													(order.status == 3 && order.shipperID == null)?'need-ship':
+													
+													(order.status == 2) ? 'need-ship' : 
+													
 													'shipping'}"><button
 													class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
 													Trở về</button></a>
