@@ -38,7 +38,7 @@
 					<table id="datatablesSimple">
 						<thead>
 							<tr>
-								<th>Mã khách hàng</th>
+								<th>Mã người dùng</th>
 								<th>Tên tài khoản</th>
 								<th>Mật khẩu</th>
 								<th>Cập nhật</th>

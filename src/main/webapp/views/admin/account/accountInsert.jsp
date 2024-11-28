@@ -25,13 +25,13 @@
 							<form action="adminInsertAccount" method="post">
 								<div class="row">
 									<div class="form-floating mb-3">
-										<input class="form-control" type="text" name="userID" /> <label>Mã khách hàng</label>
+										<input class="form-control" type="text" name="userID" required /> <label>Nhập mã người dùng mà bạn muốn thêm tài khoản</label>
 									</div>
 									<div class="form-floating mb-3">
-										<input class="form-control" type="text" name="userName" /> <label>Tên đăng nhập</label>
+										<input class="form-control" type="text" name="userName" required/> <label>Tên đăng nhập</label>
 									</div>
 									<div class="form-floating mb-3">
-										<input class="form-control" type="text" name="password" /> <label>Mật khẩu</label>
+										<input class="form-control" type="text" name="password" required/> <label>Mật khẩu</label>
 									</div>
 								</div>
 								<div class="text-center mt-4">

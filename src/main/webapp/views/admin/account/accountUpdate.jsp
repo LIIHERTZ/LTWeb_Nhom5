@@ -30,11 +30,11 @@
 									</div>
 									<div class="form-floating mb-3">
 										<input class="form-control" type="text" name="userName"
-											value="${account.userName}" /> <label>Tên đăng nhập</label>
+											value="${account.userName}" required/> <label>Tên đăng nhập</label>
 									</div>
 									<div class="form-floating mb-3">
 										<input class="form-control" type="text" name="password"
-											value="${account.password}" /> <label>Mật khẩu</label>
+											value="${account.password}" required/> <label>Mật khẩu</label>
 									</div>
 
 
