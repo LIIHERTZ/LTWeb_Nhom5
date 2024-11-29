@@ -19,18 +19,80 @@
 					<div class="sidebar">
 						<div class="sidebar-top">
 							<div class="sidebar-profile-img">
-								<img src="/FurSPS_Nhom5/assets/img/account/02.jpg" alt="">
-								<button type="button" class="profile-img-btn">
-									<i class="far fa-camera"></i>
-								</button>
-								<input type="file" class="profile-img-file">
+								<!-- Hình ảnh hiện tại của người dùng -->
+								<img src="${user.avatar}" alt="Profile Image"
+									class="profile-img">
+
+								<!-- Form để cập nhật avatar -->
+								<form action="/FurSPS_Nhom5/user/updateAvatar" method="POST"
+									enctype="multipart/form-data" class="upload-form">
+									<input type="hidden" name="UserID" value="${userModel.userID}">
+									<input type="hidden" name="image" value="${userModel.avatar}">
+
+									<!-- Input để chọn ảnh mới (ẩn đi) -->
+									<input type="file" name="file" id="fileInput"
+										class="profile-img-file" accept="image/*"
+										onchange="this.form.submit()">
+
+									<!-- Nút chọn ảnh -->
+									<button type="button" class="profile-img-choose-btn"
+										onclick="document.getElementById('fileInput').click();">
+										<i class="far fa-camera"></i> Choose Image
+									</button>
+								</form>
 							</div>
-							<h5>${user.firstName} ${user.lastName}</h5>
+							<style>
+.profile-img-choose-btn {
+
+    border-radius: 5px;
+    font-size: 14px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* Căn giữa nút */
+    opacity: 1; /* Luôn hiển thị nút */
+
+}
+.sidebar-profile-img {
+	position: relative;
+	width: 100px; /* Kích thước cố định cho phần tử chứa */
+	height: 100px; /* Kích thước cố định cho phần tử chứa */
+	overflow: hidden; /* Đảm bảo ảnh không tràn ra ngoài */
+	border-radius: 50%; /* Làm phần tử chứa thành hình tròn */
+}
+
+/* Định dạng ảnh */
+.profile-img {
+	width: 100%; /* Ảnh chiếm toàn bộ diện tích của phần tử chứa */
+	height: 100%; /* Ảnh chiếm toàn bộ diện tích của phần tử chứa */
+	object-fit: cover; /* Đảm bảo ảnh không bị méo và phù hợp với tỷ lệ */
+	border-radius: 50%; /* Làm ảnh thành hình tròn */
+}
+
+/* Định dạng input file */
+.profile-img-file {
+	position: absolute;
+	bottom: 5px; /* Đặt input file ở dưới cùng */
+	right: 5px; /* Đặt input file ở bên phải */
+	opacity: 0; /* Ẩn input file */
+	width: 30px; /* Kích thước của input file */
+	height: 30px; /* Kích thước của input file */
+	background-color: rgba(0, 0, 0, 0.5); /* Nền cho input file */
+	border-radius: 50%; /* Làm nút input thành hình tròn */
+	cursor: pointer; /* Hiển thị con trỏ dạng tay */
+	
+}
+
+.sidebar-profile-img:hover .profile-img-file {
+	opacity: 1; /* Hiển thị input file khi hover */
+}
+</style>
+							<h5>${user.firstName}${user.lastName}</h5>
 						</div>
 						<ul class="sidebar-list">
-							<li><a class="active"><i
-									class="far fa-user"></i> Cập nhật thông tin</a></li>
-							<li><a href="<c:url value='/user/infoUser'/>"><i class="far fa-sign-out"></i> Trở về</a></li>
+							<li><a class="active"><i class="far fa-user"></i> Cập
+									nhật thông tin</a></li>
+							<li><a href="<c:url value='/user/infoUser'/>"><i
+									class="far fa-sign-out"></i> Trở về</a></li>
 						</ul>
 					</div>
 				</div>
@@ -68,7 +130,7 @@
 												<div class="col-md-6">
 													<div class="form-group">
 														<label>Email</label> <input type="text"
-															class="form-control" value="${user.email}" name="Email" 
+															class="form-control" value="${user.email}" name="Email"
 															placeholder="Email" readonly>
 													</div>
 												</div>

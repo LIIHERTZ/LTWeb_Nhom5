@@ -117,13 +117,18 @@ public class CategoryDAOImpl implements ICategoryDAO {
 	@Override
 	public CategoryModel findRootCategoryByCategoryId(int id) {
 		CategoryModel category = new CategoryModel();
-		String sql = "WITH RECURSIVE CategoryPath AS (\r\n"
-				+ "    SELECT CategoryID, ParentCategoryID, CategoryName, Image\r\n" + "    FROM FurSPS.CATEGORY\r\n"
-				+ "    WHERE CategoryID=? \r\n" + "    UNION ALL\r\n"
-				+ "    SELECT c.CategoryID, c.ParentCategoryID, c.CategoryName, c.Image\r\n"
-				+ "    FROM FurSPS.CATEGORY c\r\n"
-				+ "    JOIN CategoryPath cp ON c.CategoryID = cp.ParentCategoryID\r\n" + ")\r\n" + "SELECT *\r\n"
-				+ "FROM CategoryPath\r\n" + "WHERE ParentCategoryID IS NULL;";
+		String sql = "WITH CategoryPath AS ("
+		           + "    SELECT CategoryID, ParentCategoryID, CategoryName, Image "
+		           + "    FROM CATEGORY "
+		           + "    WHERE CategoryID = ? "
+		           + "    UNION ALL "
+		           + "    SELECT c.CategoryID, c.ParentCategoryID, c.CategoryName, c.Image "
+		           + "    FROM CATEGORY c "
+		           + "    JOIN CategoryPath cp ON c.ParentCategoryID = cp.CategoryID "
+		           + ") "
+		           + "SELECT * "
+		           + "FROM CategoryPath "
+		           + "WHERE ParentCategoryID IS NULL;";
 		try {
 			new DBConnection();
 			conn = DBConnection.getConnection();

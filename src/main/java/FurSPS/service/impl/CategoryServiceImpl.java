@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import FurSPS.dao.ICategoryDAO;
 import FurSPS.dao.impl.CategoryDAOImpl;
 import FurSPS.models.CategoryModel;
@@ -27,14 +26,12 @@ public class CategoryServiceImpl implements ICategoryService {
 
 		for (CategoryModel category : listCategory) {
 			if (category.getParentCategoryID() == 0) {
-				CategoryLevelModel categoryLevel = new CategoryLevelModel();
-				categoryLevel.setCategoryID(category.getCategoryID());
-				categoryLevel.setCategoryName(category.getCategoryName());
-				categoryLevel.setChildrens(getChildren(listCategory, category.getCategoryID()));
-				CategoryLevel.add(categoryLevel);
+				CategoryLevelModel categoryLevelModel = new CategoryLevelModel(category.getCategoryID(),
+						category.getCategoryName(), category.getParentCategoryID(), category.getImage());
+				categoryLevelModel.setChildrens(getChildren(listCategory, category.getCategoryID()));
+				CategoryLevel.add(categoryLevelModel);
 			}
 		}
-
 		return CategoryLevel;
 
 	}
@@ -48,7 +45,7 @@ public class CategoryServiceImpl implements ICategoryService {
 				newCateGoryDate.setCategoryName(category.getCategoryName());
 				newCateGoryDate.setParentCategoryID(category.getParentCategoryID());
 				newCateGoryDate.setChildrens(new ArrayList<CategoryLevelModel>());
-				
+
 				children.add(newCateGoryDate);
 				children.addAll(getChildren(data, category.getCategoryID()));
 			}

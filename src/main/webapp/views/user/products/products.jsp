@@ -3,6 +3,10 @@
 <%@include file="/common/taglib.jsp"%>
 <!DOCTYPE html>
 <html lang="en">
+
+<script src="/FurSPS_Nhom5/assets/js/jquery-3.7.1.min.js"></script>
+<script src="/FurSPS_Nhom5/assets/js/jquery-ui.min.js"></script>
+'
 <!-- breadcrumb -->
 <div class="site-breadcrumb">
 	<div class="site-breadcrumb-bg"
@@ -50,153 +54,113 @@
 					</div>
 					<div class="shop-widget">
 						<h4 class="shop-widget-title">Category</h4>
-						<ul class="shop-category-list">
-							<li class="${rootcategory.categoryID == null ? 'active' : ''}">
-								<a href="/FurSPS_Nhom5/user/products" data-filter="*">Tất cả
-									sản phẩm</a>
-							</li>
-							<c:forEach items="${rootCategories}" var="item">
-								<a href="/FurSPS_Nhom5/user/products?cateId=${item.categoryID}"
-									class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 ${rootcategory.categoryID == item.categoryID ? 'how-active1' : ''}"
-									data-filter="*">${item.categoryName}</a>
-							</c:forEach>
-						</ul>
-					</div>
+						<div class="offcanvas-body">
+							<ul class="shop-category-list">
+								<!-- Liên kết "Tất cả sản phẩm" -->
+								<li class="${rootcategory.categoryID == null ? 'active' : ''}">
+									<a href="/FurSPS_Nhom5/user/products" data-filter="*">Tất
+										cả sản phẩm</a>
+								</li>
 
+								<!-- Danh mục cha -->
+								<c:forEach items="${levelCategories}" var="item">
+									<li class="nav-item dropdown">
+										<!-- Danh mục cha --> <a class="nav-link dropdown-toggle"
+										href="<c:url value='/user/products?cateId=${item.categoryID}'/>"
+										id="navbarDropdown${item.categoryID}" role="button"
+										data-bs-toggle="dropdown" aria-expanded="false">
+											${item.categoryName} </a> <!-- Nếu có danh mục con, hiển thị menu dropdown -->
+										<c:if test="${not empty item.childrens}">
+											<ul class="dropdown-menu fade-down"
+												aria-labelledby="navbarDropdown${item.categoryID}">
+
+												<!-- Mục "Tất cả" cho danh mục con -->
+												<li><a class="dropdown-item"
+													href="<c:url value='/user/products?cateId=${item.categoryID}'/>">
+														Tất cả ${item.categoryName}</a></li>
+
+												<!-- Duyệt qua các danh mục con -->
+												<c:forEach items="${item.childrens}" var="subItem">
+													<li><a class="dropdown-item"
+														href="<c:url value='/user/products?cateId=${subItem.categoryID}'/>">
+															${subItem.categoryName}</a></li>
+												</c:forEach>
+											</ul>
+										</c:if>
+									</li>
+								</c:forEach>
+							</ul>
+						</div>
+					</div>
 					<div class="shop-widget">
 						<h4 class="shop-widget-title">Price Range</h4>
 						<div class="price-range-box">
 							<div class="price-range-input">
+								<!-- Input để hiển thị giá trị chọn từ slider -->
 								<input type="text" id="price-amount" readonly>
 							</div>
 							<div class="price-range"></div>
+							<!-- Thanh trượt giá -->
 						</div>
 						<button type="submit" class="theme-btn" id="filter-button">
 							<span class="far fa-search"></span> Lọc
 						</button>
 					</div>
-					<script>
-					    // Hàm định dạng số (thêm dấu ',' và hiển thị đơn vị)
-					    function formatNumber(num) {
-					        if (num >= 1000000000) {
-					            return (num / 1000000000).toFixed(1) + " tỷ"; // Hiển thị tỷ nếu giá trị >= 1 tỷ
-					        } else if (num >= 1000000) {
-					            return (num / 1000000).toFixed(1) + " triệu"; // Hiển thị triệu
-					        } else if (num >= 1000) {
-					            return (num / 1000).toFixed(0) + " nghìn"; // Hiển thị nghìn
-					        }
-					        return num; // Hiển thị số đơn thuần
-					    }
-					
-					    $(function() {
-					        // Cấu hình slider
-					        $(".price-range").slider({
-					            range: true,
-					            min: 0,
-					            max: 20000000, // Giá trị tối đa là 20 triệu
-					            values: [1000000, 5000000], // Giá trị mặc định
-					            step: 100000, // Bước nhảy
-					            slide: function(event, ui) {
-					                // Hiển thị giá trị trong input với định dạng
-					                $("#price-amount").val(
-					                    formatNumber(ui.values[0]) + " - " + formatNumber(ui.values[1])
-					                );
-					            }
-					        });
-					
-					        // Hiển thị giá trị mặc định trong input khi trang được tải
-					        $("#price-amount").val(
-					            formatNumber($(".price-range").slider("values", 0)) +
-					            " - " +
-					            formatNumber($(".price-range").slider("values", 1))
-					        );
-					
-					        // Sự kiện click vào nút "Lọc"
-					        $("#filter-button").click(function() {
-					            // Lấy giá trị hiện tại của slider
-					            let minPrice = $(".price-range").slider("values", 0);
-					            let maxPrice = $(".price-range").slider("values", 1);
-					
-					            // Thực hiện hành động với giá trị (ví dụ: in ra console)
-					            console.log("Giá từ:", minPrice);
-					            console.log("Giá đến:", maxPrice);
-					
-					            // Hoặc nếu bạn muốn gửi các giá trị này đến server thông qua AJAX
-					            $.ajax({
-					                url: "your-server-endpoint-url", // Thay bằng URL server của bạn
-					                type: "GET",
-					                data: {
-					                    minPrice: minPrice,
-					                    maxPrice: maxPrice
-					                },
-					                success: function(response) {
-					                    // Xử lý kết quả trả về từ server
-					                    console.log(response);
-					                },
-					                error: function(xhr, status, error) {
-					                    console.error("Có lỗi xảy ra:", error);
-					                }
-					            });
-					        });
-					    });
-					</script>
-
-
 					<div class="shop-widget">
 						<h4 class="shop-widget-title">Ratings</h4>
 						<ul class="shop-checkbox-list rating">
 							<li>
 								<div class="form-check">
-									<input class="form-check-input" type="checkbox" id="rate1">
-									<label class="form-check-label" for="rate1"> <i
+									<input class="form-check-input" type="radio" name="rating"
+										id="rate1" value="5"> <label class="form-check-label"
+										for="rate1"> <i class="fas fa-star"></i> <i
 										class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-										class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-										class="fas fa-star"></i>
+										class="fas fa-star"></i> <i class="fas fa-star"></i>
 									</label>
 								</div>
 							</li>
 							<li>
 								<div class="form-check">
-									<input class="form-check-input" type="checkbox" id="rate2">
-									<label class="form-check-label" for="rate2"> <i
+									<input class="form-check-input" type="radio" name="rating"
+										id="rate2" value="4"> <label class="form-check-label"
+										for="rate2"> <i class="fas fa-star"></i> <i
 										class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-										class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-										class="fal fa-star"></i>
+										class="fas fa-star"></i> <i class="fal fa-star"></i>
 									</label>
 								</div>
 							</li>
 							<li>
 								<div class="form-check">
-									<input class="form-check-input" type="checkbox" id="rate3">
-									<label class="form-check-label" for="rate3"> <i
+									<input class="form-check-input" type="radio" name="rating"
+										id="rate3" value="3"> <label class="form-check-label"
+										for="rate3"> <i class="fas fa-star"></i> <i
 										class="fas fa-star"></i> <i class="fas fa-star"></i> <i
+										class="fal fa-star"></i> <i class="fal fa-star"></i>
+									</label>
+								</div>
+							</li>
+							<li>
+								<div class="form-check">
+									<input class="form-check-input" type="radio" name="rating"
+										id="rate4" value="2"> <label class="form-check-label"
+										for="rate4"> <i class="fas fa-star"></i> <i
 										class="fas fa-star"></i> <i class="fal fa-star"></i> <i
-										class="fal fa-star"></i>
+										class="fal fa-star"></i> <i class="fal fa-star"></i>
 									</label>
 								</div>
 							</li>
 							<li>
 								<div class="form-check">
-									<input class="form-check-input" type="checkbox" id="rate4">
-									<label class="form-check-label" for="rate4"> <i
-										class="fas fa-star"></i> <i class="fas fa-star"></i> <i
+									<input class="form-check-input" type="radio" name="rating"
+										id="rate5" value="1"> <label class="form-check-label"
+										for="rate5"> <i class="fas fa-star"></i> <i
 										class="fal fa-star"></i> <i class="fal fa-star"></i> <i
-										class="fal fa-star"></i>
-									</label>
-								</div>
-							</li>
-							<li>
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" id="rate5">
-									<label class="form-check-label" for="rate5"> <i
-										class="fas fa-star"></i> <i class="fal fa-star"></i> <i
-										class="fal fa-star"></i> <i class="fal fa-star"></i> <i
-										class="fal fa-star"></i>
+										class="fal fa-star"></i> <i class="fal fa-star"></i>
 									</label>
 								</div>
 							</li>
 						</ul>
-						<button type="submit" class="theme-btn">
+						<button type="submit" class="theme-btn" onclick="changeRating()">
 							<span class="far fa-search"></span> Lọc
 						</button>
 					</div>
@@ -207,881 +171,334 @@
 					<div class="shop-sort">
 						<div class="shop-sort-box">
 							<div class="shop-sorty-label">Sort By:</div>
-							<select id="sort-options" class="select">
-								<option value="low-to-high">Price - Low To High</option>
-								<option value="high-to-low">Price - High To Low</option>
-							</select>
-						</div>
 
-						<script>
-					    // Đối tượng params
-					    let params = {
-					        sort: null // Khởi tạo giá trị sắp xếp ban đầu
-					    };
-					
-					    // Hàm run (ví dụ, có thể là hàm đã định nghĩa để thực hiện tìm kiếm hoặc lọc sản phẩm)
-					    function run(param) {
-					        console.log("Đang chạy với tham số:", param);
-					        console.log("Các params hiện tại:", params);
-					        // Thực hiện hành động khác ở đây, ví dụ: gửi request đến server
-					    }
-					
-					    // Lắng nghe sự kiện change trên select box
-					    document.getElementById("sort-options").addEventListener("change", function() {
-					        let selectedValue = this.value;
-					
-					        // Cập nhật params dựa trên giá trị đã chọn
-					        if (selectedValue === "low-to-high") {
-					            params.sort = "low-to-high"; // Sắp xếp từ thấp đến cao
-					        } else if (selectedValue === "high-to-low") {
-					            params.sort = "high-to-low"; // Sắp xếp từ cao đến thấp
-					        }
-					
-					        params.page = 1; // Reset trang về 1 khi có thay đổi sort
-					        run(0); // Gọi hàm run để thực hiện việc sắp xếp
-					    });
-					
-					    // Hàm để cập nhật giao diện (nếu cần)
-					    function updateSortDisplay() {
-					        // Bạn có thể thêm logic để cập nhật giao diện dựa trên params.sort nếu cần
-					    }
-					</script>
-						<div class="shop-sort-gl">
-							<a href="shop-grid.html" class="shop-sort-grid active"><i
-								class="far fa-grid-round-2"></i></a> <a href="shop-list.html"
-								class="shop-sort-list"><i class="far fa-list-ul"></i></a>
+
+							<select id="sort-options" class="select"
+								onchange="changSort(this.value)">
+								<option value="" selected disabled>Chọn sắp xếp</option>
+								<option value="asc">Giá từ thấp đến cao</option>
+								<option value="desc">Giá từ cao đến thấp</option>
+							</select>
+
 						</div>
 					</div>
 				</div>
 				<div class="shop-item-wrap item-3">
 					<div class="row g-4">
-						<div class="col-md-6 col-lg-4">
-							<div class="product-item">
-								<div class="product-img">
-									<span class="type">Trending</span> <a href="shop-single.html"><img
-										src="/FurSPS_Nhom5/assets/img/product/01.png" alt=""></a>
-									<div class="product-action-wrap">
-										<div class="product-action">
-											<a href="#" data-bs-toggle="modal"
-												data-bs-target="#quickview" data-tooltip="tooltip"
-												title="Quick View"><i class="far fa-eye"></i></a> <a
-												href="#" data-tooltip="tooltip" title="Add To Wishlist"><i
-												class="far fa-heart"></i></a> <a href="#" data-tooltip="tooltip"
-												title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-										</div>
-									</div>
-								</div>
-								<div class="product-content">
-									<h3 class="product-title">
-										<a href="shop-single.html">Simple Denim Chair</a>
-									</h3>
-									<div class="product-rate">
-										<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="far fa-star"></i>
-									</div>
-									<div class="product-bottom">
-										<div class="product-price">
-											<span>$100.00</span>
-										</div>
-										<button type="button" class="product-cart-btn"
-											data-bs-placement="left" data-tooltip="tooltip"
-											title="Add To Cart">
-											<i class="far fa-shopping-bag"></i>
-										</button>
-									</div>
-								</div>
+						<c:if test="${products.size()== 0 && keyword!=null}">
+							<div
+								style="display: flex; justify-content: center; align-items: center;">
+
+								<div>Không tìm thấy sản phẩm nào phù hợp</div>
 							</div>
-						</div>
-						<div class="col-md-6 col-lg-4">
-							<div class="product-item">
-								<div class="product-img">
-									<span class="type hot">Hot</span> <a href="shop-single.html"><img
-										src="/FurSPS_Nhom5/assets/img/product/02.png" alt=""></a>
-									<div class="product-action-wrap">
-										<div class="product-action">
-											<a href="#" data-bs-toggle="modal"
-												data-bs-target="#quickview" data-tooltip="tooltip"
-												title="Quick View"><i class="far fa-eye"></i></a> <a
-												href="#" data-tooltip="tooltip" title="Add To Wishlist"><i
-												class="far fa-heart"></i></a> <a href="#" data-tooltip="tooltip"
-												title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+						</c:if>
+						<!-- List Products -->
+						<c:if test="${products.size() > 0}">
+							<c:forEach items="${products}" var="item">
+								<div class="col-md-6 col-lg-4">
+									<div class="product-item">
+										<div class="product-img">
+											<a
+												href='<c:url value="/user/products?id=${item.productID}"/>'><img
+												src="${item.displayedImage}" alt="IMG-PRODUCT"></a>
+											<div class="product-action-wrap">
+												<div class="product-action">
+													<a href='<c:url value="/products?id=${item.productID}"/>'
+														data-bs-toggle="modal"
+														data-bs-target="#quickview-${item.productID}"
+														data-tooltip="tooltip" title="Quick View"><i
+														class="far fa-eye"></i></a> <a
+														href='<c:url value="/user/products?id=${item.productID}"/>'
+														data-tooltip="tooltip" title="View detail"><i
+														class="far fa-search"></i></a>
+												</div>
+											</div>
+										</div>
+										<div class="product-content">
+											<h3 class="product-title">
+												<a
+													href='<c:url value="/user/products?id=${item.productID}"/>'>${item.productName}</a>
+											</h3>
+											<p>${item.description}</p>
+											<span class="stext-105 cl3"> <i class="fas fa-star"
+												style="${item.avgRating >= 1 ? 'color: gold;' : ''}"></i> <i
+												class="fas fa-star"
+												style="${item.avgRating >= 2 ? 'color: gold;' : ''}"></i> <i
+												class="fas fa-star"
+												style="${item.avgRating >= 3 ? 'color: gold;' : ''}"></i> <i
+												class="fas fa-star"
+												style="${item.avgRating >= 4 ? 'color: gold;' : ''}"></i> <i
+												class="fas fa-star"
+												style="${item.avgRating >= 5 ? 'color: gold;' : ''}"></i>
+											</span>
+											<div class="product-bottom">
+												<div class="product-price">
+													<span><fmt:formatNumber type="currency"
+															value="${item.displayedPromotionPrice}" currencyCode="VND"
+															pattern="#,##0 VND" var="formattedPrice" />
+														${formattedPrice}</span>
+												</div>
+												<button type="button" class="product-cart-btn"
+													data-bs-placement="left" data-tooltip="tooltip"
+													title="Add To Cart">
+													<i class="far fa-shopping-bag"></i>
+												</button>
+											</div>
 										</div>
 									</div>
 								</div>
-								<div class="product-content">
-									<h3 class="product-title">
-										<a href="shop-single.html">Simple Denim Chair</a>
-									</h3>
-									<div class="product-rate">
-										<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="far fa-star"></i>
-									</div>
-									<div class="product-bottom">
-										<div class="product-price">
-											<span>$100.00</span>
+								<!-- modal quick shop-->
+								<div class="modal quickview fade"
+									id="quickview-${item.productID}" data-bs-backdrop="static"
+									data-bs-keyboard="false" tabindex="-1"
+									aria-labelledby="quickview" aria-hidden="true">
+									<div class="modal-dialog modal-lg modal-dialog-centered"
+										role="document">
+										<div class="modal-content">
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close">
+												<i class="far fa-xmark"></i>
+											</button>
+											<div class="modal-body">
+												<div class="row">
+													<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+														<img src="${item.displayedImage}" alt="IMG-PRODUCT">
+													</div>
+													<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+														<div class="quickview-content">
+															<h4 class="quickview-title">${item.productName}</h4>
+															<span class="stext-105 cl3"> <i
+																class="fas fa-star"
+																style="${item.avgRating >= 1 ? 'color: gold;' : ''}"></i>
+																<i class="fas fa-star"
+																style="${item.avgRating >= 2 ? 'color: gold;' : ''}"></i>
+																<i class="fas fa-star"
+																style="${item.avgRating >= 3 ? 'color: gold;' : ''}"></i>
+																<i class="fas fa-star"
+																style="${item.avgRating >= 4 ? 'color: gold;' : ''}"></i>
+																<i class="fas fa-star"
+																style="${item.avgRating >= 5 ? 'color: gold;' : ''}"></i>
+															</span>
+															<div class="quickview-price">
+																<h5>
+																	<c:if test="${item.displayedPromotionPrice ne 0}">
+																		<del>
+																			<fmt:formatNumber
+																				value="${item.displayedOriginalPrice}"
+																				currencyCode="VND" pattern="#,##0 VND"
+																				var="formattedOriginalPrice" />
+																			${formattedOriginalPrice}
+																		</del>
+																		<span> <fmt:formatNumber
+																				value="${item.displayedPromotionPrice}"
+																				currencyCode="VND" pattern="#,##0 VND"
+																				var="formattedPrice" /> ${formattedPrice}
+																		</span>
+																	</c:if>
+																	<c:if test="${item.displayedPromotionPrice eq 0}">
+																		<span> <fmt:formatNumber type="currency"
+																				value="${item.displayedOriginalPrice}"
+																				currencyCode="VND" pattern="#,##0 VND"
+																				var="formattedPrice" />${formattedPrice}
+																		</span>
+																	</c:if>
+																</h5>
+															</div>
+															<ul class="quickview-list">
+																<li><strong>Chất liệu:</strong> ${item.material}</li>
+																<li><strong>Nhà cung cấp:</strong>
+																	${item.getSupplierName()}</li>
+																<li><strong>Xuất xứ:</strong> ${item.origin}</li>
+															</ul>
+															<div class="quickview-cart">
+																<a href="#" class="theme-btn">Add to cart</a>
+															</div>
+															<div class="quickview-social">
+																<span>Share:</span> <a href="#"><i
+																	class="fab fa-facebook-f"></i></a> <a href="#"><i
+																	class="fab fa-x-twitter"></i></a> <a href="#"><i
+																	class="fab fa-pinterest-p"></i></a> <a href="#"><i
+																	class="fab fa-instagram"></i></a> <a href="#"><i
+																	class="fab fa-linkedin-in"></i></a>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
 										</div>
-										<button type="button" class="product-cart-btn"
-											data-bs-placement="left" data-tooltip="tooltip"
-											title="Add To Cart">
-											<i class="far fa-shopping-bag"></i>
-										</button>
 									</div>
 								</div>
+								<!-- modal quick shop end -->
+							</c:forEach>
+							<!-- Pagination -->
+							<div class="pagination-area mt-50">
+								<ul class="pagination">
+									<!-- Previous Button -->
+									<li class="page-item ${page == 1 ? 'disabled' : ''}"><a
+										class="page-link" href="#" aria-label="Previous"
+										onclick="changePage('${page - 1}')"> <span
+											aria-hidden="true"><i class="far fa-arrow-left"></i></span>
+									</a></li>
+
+									<!-- Page Number Buttons -->
+									<c:forEach begin="1" end="${totalPage}" varStatus="loop">
+										<li class="page-item ${page == loop.index ? 'active' : ''}">
+											<a class="page-link" href="#"
+											onclick="changePage('${loop.index}')">${loop.index}</a>
+										</li>
+									</c:forEach>
+
+									<!-- Next Button -->
+									<li class="page-item ${page == totalPage ? 'disabled' : ''}">
+										<a class="page-link" href="#" aria-label="Next"
+										onclick="changePage('${page + 1}')"> <span
+											aria-hidden="true"><i class="far fa-arrow-right"></i></span>
+									</a>
+									</li>
+								</ul>
 							</div>
-						</div>
-						<div class="col-md-6 col-lg-4">
-							<div class="product-item">
-								<div class="product-img">
-									<span class="type oos">Out Of Stock</span> <a
-										href="shop-single.html"><img
-										src="/FurSPS_Nhom5/assets/img/product/03.png" alt=""></a>
-									<div class="product-action-wrap">
-										<div class="product-action">
-											<a href="#" data-bs-toggle="modal"
-												data-bs-target="#quickview" data-tooltip="tooltip"
-												title="Quick View"><i class="far fa-eye"></i></a> <a
-												href="#" data-tooltip="tooltip" title="Add To Wishlist"><i
-												class="far fa-heart"></i></a> <a href="#" data-tooltip="tooltip"
-												title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-										</div>
-									</div>
-								</div>
-								<div class="product-content">
-									<h3 class="product-title">
-										<a href="shop-single.html">Simple Denim Chair</a>
-									</h3>
-									<div class="product-rate">
-										<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="far fa-star"></i>
-									</div>
-									<div class="product-bottom">
-										<div class="product-price">
-											<span>$100.00</span>
-										</div>
-										<button type="button" class="product-cart-btn"
-											data-bs-placement="left" data-tooltip="tooltip"
-											title="Add To Cart">
-											<i class="far fa-shopping-bag"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-lg-4">
-							<div class="product-item">
-								<div class="product-img">
-									<a href="shop-single.html"><img
-										src="/FurSPS_Nhom5/assets/img/product/04.png" alt=""></a>
-									<div class="product-action-wrap">
-										<div class="product-action">
-											<a href="#" data-bs-toggle="modal"
-												data-bs-target="#quickview" data-tooltip="tooltip"
-												title="Quick View"><i class="far fa-eye"></i></a> <a
-												href="#" data-tooltip="tooltip" title="Add To Wishlist"><i
-												class="far fa-heart"></i></a> <a href="#" data-tooltip="tooltip"
-												title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-										</div>
-									</div>
-								</div>
-								<div class="product-content">
-									<h3 class="product-title">
-										<a href="shop-single.html">Simple Denim Chair</a>
-									</h3>
-									<div class="product-rate">
-										<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="far fa-star"></i>
-									</div>
-									<div class="product-bottom">
-										<div class="product-price">
-											<span>$100.00</span>
-										</div>
-										<button type="button" class="product-cart-btn"
-											data-bs-placement="left" data-tooltip="tooltip"
-											title="Add To Cart">
-											<i class="far fa-shopping-bag"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-lg-4">
-							<div class="product-item">
-								<div class="product-img">
-									<span class="type discount">10% Off</span> <a
-										href="shop-single.html"><img
-										src="/FurSPS_Nhom5/assets/img/product/05.png" alt=""></a>
-									<div class="product-action-wrap">
-										<div class="product-action">
-											<a href="#" data-bs-toggle="modal"
-												data-bs-target="#quickview" data-tooltip="tooltip"
-												title="Quick View"><i class="far fa-eye"></i></a> <a
-												href="#" data-tooltip="tooltip" title="Add To Wishlist"><i
-												class="far fa-heart"></i></a> <a href="#" data-tooltip="tooltip"
-												title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-										</div>
-									</div>
-								</div>
-								<div class="product-content">
-									<h3 class="product-title">
-										<a href="shop-single.html">Simple Denim Chair</a>
-									</h3>
-									<div class="product-rate">
-										<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="far fa-star"></i>
-									</div>
-									<div class="product-bottom">
-										<div class="product-price">
-											<del>120.00</del>
-											<span>$100.00</span>
-										</div>
-										<button type="button" class="product-cart-btn"
-											data-bs-placement="left" data-tooltip="tooltip"
-											title="Add To Cart">
-											<i class="far fa-shopping-bag"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-lg-4">
-							<div class="product-item">
-								<div class="product-img">
-									<a href="shop-single.html"><img
-										src="/FurSPS_Nhom5/assets/img/product/06.png" alt=""></a>
-									<div class="product-action-wrap">
-										<div class="product-action">
-											<a href="#" data-bs-toggle="modal"
-												data-bs-target="#quickview" data-tooltip="tooltip"
-												title="Quick View"><i class="far fa-eye"></i></a> <a
-												href="#" data-tooltip="tooltip" title="Add To Wishlist"><i
-												class="far fa-heart"></i></a> <a href="#" data-tooltip="tooltip"
-												title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-										</div>
-									</div>
-								</div>
-								<div class="product-content">
-									<h3 class="product-title">
-										<a href="shop-single.html">Simple Denim Chair</a>
-									</h3>
-									<div class="product-rate">
-										<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="far fa-star"></i>
-									</div>
-									<div class="product-bottom">
-										<div class="product-price">
-											<span>$100.00</span>
-										</div>
-										<button type="button" class="product-cart-btn"
-											data-bs-placement="left" data-tooltip="tooltip"
-											title="Add To Cart">
-											<i class="far fa-shopping-bag"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-lg-4">
-							<div class="product-item">
-								<div class="product-img">
-									<span class="type new">New</span> <a href="shop-single.html"><img
-										src="/FurSPS_Nhom5/assets/img/product/07.png" alt=""></a>
-									<div class="product-action-wrap">
-										<div class="product-action">
-											<a href="#" data-bs-toggle="modal"
-												data-bs-target="#quickview" data-tooltip="tooltip"
-												title="Quick View"><i class="far fa-eye"></i></a> <a
-												href="#" data-tooltip="tooltip" title="Add To Wishlist"><i
-												class="far fa-heart"></i></a> <a href="#" data-tooltip="tooltip"
-												title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-										</div>
-									</div>
-								</div>
-								<div class="product-content">
-									<h3 class="product-title">
-										<a href="shop-single.html">Simple Denim Chair</a>
-									</h3>
-									<div class="product-rate">
-										<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="far fa-star"></i>
-									</div>
-									<div class="product-bottom">
-										<div class="product-price">
-											<span>$100.00</span>
-										</div>
-										<button type="button" class="product-cart-btn"
-											data-bs-placement="left" data-tooltip="tooltip"
-											title="Add To Cart">
-											<i class="far fa-shopping-bag"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-lg-4">
-							<div class="product-item">
-								<div class="product-img">
-									<a href="shop-single.html"><img
-										src="/FurSPS_Nhom5/assets/img/product/08.png" alt=""></a>
-									<div class="product-action-wrap">
-										<div class="product-action">
-											<a href="#" data-bs-toggle="modal"
-												data-bs-target="#quickview" data-tooltip="tooltip"
-												title="Quick View"><i class="far fa-eye"></i></a> <a
-												href="#" data-tooltip="tooltip" title="Add To Wishlist"><i
-												class="far fa-heart"></i></a> <a href="#" data-tooltip="tooltip"
-												title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-										</div>
-									</div>
-								</div>
-								<div class="product-content">
-									<h3 class="product-title">
-										<a href="shop-single.html">Simple Denim Chair</a>
-									</h3>
-									<div class="product-rate">
-										<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="far fa-star"></i>
-									</div>
-									<div class="product-bottom">
-										<div class="product-price">
-											<span>$100.00</span>
-										</div>
-										<button type="button" class="product-cart-btn"
-											data-bs-placement="left" data-tooltip="tooltip"
-											title="Add To Cart">
-											<i class="far fa-shopping-bag"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-lg-4">
-							<div class="product-item">
-								<div class="product-img">
-									<a href="shop-single.html"><img
-										src="/FurSPS_Nhom5/assets/img/product/09.png" alt=""></a>
-									<div class="product-action-wrap">
-										<div class="product-action">
-											<a href="#" data-bs-toggle="modal"
-												data-bs-target="#quickview" data-tooltip="tooltip"
-												title="Quick View"><i class="far fa-eye"></i></a> <a
-												href="#" data-tooltip="tooltip" title="Add To Wishlist"><i
-												class="far fa-heart"></i></a> <a href="#" data-tooltip="tooltip"
-												title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-										</div>
-									</div>
-								</div>
-								<div class="product-content">
-									<h3 class="product-title">
-										<a href="shop-single.html">Simple Denim Chair</a>
-									</h3>
-									<div class="product-rate">
-										<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="far fa-star"></i>
-									</div>
-									<div class="product-bottom">
-										<div class="product-price">
-											<span>$100.00</span>
-										</div>
-										<button type="button" class="product-cart-btn"
-											data-bs-placement="left" data-tooltip="tooltip"
-											title="Add To Cart">
-											<i class="far fa-shopping-bag"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-lg-4">
-							<div class="product-item">
-								<div class="product-img">
-									<a href="shop-single.html"><img
-										src="/FurSPS_Nhom5/assets/img/product/10.png" alt=""></a>
-									<div class="product-action-wrap">
-										<div class="product-action">
-											<a href="#" data-bs-toggle="modal"
-												data-bs-target="#quickview" data-tooltip="tooltip"
-												title="Quick View"><i class="far fa-eye"></i></a> <a
-												href="#" data-tooltip="tooltip" title="Add To Wishlist"><i
-												class="far fa-heart"></i></a> <a href="#" data-tooltip="tooltip"
-												title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-										</div>
-									</div>
-								</div>
-								<div class="product-content">
-									<h3 class="product-title">
-										<a href="shop-single.html">Simple Denim Chair</a>
-									</h3>
-									<div class="product-rate">
-										<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="far fa-star"></i>
-									</div>
-									<div class="product-bottom">
-										<div class="product-price">
-											<span>$100.00</span>
-										</div>
-										<button type="button" class="product-cart-btn"
-											data-bs-placement="left" data-tooltip="tooltip"
-											title="Add To Cart">
-											<i class="far fa-shopping-bag"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-lg-4">
-							<div class="product-item">
-								<div class="product-img">
-									<a href="shop-single.html"><img
-										src="/FurSPS_Nhom5/assets/img/product/11.png" alt=""></a>
-									<div class="product-action-wrap">
-										<div class="product-action">
-											<a href="#" data-bs-toggle="modal"
-												data-bs-target="#quickview" data-tooltip="tooltip"
-												title="Quick View"><i class="far fa-eye"></i></a> <a
-												href="#" data-tooltip="tooltip" title="Add To Wishlist"><i
-												class="far fa-heart"></i></a> <a href="#" data-tooltip="tooltip"
-												title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-										</div>
-									</div>
-								</div>
-								<div class="product-content">
-									<h3 class="product-title">
-										<a href="shop-single.html">Simple Denim Chair</a>
-									</h3>
-									<div class="product-rate">
-										<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="far fa-star"></i>
-									</div>
-									<div class="product-bottom">
-										<div class="product-price">
-											<span>$100.00</span>
-										</div>
-										<button type="button" class="product-cart-btn"
-											data-bs-placement="left" data-tooltip="tooltip"
-											title="Add To Cart">
-											<i class="far fa-shopping-bag"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-lg-4">
-							<div class="product-item">
-								<div class="product-img">
-									<span class="type hot">Hot</span> <a href="shop-single.html"><img
-										src="/FurSPS_Nhom5/assets/img/product/12.png" alt=""></a>
-									<div class="product-action-wrap">
-										<div class="product-action">
-											<a href="#" data-bs-toggle="modal"
-												data-bs-target="#quickview" data-tooltip="tooltip"
-												title="Quick View"><i class="far fa-eye"></i></a> <a
-												href="#" data-tooltip="tooltip" title="Add To Wishlist"><i
-												class="far fa-heart"></i></a> <a href="#" data-tooltip="tooltip"
-												title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-										</div>
-									</div>
-								</div>
-								<div class="product-content">
-									<h3 class="product-title">
-										<a href="shop-single.html">Simple Denim Chair</a>
-									</h3>
-									<div class="product-rate">
-										<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="far fa-star"></i>
-									</div>
-									<div class="product-bottom">
-										<div class="product-price">
-											<span>$100.00</span>
-										</div>
-										<button type="button" class="product-cart-btn"
-											data-bs-placement="left" data-tooltip="tooltip"
-											title="Add To Cart">
-											<i class="far fa-shopping-bag"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-lg-4">
-							<div class="product-item">
-								<div class="product-img">
-									<a href="shop-single.html"><img
-										src="/FurSPS_Nhom5/assets/img/product/13.png" alt=""></a>
-									<div class="product-action-wrap">
-										<div class="product-action">
-											<a href="#" data-bs-toggle="modal"
-												data-bs-target="#quickview" data-tooltip="tooltip"
-												title="Quick View"><i class="far fa-eye"></i></a> <a
-												href="#" data-tooltip="tooltip" title="Add To Wishlist"><i
-												class="far fa-heart"></i></a> <a href="#" data-tooltip="tooltip"
-												title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-										</div>
-									</div>
-								</div>
-								<div class="product-content">
-									<h3 class="product-title">
-										<a href="shop-single.html">Simple Denim Chair</a>
-									</h3>
-									<div class="product-rate">
-										<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="far fa-star"></i>
-									</div>
-									<div class="product-bottom">
-										<div class="product-price">
-											<span>$100.00</span>
-										</div>
-										<button type="button" class="product-cart-btn"
-											data-bs-placement="left" data-tooltip="tooltip"
-											title="Add To Cart">
-											<i class="far fa-shopping-bag"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-lg-4">
-							<div class="product-item">
-								<div class="product-img">
-									<a href="shop-single.html"><img
-										src="/FurSPS_Nhom5/assets/img/product/14.png" alt=""></a>
-									<div class="product-action-wrap">
-										<div class="product-action">
-											<a href="#" data-bs-toggle="modal"
-												data-bs-target="#quickview" data-tooltip="tooltip"
-												title="Quick View"><i class="far fa-eye"></i></a> <a
-												href="#" data-tooltip="tooltip" title="Add To Wishlist"><i
-												class="far fa-heart"></i></a> <a href="#" data-tooltip="tooltip"
-												title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-										</div>
-									</div>
-								</div>
-								<div class="product-content">
-									<h3 class="product-title">
-										<a href="shop-single.html">Simple Denim Chair</a>
-									</h3>
-									<div class="product-rate">
-										<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="far fa-star"></i>
-									</div>
-									<div class="product-bottom">
-										<div class="product-price">
-											<span>$100.00</span>
-										</div>
-										<button type="button" class="product-cart-btn"
-											data-bs-placement="left" data-tooltip="tooltip"
-											title="Add To Cart">
-											<i class="far fa-shopping-bag"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-lg-4">
-							<div class="product-item">
-								<div class="product-img">
-									<a href="shop-single.html"><img
-										src="/FurSPS_Nhom5/assets/img/product/15.png" alt=""></a>
-									<div class="product-action-wrap">
-										<div class="product-action">
-											<a href="#" data-bs-toggle="modal"
-												data-bs-target="#quickview" data-tooltip="tooltip"
-												title="Quick View"><i class="far fa-eye"></i></a> <a
-												href="#" data-tooltip="tooltip" title="Add To Wishlist"><i
-												class="far fa-heart"></i></a> <a href="#" data-tooltip="tooltip"
-												title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-										</div>
-									</div>
-								</div>
-								<div class="product-content">
-									<h3 class="product-title">
-										<a href="shop-single.html">Simple Denim Chair</a>
-									</h3>
-									<div class="product-rate">
-										<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="far fa-star"></i>
-									</div>
-									<div class="product-bottom">
-										<div class="product-price">
-											<span>$100.00</span>
-										</div>
-										<button type="button" class="product-cart-btn"
-											data-bs-placement="left" data-tooltip="tooltip"
-											title="Add To Cart">
-											<i class="far fa-shopping-bag"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-lg-4">
-							<div class="product-item">
-								<div class="product-img">
-									<a href="shop-single.html"><img
-										src="/FurSPS_Nhom5/assets/img/product/16.png" alt=""></a>
-									<div class="product-action-wrap">
-										<div class="product-action">
-											<a href="#" data-bs-toggle="modal"
-												data-bs-target="#quickview" data-tooltip="tooltip"
-												title="Quick View"><i class="far fa-eye"></i></a> <a
-												href="#" data-tooltip="tooltip" title="Add To Wishlist"><i
-												class="far fa-heart"></i></a> <a href="#" data-tooltip="tooltip"
-												title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-										</div>
-									</div>
-								</div>
-								<div class="product-content">
-									<h3 class="product-title">
-										<a href="shop-single.html">Simple Denim Chair</a>
-									</h3>
-									<div class="product-rate">
-										<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="far fa-star"></i>
-									</div>
-									<div class="product-bottom">
-										<div class="product-price">
-											<span>$100.00</span>
-										</div>
-										<button type="button" class="product-cart-btn"
-											data-bs-placement="left" data-tooltip="tooltip"
-											title="Add To Cart">
-											<i class="far fa-shopping-bag"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-lg-4">
-							<div class="product-item">
-								<div class="product-img">
-									<a href="shop-single.html"><img
-										src="/FurSPS_Nhom5/assets/img/product/17.png" alt=""></a>
-									<div class="product-action-wrap">
-										<div class="product-action">
-											<a href="#" data-bs-toggle="modal"
-												data-bs-target="#quickview" data-tooltip="tooltip"
-												title="Quick View"><i class="far fa-eye"></i></a> <a
-												href="#" data-tooltip="tooltip" title="Add To Wishlist"><i
-												class="far fa-heart"></i></a> <a href="#" data-tooltip="tooltip"
-												title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-										</div>
-									</div>
-								</div>
-								<div class="product-content">
-									<h3 class="product-title">
-										<a href="shop-single.html">Simple Denim Chair</a>
-									</h3>
-									<div class="product-rate">
-										<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="far fa-star"></i>
-									</div>
-									<div class="product-bottom">
-										<div class="product-price">
-											<span>$100.00</span>
-										</div>
-										<button type="button" class="product-cart-btn"
-											data-bs-placement="left" data-tooltip="tooltip"
-											title="Add To Cart">
-											<i class="far fa-shopping-bag"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-lg-4">
-							<div class="product-item">
-								<div class="product-img">
-									<a href="shop-single.html"><img
-										src="/FurSPS_Nhom5/assets/img/product/18.png" alt=""></a>
-									<div class="product-action-wrap">
-										<div class="product-action">
-											<a href="#" data-bs-toggle="modal"
-												data-bs-target="#quickview" data-tooltip="tooltip"
-												title="Quick View"><i class="far fa-eye"></i></a> <a
-												href="#" data-tooltip="tooltip" title="Add To Wishlist"><i
-												class="far fa-heart"></i></a> <a href="#" data-tooltip="tooltip"
-												title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-										</div>
-									</div>
-								</div>
-								<div class="product-content">
-									<h3 class="product-title">
-										<a href="shop-single.html">Simple Denim Chair</a>
-									</h3>
-									<div class="product-rate">
-										<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="far fa-star"></i>
-									</div>
-									<div class="product-bottom">
-										<div class="product-price">
-											<span>$100.00</span>
-										</div>
-										<button type="button" class="product-cart-btn"
-											data-bs-placement="left" data-tooltip="tooltip"
-											title="Add To Cart">
-											<i class="far fa-shopping-bag"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-lg-4">
-							<div class="product-item">
-								<div class="product-img">
-									<span class="type new">New</span> <a href="shop-single.html"><img
-										src="/FurSPS_Nhom5/assets/img/product/19.png" alt=""></a>
-									<div class="product-action-wrap">
-										<div class="product-action">
-											<a href="#" data-bs-toggle="modal"
-												data-bs-target="#quickview" data-tooltip="tooltip"
-												title="Quick View"><i class="far fa-eye"></i></a> <a
-												href="#" data-tooltip="tooltip" title="Add To Wishlist"><i
-												class="far fa-heart"></i></a> <a href="#" data-tooltip="tooltip"
-												title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-										</div>
-									</div>
-								</div>
-								<div class="product-content">
-									<h3 class="product-title">
-										<a href="shop-single.html">Simple Denim Chair</a>
-									</h3>
-									<div class="product-rate">
-										<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="far fa-star"></i>
-									</div>
-									<div class="product-bottom">
-										<div class="product-price">
-											<span>$100.00</span>
-										</div>
-										<button type="button" class="product-cart-btn"
-											data-bs-placement="left" data-tooltip="tooltip"
-											title="Add To Cart">
-											<i class="far fa-shopping-bag"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-lg-4">
-							<div class="product-item">
-								<div class="product-img">
-									<a href="shop-single.html"><img
-										src="/FurSPS_Nhom5/assets/img/product/20.png" alt=""></a>
-									<div class="product-action-wrap">
-										<div class="product-action">
-											<a href="#" data-bs-toggle="modal"
-												data-bs-target="#quickview" data-tooltip="tooltip"
-												title="Quick View"><i class="far fa-eye"></i></a> <a
-												href="#" data-tooltip="tooltip" title="Add To Wishlist"><i
-												class="far fa-heart"></i></a> <a href="#" data-tooltip="tooltip"
-												title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-										</div>
-									</div>
-								</div>
-								<div class="product-content">
-									<h3 class="product-title">
-										<a href="shop-single.html">Simple Denim Chair</a>
-									</h3>
-									<div class="product-rate">
-										<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="far fa-star"></i>
-									</div>
-									<div class="product-bottom">
-										<div class="product-price">
-											<span>$100.00</span>
-										</div>
-										<button type="button" class="product-cart-btn"
-											data-bs-placement="left" data-tooltip="tooltip"
-											title="Add To Cart">
-											<i class="far fa-shopping-bag"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-lg-4">
-							<div class="product-item">
-								<div class="product-img">
-									<a href="shop-single.html"><img
-										src="/FurSPS_Nhom5/assets/img/product/21.png" alt=""></a>
-									<div class="product-action-wrap">
-										<div class="product-action">
-											<a href="#" data-bs-toggle="modal"
-												data-bs-target="#quickview" data-tooltip="tooltip"
-												title="Quick View"><i class="far fa-eye"></i></a> <a
-												href="#" data-tooltip="tooltip" title="Add To Wishlist"><i
-												class="far fa-heart"></i></a> <a href="#" data-tooltip="tooltip"
-												title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-										</div>
-									</div>
-								</div>
-								<div class="product-content">
-									<h3 class="product-title">
-										<a href="shop-single.html">Simple Denim Chair</a>
-									</h3>
-									<div class="product-rate">
-										<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-											class="far fa-star"></i>
-									</div>
-									<div class="product-bottom">
-										<div class="product-price">
-											<span>$100.00</span>
-										</div>
-										<button type="button" class="product-cart-btn"
-											data-bs-placement="left" data-tooltip="tooltip"
-											title="Add To Cart">
-											<i class="far fa-shopping-bag"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
+						</c:if>
 					</div>
 				</div>
-				<!-- pagination -->
-				<div class="pagination-area mt-50">
-					<div aria-label="Page navigation example">
-						<ul class="pagination">
-							<li class="page-item"><a class="page-link" href="#"
-								aria-label="Previous"> <span aria-hidden="true"><i
-										class="far fa-arrow-left"></i></span>
-							</a></li>
-							<li class="page-item active"><a class="page-link" href="#">1</a></li>
-							<li class="page-item"><a class="page-link" href="#">2</a></li>
-							<li class="page-item"><span class="page-link">...</span></li>
-							<li class="page-item"><a class="page-link" href="#">10</a></li>
-							<li class="page-item"><a class="page-link" href="#"
-								aria-label="Next"> <span aria-hidden="true"><i
-										class="far fa-arrow-right"></i></span>
-							</a></li>
-						</ul>
-					</div>
-				</div>
-				<!-- pagination end -->
+				<br>
 			</div>
 		</div>
 	</div>
 </div>
 <!-- shop-area end -->
+<script>
+	var params = {
+		keyword : "${keyword}",
+		cateId : "${cateId}",
+		sort : "${sort}",
+		price : "${price}",
+		rating : "${rating}",
+		page : "${page}",
+	};
 
+	function formatNumber(num) {
+        if (num >= 1000000000) {
+            return (num / 1000000000).toFixed(1) + " tỷ"; // Hiển thị tỷ nếu giá trị >= 1 tỷ
+        } else if (num >= 1000000) {
+            return (num / 1000000).toFixed(1) + " triệu"; // Hiển thị triệu
+        } else if (num >= 1000) {
+            return (num / 1000).toFixed(0) + " nghìn"; // Hiển thị nghìn
+        }
+        return num; // Hiển thị số đơn thuần
+    }
+
+    $(function() {
+        // Cấu hình slider
+        $(".price-range").slider({
+            range: true,
+            min: 0,
+            max: 20000000, // Giá trị tối đa là 20 triệu
+            values: [1000000, 5000000], // Giá trị mặc định
+            step: 100000, // Bước nhảy
+            slide: function(event, ui) {
+                // Hiển thị giá trị trong input với định dạng
+                $("#price-amount").val(
+                    formatNumber(ui.values[0]) + " - " + formatNumber(ui.values[1])
+                );
+            }
+        });
+
+        // Hiển thị giá trị mặc định trong input khi trang được tải
+        $("#price-amount").val(
+            formatNumber($(".price-range").slider("values", 0)) +
+            " - " +
+            formatNumber($(".price-range").slider("values", 1))
+        );
+
+        // Sự kiện click vào nút "Lọc"
+        $("#filter-button").click(function() {
+            // Lấy giá trị hiện tại của slider
+            let minPrice = $(".price-range").slider("values", 0);
+            let maxPrice = $(".price-range").slider("values", 1);
+
+            // Ghép giá trị thành chuỗi theo định dạng 'minPrice-maxPrice'
+            let priceRange = minPrice + '-' + maxPrice;
+
+            // Gọi hàm changPrice với giá trị chuỗi
+            changPrice(priceRange);
+        });
+    });
+	function changeRating() {
+		// Lấy tất cả các radio button với name là 'rating'
+		const ratingRadios = document.getElementsByName('rating');
+
+		// Tìm giá trị của radio button được chọn
+		let selectedRating = null;
+		for (let i = 0; i < ratingRadios.length; i++) {
+			if (ratingRadios[i].checked) {
+
+				params["rating"] = ratingRadios[i].value;
+				params["page"] = 1
+				run(0);
+				break;
+			}
+		}
+
+		// Kiểm tra xem có rating nào được chọn không
+		if (selectedRating) {
+			console.log("Giá trị rating được chọn: " + selectedRating);
+			// Bạn có thể thực hiện hành động khác, ví dụ: gửi giá trị này đến server
+		} else {
+			console.log("Không có đánh giá nào được chọn.");
+		}
+	}
+	function run() {
+		var url = "?"
+				+ Object.keys(params).map(
+						function(key) {
+							if (params[key] !== null
+									&& params[key] !== undefined
+									&& params[key] !== "") {
+								return encodeURIComponent(key) + '='
+										+ encodeURIComponent(params[key]);
+							}
+						}).filter(Boolean).join('&');
+
+		window.location.href = url;
+	}
+
+	function changPrice(price) {
+		params["price"] = price;
+		params["page"] = 1
+		run(0);
+	}
+
+	function changSort(sort) {
+		params["sort"] = sort;
+		params["page"] = 1
+		run(0);
+	}
+	function changePage(page) {
+		params["page"] = page
+		run(0);
+	}
+	function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param); // Trả về giá trị tham số (hoặc null nếu không tồn tại)
+    }
+
+    // Hàm đặt giá trị mặc định cho radio button
+    function setDefaultRating() {
+        const rating = getQueryParam('rating'); // Lấy giá trị tham số rating từ URL
+        if (rating) {
+            const radio = document.querySelector(`input[name="rating"][value="${rating}"]`);
+            if (radio) {
+                radio.checked = true; // Đặt radio button có giá trị tương ứng thành checked
+            }
+        }
+    }
+
+    // Gọi hàm khi trang được tải
+    document.addEventListener('DOMContentLoaded', setDefaultRating);
+ 	
+    
+    
+   
+    
+</script>
 </html>

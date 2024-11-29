@@ -31,8 +31,14 @@ public class CategoryLevelModel extends CategoryModel {
 	}
 
 	@Override
-	public String toString() {
-		return "CategoryLevelModel [childrens=" + childrens + "]";
-	}
+    public String toString() {
+        return "CategoryLevelModel{" +
+                "categoryID=" + getCategoryID() +
+                ", categoryName='" + getCategoryName() + '\'' +
+                ", parentCategoryID=" + getParentCategoryID() +
+                ", image='" + getImage() + '\'' +
+                ", childrens=" + (childrens != null ? childrens.size() : 0) + 
+                '}';
+    }
 
 }
