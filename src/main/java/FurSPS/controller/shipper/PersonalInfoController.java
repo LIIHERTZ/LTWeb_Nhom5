@@ -25,8 +25,7 @@ import FurSPS.service.IAccountService;
 import FurSPS.service.IUserService;
 import FurSPS.service.impl.AccountServiceImpl;
 import FurSPS.service.impl.UserServiceImpl;
-
-import FurSPS.other.UploadImage;
+import FurSPS.other.ImageUploader;
 import FurSPS.other.Assignment;
 
 @WebServlet(urlPatterns = { "/shipper-info", "/shipper-update-info", "/shipper-update-avatar", "/shipper-update-pass" })
@@ -72,8 +71,8 @@ public class PersonalInfoController extends HttpServlet {
 			updateAvatar(req, resp);
 		}else if (url.contains("shipper-update-pass")) {
 			createAccountModel(req, resp);
-		}
-		resp.sendRedirect("shipper-info");
+		}else
+			resp.sendRedirect("shipper-info");
 	}
 
 	private void showInfoPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -150,6 +149,7 @@ public class PersonalInfoController extends HttpServlet {
 		user.setEmail(email);
 
 		new ShipperDAOImpl().updateShipper(user);
+		resp.sendRedirect("shipper-info");
 	}
 
 	private void createAccountModel(HttpServletRequest req, HttpServletResponse resp)
@@ -166,23 +166,40 @@ public class PersonalInfoController extends HttpServlet {
 		} else {
 			String error = "Mật khẩu cũ không đúng. Vui lòng nhập lại";
 			req.setAttribute("message", error);
+			req.setAttribute("accountModel", new AccountModel(userID, userName, password));  // Truyền lại accountModel
 			req.getRequestDispatcher("/views/shipper/updatePass.jsp").forward(req, resp);
 		}
 	}
 
 	private void updateAvatar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+//		HttpSession session = req.getSession();
+//		UserModel user = (UserModel) session.getAttribute("user");
+//		Part filepart = req.getPart("image");
+//		Random rnd = new Random();
+//		String rdCode = String.valueOf(rnd.nextInt(100, 999));
+//		UploadImage.uploadImage("mysql-web", "web-budget", "Image/Avatar/" + user.getUserID() + rdCode + ".jpg",
+//				filepart.getInputStream());
+//		String avatar = "https://storage.googleapis.com/web-budget/Image/Avatar/" + user.getUserID() + rdCode + ".jpg";
+//		userService.updateAvatar(user.getUserID(), avatar);
+		
+		
 		HttpSession session = req.getSession();
 		UserModel user = (UserModel) session.getAttribute("user");
-		Part filepart = req.getPart("image");
-		Random rnd = new Random();
-		String rdCode = String.valueOf(rnd.nextInt(100, 999));
-		UploadImage.uploadImage("mysql-web", "web-budget", "Image/Avatar/" + user.getUserID() + rdCode + ".jpg",
-				filepart.getInputStream());
-		String avatar = "https://storage.googleapis.com/web-budget/Image/Avatar/" + user.getUserID() + rdCode + ".jpg";
-		userService.updateAvatar(user.getUserID(), avatar);
 
+		// Gọi hàm uploadImage mới
+		try {
+		    String avatarUrl = ImageUploader.uploadImage(req);  // Gọi hàm uploadImage để lấy URL ảnh đã upload
+
+		    // Cập nhật avatar cho người dùng
+		    userService.updateAvatar(user.getUserID(), avatarUrl);
+		} catch (IOException | ServletException e) {
+		    e.printStackTrace();
+		    // Xử lý lỗi nếu cần
+		}		
 	}
+
+
 
 	private void updatePassword(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {

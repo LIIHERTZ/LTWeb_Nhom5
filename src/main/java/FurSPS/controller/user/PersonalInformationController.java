@@ -22,7 +22,7 @@ import FurSPS.service.IUserService;
 import FurSPS.service.impl.UserServiceImpl;
 import FurSPS.utils.MessageUtil;
 
-import FurSPS.other.UploadImage;
+import FurSPS.other.ImageUploader;
 
 @WebServlet(urlPatterns = { "/user/infoUser", "/user/updateUser", "/user/updateAccount", "/user/updateAvatar" })
 @MultipartConfig
@@ -155,15 +155,18 @@ public class PersonalInformationController extends HttpServlet {
 	}
 
 	private void updateAvatar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		int userID = Integer.parseInt(req.getParameter("UserID"));
-		Part filepart = req.getPart("image");
-		Random rnd = new Random();
-		String rdCode = String.valueOf(rnd.nextInt(100, 999));
-		UploadImage.uploadImage("mysql-web", "web-budget", "Image/Avatar/" + userID + rdCode + ".jpg", filepart.getInputStream());
-		String avatar = "https://storage.googleapis.com/web-budget/Image/Avatar/" + userID + rdCode + ".jpg";
-		userService.updateAvatar(userID, avatar);
-		HttpSession session = req.getSession(true);
-		session.setAttribute("user",userService.getInfoUser(userID));
-		getInfUser(req, resp);
+//		int userID = Integer.parseInt(req.getParameter("UserID"));
+//		Part filepart = req.getPart("image");
+//		Random rnd = new Random();
+//		String rdCode = String.valueOf(rnd.nextInt(100, 999));
+//		UploadImage.uploadImage("mysql-web", "web-budget", "Image/Avatar/" + userID + rdCode + ".jpg", filepart.getInputStream());
+//		String avatar = "https://storage.googleapis.com/web-budget/Image/Avatar/" + userID + rdCode + ".jpg";
+//		userService.updateAvatar(userID, avatar);
+//		HttpSession session = req.getSession(true);
+//		session.setAttribute("user",userService.getInfoUser(userID));
+//		getInfUser(req, resp);
+		
+		
+		
 	}
 }

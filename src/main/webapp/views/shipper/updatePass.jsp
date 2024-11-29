@@ -36,7 +36,7 @@
 	border-radius: 15px!important;
 }
 </style>
-<form action="shipper-info" method="post" enctype="multipart/form-data">
+<form action="shipper-update-pass" method="post" enctype="multipart/form-data">
 	<section class="bg0 p-t-52 p-b-20 update-pass-container">
 		<div class="container">
 			<div class="row update-pass-content-container">

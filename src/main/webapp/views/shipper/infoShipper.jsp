@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/common/taglib.jsp"%>
 <!DOCTYPE html>
+
+
 <style>
 .shipper-profile {
 	padding: 20px;
@@ -76,6 +78,8 @@ button:hover, .shipper-btn:hover {
 }
 
 </style>
+
+
 <div class="shipper-profile">
 	<div class="shipper-info">
 		<p>
@@ -111,11 +115,11 @@ button:hover, .shipper-btn:hover {
 			<button class="update-pass">Đổi mật khẩu</button>
 		</a>
 	</div>
-	<div class="shipper-avt">
+	 <div class="shipper-avt">
 		<img src="${user.avatar}" id="myImage" alt="User Image">
-		<input class="hind" type="file" id="imageInput" accept="image/*"> 
+		<input class="hind" type="file" id="imageInput" name = "file" accept="image/*"> 
 		<label class="shipper-btn shipper-button-img mt-4" for="imageInput">Sửa ảnh</label>
-	</div>
+	</div> 	
 </div>
 <script>
 	// JavaScript để xử lý sự kiện khi giá trị của input file thay đổi
@@ -124,7 +128,7 @@ button:hover, .shipper-btn:hover {
 				// Đối tượng hình ảnh
 
 				var formData = new FormData();
-				formData.append('image', $('#imageInput')[0].files[0]);
+				formData.append('file', $('#imageInput')[0].files[0]);
 
 				$.ajax({
 					type : 'POST',

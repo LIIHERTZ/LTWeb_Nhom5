@@ -35,7 +35,7 @@
 											value="${shipper.address}" /> <label>Địa chỉ</label>
 									</div>
 									<div class="form-floating mb-3">
-										<input class="form-control" type="text" name="email"
+										<input class="form-control" type="email" name="email"
 											value="${shipper.email}" /> <label>Email</label>
 									</div>
 									<div class="form-floating mb-3">
@@ -56,8 +56,9 @@
 
 								<div class="col-md-6">
 									<div class="form-floating mb-3">
-										<input class="form-control" type="text" name="phone"
-											value="${shipper.phone}" /> <label>SĐT</label>
+										<input class="form-control" type="tel" name="phone"
+											value="${shipper.phone}" pattern="^[0-9]{10}$"
+											title="Số điện thoại phải là 10 chữ số" /> <label>SĐT</label>
 									</div>
 									<div class="form-floating mb-3">
 										<input class="form-control" type="date" name="dob"
@@ -65,20 +66,21 @@
 									</div>
 									<div class="form-floating mb-3">
 										<input class="form-control" type="text" name="cid"
-											value="${shipper.cid}" /> <label>CCCD</label>
+											value="${shipper.cid}" pattern="^\d{12}$"
+											title="Căn cước công dân phải gồm 12 chữ số" /> <label>CCCD</label>
 									</div>
-
 									<div class="form-floating mb-3">
 										<input class="form-control" name="area"
 											value="${shipper.area}" list="listlist" id="fruitsInput">
-										<datalist id="listlist" >
+										<datalist id="listlist">
 											<c:forEach var="city" items="${listAssign}">
 												<option value="${city.toString()}">
 											</c:forEach>
 										</datalist>
-										<label for="fruitsInput">Phân công</label>
-										<input style="visibility: hidden" class="form-control" list="datalistOptions"
-										id="exampleDataList" placeholder="Type to search...">
+										<label for="fruitsInput">Phân công</label> <input
+											style="visibility: hidden" class="form-control"
+											list="datalistOptions" id="exampleDataList"
+											placeholder="Type to search...">
 									</div>
 								</div>
 							</div>
