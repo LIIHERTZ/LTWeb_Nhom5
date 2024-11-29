@@ -40,19 +40,24 @@
 
 </head>
 <body class="sb-nav-fixed">
-	<!-- header -->
-	<%@ include file="/common/seller/header.jsp"%>
-	<!-- header -->
-	<div id="layoutSidenav">
-		<div id="layoutSidenav_nav">
-			<%@ include file="/common/seller/menu.jsp"%>
-		</div>
-		<div id="layoutSidenav_content">
-			<decorator:body></decorator:body>
-			<!-- footer -->
-			<%@ include file="/common/seller/footer.jsp"%>
-			<!-- footer -->
-		</div>
-	</div>
+    <!-- header -->
+    <%@ include file="/common/seller/header.jsp"%>
+    <!-- header -->
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <%@ include file="/common/seller/menu.jsp"%>
+        </div>
+
+        <!-- Nội dung chính của trang sẽ được chèn vào đây -->
+        <div id="layoutSidenav_content">
+            <!-- Sử dụng sitemesh để viết nội dung động vào đây -->
+            <sitemesh:write property="body" />
+        </div>
+
+        <!-- footer -->
+        <%@ include file="/common/seller/footer.jsp"%>
+        <!-- footer -->
+    </div>
 </body>
+
 </html>
