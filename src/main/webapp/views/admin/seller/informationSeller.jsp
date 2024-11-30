@@ -115,15 +115,56 @@ a{
 		</a>
 	</div>
 	<div class="seller-avt">
-		<img src="${user.avatar}" id="myImage" alt="User Image">
-		<input class="hind" type="file" id="imageInput" accept="image/*"> 
-		
+		<img src="${user.avatar}" id="myImage" alt="User Image"> <input
+			class="hind" type="file" id="imageInput" name="file" accept="image/*">
+		<label class="seller-btn seller-button-img mt-4" for="imageInput">Sửa
+			ảnh</label>
 	</div>
 </div>
 <script>
-	
+	//JavaScript để xử lý sự kiện khi giá trị của input file thay đổi
+	document
+			.getElementById('imageInput')
+			.addEventListener(
+					'change',
+					function(e) {
+						// Đối tượng hình ảnh
+						var formData = new FormData();
+						formData.append('file', $('#imageInput')[0].files[0]);
+
+						$
+								.ajax({
+									type : 'POST',
+									url : 'seller-update-avatar', // Gọi đến URL servlet của bạn
+									data : formData,
+									processData : false,
+									contentType : false,
+									success : function(response) {
+										console.log('POST thành công!',
+												response);
+										window.location.href = 'adminInformationSeller?userID=${user.userID}'; // Tải lại trang sau khi upload thành công
+									},
+									error : function(error) {
+										console.error('Lỗi POST:', error);
+									}
+								});
+					});
+
 	function closePage() {
 		// JavaScript để chuyển trang
 		window.location.href = 'adminSeller'; // Thay 'url_moi' bằng URL mới bạn muốn chuyển đến
 	}
 </script>
+<!-- 	<div class="seller-avt"> -->
+<%-- 		<img src="${user.avatar}" id="myImage" alt="User Image"> --%>
+<!-- 		<input class="hind" type="file" id="imageInput" accept="image/*">  -->
+		
+<!-- 	</div> -->
+<!-- </div> -->
+<!-- <script> -->
+	
+<!-- // 	function closePage() { -->
+<!-- // 		// JavaScript để chuyển trang -->
+<!-- // 		window.location.href = 'adminSeller'; // Thay 'url_moi' bằng URL mới bạn muốn chuyển đến -->
+<!-- // 	} -->
+<!-- </script> -->

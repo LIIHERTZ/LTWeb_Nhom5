@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import FurSPS.models.submodels.*;
+import FurSPS.other.ImageUploader;
 import FurSPS.models.AccountModel;
 import FurSPS.models.UserModel;
 import FurSPS.service.IAccountService;
@@ -30,7 +31,7 @@ import FurSPS.utils.MessageUtil;
 
 
 @WebServlet(urlPatterns = { "/adminCustomer", "/adminInsertCustomer", "/adminUpdateCustomer", "/adminDeleteCustomer",
-		"/adminInformationCustomer" })
+		"/adminInformationCustomer", "/customer-update-avatar" })
 @MultipartConfig
 public class CustomerController extends HttpServlet {
 
@@ -62,6 +63,7 @@ public class CustomerController extends HttpServlet {
 				} else if (url.contains("adminInformationCustomer")) {
 					int customerID = Integer.parseInt(req.getParameter("customerID"));
 					UserModel customer = customerService.getOneCustomer(customerID);
+					session.setAttribute("userID", customerID);
 					req.setAttribute("user", customer);
 					RequestDispatcher rd = req.getRequestDispatcher("/views/admin/customer/customerInformation.jsp");
 					rd.forward(req, resp);
@@ -69,7 +71,7 @@ public class CustomerController extends HttpServlet {
 			} else {
 				resp.sendRedirect(req.getContextPath() + "/login");
 			}
-		} else {
+} else {
 			resp.sendRedirect(req.getContextPath() + "/login");
 		}
 	}
@@ -84,16 +86,21 @@ public class CustomerController extends HttpServlet {
 			insertCustomer(req, resp);
 		} else if (url.contains("adminUpdateCustomer")) {
 			updateCustomer(req, resp);
-		}
+		}else if (url.contains("customer-update-avatar")) {
+	        updateAvatar(req, resp);  // Gọi phương thức updateAvatar
+	    }
 	}
 
 	private void deleteCustomer(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		try {
 			int customerID = Integer.parseInt(req.getParameter("customerID"));
+			System.out.println("customerID from request: " + customerID);
 			UserModel customer = customerService.getOneCustomer(customerID);
 			customerService.deleteCustomer(customer);
 			MessageUtil.showMessage(req, "delSuccess");
 		} catch (Exception ex) {
+			// In lỗi ra console để kiểm tra
+	        System.out.println("Error while deleting customer: " + ex.getMessage());
 			MessageUtil.showMessage(req, "delFail");
 		}
 		RequestDispatcher rd = req.getRequestDispatcher("adminCustomer");
@@ -119,7 +126,7 @@ public class CustomerController extends HttpServlet {
 			String address = req.getParameter("address");
 			int gender = Integer.parseInt(req.getParameter("gender"));
 			String phone = req.getParameter("phone");
-			String avatar = req.getParameter("avatar");
+//			String avatar = req.getParameter("avatar");
 			String cid = req.getParameter("cid");
 			String email = req.getParameter("email");
 			String dobString = req.getParameter("dob");
@@ -143,7 +150,7 @@ public class CustomerController extends HttpServlet {
 
 	        if (!email.matches(emailPattern)) {
 	            MessageUtil.showMessage(req, "emailInvalid");
-	            getCustomerUpdate(req, resp);
+getCustomerUpdate(req, resp);
 	            return;
 	        }
 					
@@ -159,7 +166,7 @@ public class CustomerController extends HttpServlet {
 			newUser.setFirstName(firstName);
 			newUser.setLastName(lastName);
 			newUser.setGender(gender);
-			newUser.setAvatar(avatar);
+//			newUser.setAvatar(avatar);
 			newUser.setAddress(address);
 			newUser.setPhone(phone);
 			newUser.setDob(dob);
@@ -216,7 +223,7 @@ public class CustomerController extends HttpServlet {
 	            req.setAttribute("phone", phone);
 	            req.setAttribute("avatar", avatar);
 	            req.setAttribute("cid", cid);
-	            req.setAttribute("email", email);
+req.setAttribute("email", email);
 	            req.setAttribute("dob", dobString);
 	            req.getRequestDispatcher("/views/admin/customer/customerInsert.jsp").forward(req, resp);
 	            return;
@@ -279,5 +286,20 @@ public class CustomerController extends HttpServlet {
 		RequestDispatcher rd = req.getRequestDispatcher("/views/admin/customer/customer.jsp");
 		rd.forward(req, resp);
 
+	}
+	
+	private void updateAvatar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession session = req.getSession();
+		int id = (int) session.getAttribute("userID");
+		// Gọi hàm uploadImage mới
+		try {
+		    String avatarUrl = ImageUploader.uploadImage(req);  // Gọi hàm uploadImage để lấy URL ảnh đã upload
+
+		    // Cập nhật avatar cho người dùng
+		    userService.updateAvatar(id, avatarUrl);
+		} catch (IOException | ServletException e) {
+		    e.printStackTrace();
+		    // Xử lý lỗi nếu cần
+		}	
 	}
 }

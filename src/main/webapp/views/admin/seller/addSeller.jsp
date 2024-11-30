@@ -41,7 +41,7 @@
 											<input class="form-control" type="text" name="address" value="${address != null ? address : ''}" required/> <label>Địa chỉ</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="email" value="${email != null ? email : ''}" required/> <label>Email</label>
+											<input class="form-control" type="email" name="email" value="${email != null ? email : ''}" required/> <label>Email</label>
 										</div>
 										<div class="form-floating mb-3">
 											<select class="form-control" name="gender" required>
@@ -52,17 +52,17 @@
 									</div>
 									<div class="col-md-6">
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="phone" value="${phone != null ? phone : ''}" required/> <label>Số điện thoại</label>
+											<input class="form-control" type="tel" name="phone" value="${phone != null ? phone : ''}" pattern="^[0-9]{10}$" title="Số điện thoại phải là 10 chữ số" required/> <label>Số điện thoại</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="date" name="dob" value="${dob != null ? dob : ''}" required/> <label>Ngày sinh</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="cid"  value="${cid != null ? cid : ''}" required/> <label>CCCD</label>
+											<input class="form-control" type="text" name="cid"  value="${cid != null ? cid : ''}" pattern="^\d{12}$" title="Căn cước công dân phải gồm 12 chữ số" required/> <label>CCCD</label>
 										</div>
-										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="avatar" value="https://storage.googleapis.com/web-budget/Image/Avatar/first.png"/> <label>Ảnh đại diện</label>
-										</div>
+<!-- 										<div class="form-floating mb-3"> -->
+<!-- 											<input class="form-control" type="text" name="avatar" value="https://storage.googleapis.com/web-budget/Image/Avatar/first.png"/> <label>Ảnh đại diện</label> -->
+<!-- 										</div> -->
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="kpi" value="${kpi != null ? kpi : ''}" required/> <label>KPI</label>
 										</div>

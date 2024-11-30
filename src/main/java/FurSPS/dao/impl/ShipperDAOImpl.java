@@ -90,7 +90,7 @@ public class ShipperDAOImpl implements IShipperDAO {
 	@Override
 	public void updateShipper(UserModel model) {
 		Connection conn = null;
-		String sql = "Update [USER] set FirstName=?, LastName=?, Address=?, Gender=?, Phone=?, DoB=?, CID=?, Avatar=?, Area=?, Email=? where UserID=?";
+		String sql = "Update [USER] set FirstName=?, LastName=?, Address=?, Gender=?, Phone=?, DoB=?, CID=?, Area=?, Email=? where UserID=?";
 		try {
 			conn = DBConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -103,7 +103,7 @@ public class ShipperDAOImpl implements IShipperDAO {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			ps.setString(6, sdf.format(model.getDob()));
 			ps.setString(7, model.getCid());
-			ps.setString(8, model.getAvatar());
+//			ps.setString(8, model.getAvatar());
 			ps.setString(9, model.getArea());
 			ps.setString(10, model.getEmail());
 			ps.setInt(11, model.getUserID());
@@ -136,7 +136,7 @@ public class ShipperDAOImpl implements IShipperDAO {
 				shipper.setPhone(rs.getString("Phone"));
 				shipper.setDob(rs.getDate("DoB"));
 				shipper.setCid(rs.getString("CID"));
-				shipper.setAvatar(rs.getString("Avatar"));
+//				shipper.setAvatar(rs.getString("Avatar"));
 				shipper.setArea(rs.getString("Area"));
 				shipper.setEmail(rs.getString("Email"));
 			}

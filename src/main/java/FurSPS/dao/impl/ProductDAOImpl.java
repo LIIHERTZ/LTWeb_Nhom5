@@ -17,26 +17,33 @@ public class ProductDAOImpl implements IProductDAO {
 
 	@Override
 	public List<ProductModel> findAll() {
-		String sql = "SELECT p.*, \r\n"
-				+ "       SUBSTRING_INDEX(GROUP_CONCAT(ii.Image ORDER BY ii.ItemImageID), ',', 1) AS FirstImage,\r\n"
-				+ "       (SELECT MIN(i.PromotionPrice) FROM ITEM i WHERE i.ProductID = p.ProductID) AS MinPromotionPrice,\r\n"
-				+ "       (SELECT MIN(i.OriginalPrice) FROM ITEM i WHERE i.ProductID = p.ProductID) AS MinOriginalPrice,\r\n"
-				+ "AVG(rating) as Rating\r\n" + "FROM CATEGORY c\r\n"
-				+ "JOIN PRODUCT p ON c.CategoryID = p.CategoryID\r\n" + "JOIN ITEM i ON p.ProductID = i.ProductID\r\n"
-				+ "JOIN ITEMIMAGE ii ON ii.ItemID = i.ItemID\r\n" + "LEFT JOIN DETAIL d ON d.ItemID=i.ItemID "
-				+ "GROUP BY p.ProductID;";
-		List<ProductModel> list = new ArrayList<ProductModel>();
+//		String sql = "SELECT p.*, \r\n"
+//				+ "       SUBSTRING_INDEX(GROUP_CONCAT(ii.Image ORDER BY ii.ItemImageID), ',', 1) AS FirstImage,\r\n"
+//				+ "       (SELECT MIN(i.PromotionPrice) FROM ITEM i WHERE i.ProductID = p.ProductID) AS MinPromotionPrice,\r\n"
+//				+ "       (SELECT MIN(i.OriginalPrice) FROM ITEM i WHERE i.ProductID = p.ProductID) AS MinOriginalPrice,\r\n"
+//				+ "AVG(rating) as Rating\r\n" + "FROM CATEGORY c\r\n"
+//				+ "JOIN PRODUCT p ON c.CategoryID = p.CategoryID\r\n" + "JOIN ITEM i ON p.ProductID = i.ProductID\r\n"
+//				+ "JOIN ITEMIMAGE ii ON ii.ItemID = i.ItemID\r\n" + "LEFT JOIN DETAIL d ON d.ItemID=i.ItemID "
+//				+ "GROUP BY p.ProductID;";
 
+		///////
+		String sql = "SELECT p.ProductID, " + "p.ProductName, " + "p.Description, " + "p.Origin, " + "p.SupplierID, "
+				+ "p.CategoryID, " + "p.Material, "
+				+ "(SELECT TOP 1 ii.Image FROM ITEMIMAGE ii WHERE ii.ItemID = i.ItemID ORDER BY ii.ItemImageID) AS FirstImage, "
+				+ "(SELECT MIN(i.PromotionPrice) FROM ITEM i WHERE i.ProductID = p.ProductID) AS MinPromotionPrice, "
+				+ "(SELECT MIN(i.OriginalPrice) FROM ITEM i WHERE i.ProductID = p.ProductID) AS MinOriginalPrice, "
+				+ "AVG(d.rating) AS Rating " + "FROM PRODUCT p " + "JOIN ITEM i ON p.ProductID = i.ProductID "
+				+ "JOIN ITEMIMAGE ii ON ii.ItemID = i.ItemID " + "LEFT JOIN DETAIL d ON d.ItemID = i.ItemID "
+				+ "GROUP BY p.ProductID, p.ProductName, p.Description, p.Origin, p.SupplierID, p.CategoryID, p.Material, i.ItemID";
+		List<ProductModel> list = new ArrayList<>();
 		try {
 			new DBConnection();
 			conn = DBConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery(sql);
+			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				ProductModel model = new ProductModel();
-				int productID = rs.getInt("ProductID");
-
-				model.setProductID(productID);
+				model.setProductID(rs.getInt("ProductID"));
 				model.setProductName(rs.getString("ProductName"));
 				model.setDescription(rs.getString("Description"));
 				model.setOrigin(rs.getString("Origin"));
@@ -47,11 +54,9 @@ public class ProductDAOImpl implements IProductDAO {
 				model.setDisplayedImage(rs.getString("FirstImage"));
 				model.setDisplayedPromotionPrice(rs.getInt("MinPromotionPrice"));
 				model.setDisplayedOriginalPrice(rs.getInt("MinOriginalPrice"));
-
 				list.add(model);
 			}
 			conn.close();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -132,7 +137,6 @@ public class ProductDAOImpl implements IProductDAO {
 		}
 		return list;
 	}
-
 
 	@Override
 	public void insertProduct(ProductModel model) {
@@ -397,13 +401,13 @@ public class ProductDAOImpl implements IProductDAO {
 
 	@Override
 	public List<ProductModel> findAllProduct() {
-		String sql = "Select * from PRODUCT";
+		String sql = "Select * from  [PRODUCT]";
 		List<ProductModel> list = new ArrayList<ProductModel>();
 		try {
 			new DBConnection();
 			conn = DBConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery(sql);
+			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				ProductModel model = new ProductModel();
 
@@ -496,15 +500,14 @@ public class ProductDAOImpl implements IProductDAO {
 
 	@Override
 	public List<List<Object>> ProductRating() {
-		List <List<Object>> list = new ArrayList<List<Object>>();
+		List<List<Object>> list = new ArrayList<List<Object>>();
 		String sql = "select pr.ProductID, ProductName, round(avg(rating), 1)rate from (select ProductID, dt.ItemID, round(avg(Rating),1) as rating from DETAIL dt join ITEM it on dt.ItemID = it.ItemID group by dt.ItemID) q join PRODUCT pr on q.ProductID = pr.ProductID group by pr.ProductID having rate is not null order by rate desc limit 5";
 		try {
 			new DBConnection();
 			conn = DBConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery(sql);
-			while (rs.next())
-			{
+			while (rs.next()) {
 				List<Object> model = new ArrayList<Object>();
 				model.add(rs.getInt("pr.ProductID"));
 				model.add(rs.getString("ProductName"));

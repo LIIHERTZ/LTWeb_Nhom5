@@ -42,7 +42,7 @@
 												value="${shipper.address}" required/> <label>Địa chỉ</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="email"
+											<input class="form-control" type="email" name="email"
 												value="${shipper.email}" required/> <label>Email</label>
 										</div>
 										<div class="form-floating mb-3">
@@ -56,8 +56,8 @@
 									</div>
 									<div class="col-md-6">
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="phone"
-												value="${shipper.phone}" required/> <label>Số điện thoại</label>
+											<input class="form-control" type="tel" name="phone"
+												value="${shipper.phone}" pattern="^[0-9]{10}$" title="Số điện thoại phải là 10 chữ số" required/> <label>Số điện thoại</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="date" name="dob"
@@ -65,12 +65,12 @@
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="cid"
-												value="${shipper.cid}" required/> <label>CCCD</label>
+												value="${shipper.cid}" pattern="^\d{12}$" title="Căn cước công dân phải gồm 12 chữ số" required/> <label>CCCD</label>
 										</div>
-										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="avatar"
-												value="${shipper.avatar}" required/> <label>Ảnh đại diện</label>
-										</div>
+<!-- 										<div class="form-floating mb-3"> -->
+<!-- 											<input class="form-control" type="text" name="avatar" -->
+<%-- 												value="${shipper.avatar}" required/> <label>Ảnh đại diện</label> --%>
+<!-- 										</div> -->
 <!-- 										<div class="form-floating mb-3"> -->
 <!-- 											<input class="form-control" type="text" name="area" -->
 <%-- 												value="${shipper.area}" required/> <label>Khu vực</label> --%>

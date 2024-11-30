@@ -52,7 +52,7 @@ public class SellerDAOImpl implements ISellerDAO {
 	@Override
 	public void updateSeller(UserModel model) {
 		Connection conn = null;
-		String sql = "Update [USER] set FirstName=?, LastName=?, Address=?, Gender=?, Phone=?, DoB=?, CID=?, Avatar=?, KPI=?, Email=? where UserID=?";
+		String sql = "Update [USER] set FirstName=?, LastName=?, Address=?, Gender=?, Phone=?, DoB=?, CID=?, KPI=?, Email=? where UserID=?";
 		try {
 			conn = DBConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -65,10 +65,10 @@ public class SellerDAOImpl implements ISellerDAO {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			ps.setString(6, sdf.format(model.getDob()));
 			ps.setString(7, model.getCid());
-			ps.setString(8, model.getAvatar());
-			ps.setInt(9, model.getKpi());
-			ps.setString(10, model.getEmail());
-			ps.setInt(11, model.getUserID());
+//			ps.setString(8, model.getAvatar());
+			ps.setInt(8, model.getKpi());
+			ps.setString(9, model.getEmail());
+			ps.setInt(10, model.getUserID());
 
 			ps.executeUpdate();// thuc thi cau query va tra ve Resultset
 			conn.close();

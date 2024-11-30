@@ -8,6 +8,7 @@ import java.util.List;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,8 +16,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import FurSPS.models.UserModel;
+import FurSPS.other.ImageUploader;
 import FurSPS.service.ISellerService;
+import FurSPS.service.IUserService;
 import FurSPS.service.impl.SellerServiceImpl;
+import FurSPS.service.impl.UserServiceImpl;
 import FurSPS.utils.MessageUtil;
 
 import FurSPS.models.AccountModel;
@@ -24,11 +28,13 @@ import FurSPS.service.IAccountService;
 import FurSPS.service.impl.AccountServiceImpl;
 
 @WebServlet(urlPatterns = { "/adminSeller", "/adminUpdateSeller", "/adminDeleteSeller", "/adminInsertSeller",
-		"/adminInformationSeller" })
+		"/adminInformationSeller", "/seller-update-avatar" })
+@MultipartConfig
 public class SellerController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	ISellerService sellerService = new SellerServiceImpl();
 	IAccountService accountService = new AccountServiceImpl();
+	IUserService userService = new UserServiceImpl();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -53,6 +59,7 @@ public class SellerController extends HttpServlet {
 				} else if (url.contains("adminInformationSeller")) {
 					int userID = Integer.parseInt(req.getParameter("userID"));
 					UserModel seller = sellerService.findOne(userID);
+					session.setAttribute("userID", userID);
 					req.setAttribute("user", seller);
 					RequestDispatcher rd = req.getRequestDispatcher("/views/admin/seller/informationSeller.jsp");
 					rd.forward(req, resp);
@@ -64,8 +71,7 @@ public class SellerController extends HttpServlet {
 			resp.sendRedirect(req.getContextPath() + "/login");
 		}
 	}
-
-	private void deleteSeller(HttpServletRequest req, HttpServletResponse resp) {
+private void deleteSeller(HttpServletRequest req, HttpServletResponse resp) {
 		try {
 			int id = Integer.parseInt(req.getParameter("userID"));
 			sellerService.deleteSeller(id);
@@ -99,7 +105,9 @@ public class SellerController extends HttpServlet {
 			updateSeller(req, resp);
 		} else if (url.contains("adminInsertSeller")) {
 			insertSeller(req, resp);
-		}
+		} else if (url.contains("seller-update-avatar")) {
+	        updateAvatar(req, resp);  // Gọi phương thức updateAvatar
+	    }
 	}
 
 	private void insertSeller(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -249,7 +257,7 @@ public class SellerController extends HttpServlet {
 			String address = req.getParameter("address");
 			int gender = Integer.parseInt(req.getParameter("gender"));
 			String phone = req.getParameter("phone");
-			String avatar = req.getParameter("avatar");
+//			String avatar = req.getParameter("avatar");
 			String cid = req.getParameter("cid");
 			String kpiStr = req.getParameter("kpi"); // Nhận giá trị KPI dạng chuỗi
 			int kpi = 0;
@@ -290,7 +298,7 @@ public class SellerController extends HttpServlet {
 	            getInforSeller(req, resp);
 	            return;
 	        } else {
-	            kpi = Integer.parseInt(kpiStr); // Chuyển đổi KPI thành kiểu int
+	        	kpi = Integer.parseInt(kpiStr); // Chuyển đổi KPI thành kiểu int
 	        }
 			
 			
@@ -307,7 +315,7 @@ public class SellerController extends HttpServlet {
 			newUser.setFirstName(firstName);
 			newUser.setLastName(lastName);
 			newUser.setGender(gender);
-			newUser.setAvatar(avatar);
+//			newUser.setAvatar(avatar);
 			newUser.setAddress(address);
 			newUser.setPhone(phone);
 			newUser.setDob(dob);
@@ -329,5 +337,20 @@ public class SellerController extends HttpServlet {
 
 		RequestDispatcher rd = req.getRequestDispatcher("/views/admin/seller/listSeller.jsp");
 		rd.forward(req, resp);
+	}
+	
+	private void updateAvatar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession session = req.getSession();
+		int id = (int) session.getAttribute("userID");
+		// Gọi hàm uploadImage mới
+		try {
+		    String avatarUrl = ImageUploader.uploadImage(req);  // Gọi hàm uploadImage để lấy URL ảnh đã upload
+
+		    // Cập nhật avatar cho người dùng
+		    userService.updateAvatar(id, avatarUrl);
+		} catch (IOException | ServletException e) {
+		    e.printStackTrace();
+		    // Xử lý lỗi nếu cần
+		}	
 	}
 }

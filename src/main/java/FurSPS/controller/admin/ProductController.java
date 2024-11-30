@@ -63,6 +63,12 @@ public class ProductController extends HttpServlet {
 		List<CategoryModel> listcate = cate.findAll();
 		List<ProductModel> listProduct = prod.findAllProduct();
 		List<SupplierModel> listSupplier = supp.findAll();
+		
+		// In dữ liệu ra console để kiểm tra
+	    System.out.println("Categories: " + listcate.size());
+	    System.out.println("Products: " + listProduct.size());
+	    System.out.println("Suppliers: " + listSupplier.size());
+		
 		req.setAttribute("listSupplier", listSupplier);
 		req.setAttribute("listProduct", listProduct);
 		req.setAttribute("listCate", listcate);

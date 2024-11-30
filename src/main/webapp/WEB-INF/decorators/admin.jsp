@@ -4,7 +4,8 @@
 <link
 	href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
 	rel="stylesheet" />
-<link rel="icon" type="image/png" href="https://storage.googleapis.com/web-budget/Image/FE/website-logo.png">
+<link rel="icon" type="image/png"
+	href="https://storage.googleapis.com/web-budget/Image/FE/website-logo.png">
 
 <link href='<c:url value="templates/admin/css/styles.css"/>'
 	rel="stylesheet" />
@@ -15,16 +16,22 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
-
-<meta name="viewport"
-	content="width=device-width, initial-scale-1, shrink-to-fit=no">
+	
+	
+	<!-- âsd -->
+<!-- <meta name="viewport" -->
+<!-- 	content="width=device-width, initial-scale-1, shrink-to-fit=no"> -->
+	
+	<!-- âsd -->
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css?family=Roboto Varela+Round">
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script
-	src="https://stackilath.bootstrapcdn.com/bootstrap/4.5.0/1s/bootstrap.min.js"></script>
+<!-- âsd -->
+<!-- <script -->
+<!-- 	src="https://stackilath.bootstrapcdn.com/bootstrap/4.5.0/1s/bootstrap.min.js"></script> -->
+<!-- âsd -->
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
@@ -93,7 +100,7 @@
 	width: 80px;
 	height: 80px;
 	margin: 0 auto;
-	border-radius: 50%;
+border-radius: 50%;
 	z-index: 9;
 	text-align: center;
 	border: 3px solid #f15e5e;
@@ -153,7 +160,9 @@
 			<%@ include file="/common/admin/menu.jsp"%>
 		</div>
 		<div id="layoutSidenav_content">
-			<decorator:body><sitemesh:write property="body" /></decorator:body>
+			<decorator:body>
+				<sitemesh:write property="body" />
+			</decorator:body>
 			<!-- Modal HTML to confirm delete -->
 			<div id="myModal" class="modal fade">
 				<div class="modal-dialog modal-confirm">
@@ -167,7 +176,8 @@
 								aria-hidden="true">&times;</button>
 						</div>
 						<div class="modal-body">
-							<p>Bạn có thực sự muốn xóa những bản ghi này? Quá trình này không thể hoàn tác được.</p>
+							<p>Bạn có thực sự muốn xóa những bản ghi này? Quá trình này
+								không thể hoàn tác được.</p>
 						</div>
 						<div class="modal-footer justify-content-center">
 							<button type="button" class="btn btn-secondary"
@@ -203,19 +213,26 @@
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 		crossorigin="anonymous"></script>
-	<script src='<c:url value="templates/admin/js/scripts.js"/>'></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
-		crossorigin="anonymous"></script>
-	<script
-		src='<c:url value="templates/admin/assets/demo/chart-area-demo.js"/>'></script>
-	<script
-		src='<c:url value="templates/admin/assets/demo/chart-bar-demo.js"/>'></script>
+<script src='<c:url value="templates/admin/js/scripts.js"/>'></script>
+
+<!-- âsd -->
+<!-- 	<script -->
+<!-- 		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" -->
+<!-- 		crossorigin="anonymous"></script> --> -->
+<!-- 	 <script -->
+<%-- 		src='<c:url value="templates/admin/assets/demo/chart-area-demo.js"/>'></script> --%>
+<!-- 	<script -->
+<%-- 		src='<c:url value="templates/admin/assets/demo/chart-bar-demo.js"/>'></script> --%>
+		
+		
+<!-- âsd -->
 	<script
 		src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
 		crossorigin="anonymous"></script>
 	<script
 		src='<c:url value="templates/admin/js/datatables-simple-demo.js"/>'></script>
 	<script src='<c:url value="templates/admin/js/snippets.js"/>'></script>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 </html>

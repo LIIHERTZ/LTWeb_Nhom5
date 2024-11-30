@@ -52,7 +52,7 @@
 									</div>
 									<div class="col-md-6">
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="phone" required
+											<input class="form-control" type="tel" name="phone" pattern="^[0-9]{10}$" title="Số điện thoại phải là 10 chữ số" required
 												value="${customer.phone}" /> <label>Số điện thoại</label>
 										</div>
 										<div class="form-floating mb-3">
@@ -61,14 +61,14 @@
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="cid" required
-												value="${customer.cid}" /> <label>Căn cước công dân</label>
+												value="${customer.cid}" pattern="^\d{12}$" title="Căn cước công dân phải gồm 12 chữ số" /> <label>Căn cước công dân</label>
 										</div>
+<!-- 										<div class="form-floating mb-3"> -->
+<!-- 											<input class="form-control" type="text" name="avatar" required -->
+<%-- 												value="${customer.avatar}" /> <label>ảnh đại diện</label> --%>
+<!-- 										</div>	 -->
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="avatar" required
-												value="${customer.avatar}" /> <label>ảnh đại diện</label>
-										</div>	
-										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="email" required
+											<input class="form-control" type="email" name="email" required
 												value="${customer.email}" /> <label>Email</label>
 										</div>									
 									</div>

@@ -8,6 +8,7 @@ import java.util.List;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,20 +16,26 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import FurSPS.models.UserModel;
+import FurSPS.other.ImageUploader;
 import FurSPS.service.IShipperService;
+import FurSPS.service.IUserService;
 import FurSPS.service.impl.ShipperServiceImpl;
+import FurSPS.service.impl.UserServiceImpl;
 import FurSPS.utils.MessageUtil;
 
 import FurSPS.models.AccountModel;
 import FurSPS.service.IAccountService;
 import FurSPS.service.impl.AccountServiceImpl;
 @WebServlet(urlPatterns = { "/adminShipper", "/adminUpdateShipper", "/adminDeleteShipper", "/adminInsertShipper",
-		"/adminInformationShipper" })
+		"/adminInformationShipper", "/shipper-update-avatar" })
+
+@MultipartConfig
 public class ShipperController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	IShipperService shipperService = new ShipperServiceImpl();
 	IAccountService accountService = new AccountServiceImpl();
+	IUserService userService = new UserServiceImpl();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -51,6 +58,7 @@ public class ShipperController extends HttpServlet {
 				} else if (url.contains("adminInformationShipper")) {
 					int userID = Integer.parseInt(req.getParameter("userID"));
 					UserModel shipper = shipperService.findOne(userID);
+					session.setAttribute("userID", userID);
 					req.setAttribute("user", shipper);
 					RequestDispatcher rd = req.getRequestDispatcher("/views/admin/shipper/informationShipper.jsp");
 					rd.forward(req, resp);
@@ -107,7 +115,10 @@ public class ShipperController extends HttpServlet {
 			updateShipper(req, resp);
 		} else if (url.contains("adminInsertShipper")) {
 			insertShipper(req, resp);
-		}
+		} else if (url.contains("shipper-update-avatar")) {
+	        updateAvatar(req, resp);  // Gọi phương thức updateAvatar
+	    }else
+			resp.sendRedirect("adminInformationShipper");
 	}
 
 	private void insertShipper(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -232,7 +243,7 @@ public class ShipperController extends HttpServlet {
 			String address = req.getParameter("address");
 			int gender = Integer.parseInt(req.getParameter("gender"));
 			String phone = req.getParameter("phone");
-			String avatar = req.getParameter("avatar");
+//			String avatar = req.getParameter("avatar");
 			String cid = req.getParameter("cid");
 			String area = req.getParameter("area");
 			String email = req.getParameter("email");
@@ -278,7 +289,7 @@ public class ShipperController extends HttpServlet {
 			newUser.setFirstName(firstName);
 			newUser.setLastName(lastName);
 			newUser.setGender(gender);
-			newUser.setAvatar(avatar);
+//			newUser.setAvatar(avatar);
 			newUser.setAddress(address);
 			newUser.setPhone(phone);
 			newUser.setDob(dob);
@@ -294,4 +305,21 @@ public class ShipperController extends HttpServlet {
 		resp.sendRedirect("adminInformationShipper?userID=" + id);
 
 	}
+	
+	
+	private void updateAvatar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession session = req.getSession();
+		int id = (int) session.getAttribute("userID");
+// Gọi hàm uploadImage mới
+		try {
+		    String avatarUrl = ImageUploader.uploadImage(req);  // Gọi hàm uploadImage để lấy URL ảnh đã upload
+
+		    // Cập nhật avatar cho người dùng
+		    userService.updateAvatar(id, avatarUrl);
+		} catch (IOException | ServletException e) {
+		    e.printStackTrace();
+		    // Xử lý lỗi nếu cần
+		}	
+	}
+	
 }

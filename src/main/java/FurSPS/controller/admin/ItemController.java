@@ -20,7 +20,7 @@ import FurSPS.service.IItemImageService;
 import FurSPS.service.IItemService;
 import FurSPS.service.impl.ItemImageServiceImpl;
 import FurSPS.service.impl.ItemServiceImpl;
-import FurSPS.other.UploadImage;
+//import FurSPS.other.UploadImage;
 
 @MultipartConfig
 @WebServlet(urlPatterns = { "/adminItem", "/admininsertItem", "/admindeleteItem", "/adminupdateItem", "/adminviewItem",

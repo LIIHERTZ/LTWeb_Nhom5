@@ -4,30 +4,18 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import FurSPS.configs.CloudinaryConfig;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
-
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Part;
 import java.io.*;
 import java.util.Map;
 import java.util.UUID;
 
-@WebServlet("/upload-image")
-@MultipartConfig(location = "D:/images", // Đường dẫn thư mục tạm
-		maxFileSize = 1024 * 1024 * 10, // Kích thước tối đa của tệp là 10MB
-		maxRequestSize = 1024 * 1024 * 20, // Kích thước tối đa của request là 20MB
-		fileSizeThreshold = 0) // Ngưỡng kích thước tệp
-public class UploadImageServlet extends HttpServlet {
-
-	private static final long serialVersionUID = 1L;
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+public class ImageUploader {
+	public static String uploadImage(HttpServletRequest request) throws IOException, ServletException {
 		// Kiểm tra xem có tệp gửi lên không
 		Part filePart = request.getPart("file"); // Đảm bảo "file" là tên của input trong form HTML
 		if (filePart == null) {
-			response.getWriter().write("No file uploaded.");
-			return;
+			return "No file uploaded."; // Trả về thông báo lỗi nếu không có file
 		}
 
 		String fileName = filePart.getSubmittedFileName(); // Lấy tên tệp từ phần tử form
@@ -59,12 +47,12 @@ public class UploadImageServlet extends HttpServlet {
 			// Xóa file tạm sau khi upload
 			tempFile.delete();
 
-			// Gửi URL ảnh về client
-			response.getWriter().write("File uploaded successfully. Image URL: " + imageUrl);
+			// Trả về URL ảnh đã upload
+			return imageUrl;
 
 		} catch (Exception e) {
 			// Xử lý lỗi nếu có
-			response.getWriter().write("Error uploading image: " + e.getMessage());
+			return "Error uploading image: " + e.getMessage(); // Trả về thông báo lỗi nếu có lỗi
 		}
 	}
 }
