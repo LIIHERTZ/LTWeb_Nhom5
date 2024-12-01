@@ -21,20 +21,20 @@
 								<div class="row">
 									<div class="col-md-6">
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="productName" />
+											<input class="form-control" type="text" name="productName" required/>
 											<label>Tên sản phẩm</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="description" />
+											<input class="form-control" type="text" name="description" required />
 											<label>Mô tả</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="origin" /> <label>Nguồn gốc</label>
+											<input class="form-control" type="text" name="origin" required/> <label>Nguồn gốc</label>
 										</div>
 									</div>
 									<div class="col-md-6"> 
 										<div class="form-floating mb-3"> 
-											<select name="category" class="form-control"> 
+											<select name="category" class="form-control" required> 
 												<option value="" style="text-align: center">-- 
 													Select --</option> 
 												<c:forEach var="category" items="${listCategory}"> 
@@ -45,7 +45,7 @@
 										</div> 
  
 										<div class="form-floating mb-3"> 
-											<select name="supplier" class="form-control"> 
+											<select name="supplier" class="form-control" required> 
 												<option value="" style="text-align: center">-- 
 													Select --</option> 
 												<c:forEach var="supplier" items="${listSupplier}"> 
@@ -55,7 +55,7 @@
 											</select> <label>Nhà cung cấp</label> 
 										</div> 
 										<div class="form-floating mb-3"> 
-											<input class="form-control" type="text" name="material" /> <label>Chất liệu</label> 
+											<input class="form-control" type="text" name="material" required /> <label>Chất liệu</label> 
 										</div> 
 									</div> 
 								</div>

@@ -26,20 +26,20 @@
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="productName"
-												value="${Product.productName}" /> <label>Tên sản phẩm</label>
+												value="${Product.productName}" required/> <label>Tên sản phẩm</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="description"
-												value="${Product.description}" /> <label>Mô tả</label>
+												value="${Product.description}" required/> <label>Mô tả</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="origin"
-												value="${Product.origin}" /> <label>Nguồn gốc</label>
+												value="${Product.origin}" required/> <label>Nguồn gốc</label>
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div  class="form-floating mb-3">
-											<select name="category" class="form-control">
+											<select name="category" class="form-control" required> 
 												<c:forEach var="category" items="${listCategory}">
 													<option value="${category.categoryID}"
 														<c:if test="${category.categoryID eq Product.categoryID}">selected</c:if>>${category.categoryName}</option>
@@ -48,7 +48,7 @@
 										</div>
 
 										<div class="form-floating mb-3">
-											<select name="supplier" class="form-control">
+											<select name="supplier" class="form-control" required> 
 												<c:forEach var="supplier" items="${listSupplier}">
 													<option value="${supplier.supplierID}"
 														<c:if test="${supplier.supplierID eq Product.supplierID}">selected</c:if>>${supplier.supplierName}</option>
@@ -57,7 +57,7 @@
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="material"
-												value="${Product.material}" /> <label>Chất liệu</label>
+												value="${Product.material}" required /> <label>Chất liệu</label>
 										</div>
 									</div>
 								</div>

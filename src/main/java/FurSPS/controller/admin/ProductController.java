@@ -164,7 +164,8 @@ public class ProductController extends HttpServlet {
 			int categoryID = Integer.parseInt(req.getParameter("category"));
 			String material = req.getParameter("material");
 
-			int id = prod.CreateProductID(categoryID);
+			int id = prod.CreateProductID(categoryID); // hàm đã được cập nhật tự tạo mới mà không cần truyền id vào.
+
 			ProductModel Pro = new ProductModel();
 			Pro.setProductID(id);
 			Pro.setProductName(productName);

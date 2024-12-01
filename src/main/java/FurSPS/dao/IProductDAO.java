@@ -28,4 +28,7 @@ public interface IProductDAO {
 
 	List<ProductModel> findBySupplierID(int supplier);
 	List<List<Object>> ProductRating();
+	
+	
+	int getMaxProductID();
 }
