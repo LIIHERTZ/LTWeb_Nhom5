@@ -46,7 +46,7 @@ public class ItemDAOImpl implements IItemDAO {
 
 	@Override
 	public List<ItemModel> findByProductID(int productID) {
-		String sql =  "SELECT " +
+		String sql ="SELECT " +
 	             "i.ItemID, " +
 	             "i.ProductID, " +
 	             "i.Color, " +
@@ -57,7 +57,7 @@ public class ItemDAOImpl implements IItemDAO {
 	             "i.PromotionPrice, " +
 	             "ii.Image " +
 	             "FROM ITEM i " +
-	             "RIGHT JOIN ITEMIMAGE ii ON i.ItemID = ii.ItemID " +
+	             "LEFT JOIN ITEMIMAGE ii ON i.ItemID = ii.ItemID " +
 	             "WHERE i.ProductID = ?";
 		List<ItemModel> list = new ArrayList<ItemModel>();
 		try {

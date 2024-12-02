@@ -29,4 +29,11 @@ public class RatingModel {
 	public RatingModel() {
 		super();
 	}
+	@Override
+    public String toString() {
+        return "RatingModel{" +
+                "numOfStar=" + numOfStar +
+                ", numOfRating=" + numOfRating +
+                '}';
+    }
 }

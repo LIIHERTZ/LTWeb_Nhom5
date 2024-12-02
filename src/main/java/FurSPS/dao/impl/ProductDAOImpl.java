@@ -389,17 +389,19 @@ public class ProductDAOImpl implements IProductDAO {
 
 	@Override
 	public ProductModel findOne(int id) {
-		String sql =  "SELECT p.ProductID, p.ProductName, p.Description, MAX(p.Origin) AS Origin, p.SupplierID, p.Material, p.CategoryID, c.CategoryID, c.CategoryName, s.SupplierName, "
-		           + "(SELECT MIN(i.PromotionPrice) FROM ITEM i WHERE i.ProductID = p.ProductID) AS MinPromotionPrice, "
-		           + "(SELECT MIN(i.OriginalPrice) FROM ITEM i WHERE i.ProductID = p.ProductID) AS MinOriginalPrice, "
-		           + "AVG(d.rating) AS Rating "
-		           + "FROM PRODUCT p "
-		           + "JOIN ITEM i ON p.ProductID = i.ProductID "
-		           + "JOIN CATEGORY c ON c.CategoryID = p.CategoryID "
-		           + "JOIN SUPPLIER s ON s.SupplierID = p.SupplierID "
-		           + "LEFT JOIN DETAIL d ON d.ItemID = i.ItemID "
-		           + "WHERE p.ProductID = ? "
-		           + "GROUP BY p.ProductID, p.ProductName, p.Description, p.SupplierID, p.Material, p.CategoryID, c.CategoryID, c.CategoryName, s.SupplierName";
+		String sql =  "SELECT p.ProductID, p.ProductName, p.Description, MAX(p.Origin) AS Origin, p.SupplierID, p.Material, p.CategoryID, c.CategoryID, c.CategoryName, s.SupplierName, " +
+	               "(SELECT MIN(i.PromotionPrice) FROM ITEM i WHERE i.ProductID = p.ProductID) AS MinPromotionPrice, " +
+	               "(SELECT MIN(i.OriginalPrice) FROM ITEM i WHERE i.ProductID = p.ProductID) AS MinOriginalPrice, " +
+	               "(SELECT AVG(CAST(d.rating AS FLOAT)) " +
+	               "FROM ITEM i2 " +
+	               "RIGHT JOIN DETAIL d ON d.ItemID = i2.ItemID " +
+	               "WHERE i2.ProductID = p.ProductID) AS Rating " +
+	               "FROM PRODUCT p " +
+	               "JOIN ITEM i ON p.ProductID = i.ProductID " +
+	               "JOIN CATEGORY c ON c.CategoryID = p.CategoryID " +
+	               "JOIN SUPPLIER s ON s.SupplierID = p.SupplierID " +
+	               "WHERE p.ProductID = ? " +
+	               "GROUP BY p.ProductID, p.ProductName, p.Description, p.SupplierID, p.Material, p.CategoryID, c.CategoryID, c.CategoryName, s.SupplierName;";
 		ProductModel model = new ProductModel();
 
 		try {
@@ -496,14 +498,19 @@ public class ProductDAOImpl implements IProductDAO {
 	}
 
 	public List<ProductModel> findBySupplierID(int supplierId) {
-		String sql = "SELECT p.*, \r\n"
-				+ "       SUBSTRING_INDEX(GROUP_CONCAT(ii.Image ORDER BY ii.ItemImageID), ',', 1) AS FirstImage,\r\n"
-				+ "       (SELECT MIN(i.PromotionPrice) FROM ITEM i WHERE i.ProductID = p.ProductID) AS MinPromotionPrice,\r\n"
-				+ "       (SELECT MIN(i.OriginalPrice) FROM ITEM i WHERE i.ProductID = p.ProductID) AS MinOriginalPrice,\r\n"
-				+ "AVG(rating) as Rating\r\n" + "FROM CATEGORY c\r\n"
-				+ "JOIN PRODUCT p ON c.CategoryID = p.CategoryID\r\n" + "JOIN ITEM i ON p.ProductID = i.ProductID\r\n"
-				+ "JOIN ITEMIMAGE ii ON ii.ItemID = i.ItemID\r\n" + "LEFT JOIN DETAIL d ON d.ItemID=i.ItemID\r\n"
-				+ "WHERE p.SupplierID = ?\r\n" + "GROUP BY p.ProductID LIMIT 5;";
+		String sql = "SELECT p.*, " +
+	               "(SELECT TOP 1 ii.Image FROM ITEMIMAGE ii JOIN ITEM i ON ii.ItemID = i.ItemID WHERE i.ProductID = p.ProductID ORDER BY ii.ItemImageID) AS FirstImage, " +
+	               "(SELECT MIN(i.PromotionPrice) FROM ITEM i WHERE i.ProductID = p.ProductID) AS MinPromotionPrice, " +
+	               "(SELECT MIN(i.OriginalPrice) FROM ITEM i WHERE i.ProductID = p.ProductID) AS MinOriginalPrice, " +
+	               "COALESCE(AVG(d.Rating), 0) AS Rating " +
+	               "FROM CATEGORY c " +
+	               "JOIN PRODUCT p ON c.CategoryID = p.CategoryID " +
+	               "JOIN ITEM i ON p.ProductID = i.ProductID " +
+	               "LEFT JOIN DETAIL d ON d.ItemID = i.ItemID " +
+	               "WHERE p.SupplierID = ? " +
+	               "GROUP BY p.ProductID, p.ProductName, p.CategoryID, p.Description, p.SupplierID, p.Material, p.Origin " +
+	               "ORDER BY p.ProductID " +
+	               "OFFSET 0 ROWS FETCH NEXT 4 ROWS ONLY";
 		List<ProductModel> list = new ArrayList<ProductModel>();
 
 		try {
@@ -515,6 +522,8 @@ public class ProductDAOImpl implements IProductDAO {
 			while (rs.next()) {
 				ProductModel model = new ProductModel();
 				int productID = rs.getInt("ProductID");
+				SupplierModel supplier = supDao.findOne(rs.getInt("SupplierID"));
+				model.setSupplierName(supplier.getSupplierName());
 
 				model.setProductID(productID);
 				model.setProductName(rs.getString("ProductName"));

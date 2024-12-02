@@ -15,12 +15,12 @@ public class DetailDAOImpl implements IDetailDAO {
 
 	@Override
 	public List<DetailModel> findDetailByProductID(int productID) {
-		String sql = "SELECT\r\n" + "    d.ItemID,\r\n" + "    d.Content,\r\n" + "    d.Rating,\r\n"
-				+ "    d.EvaluationDate,\r\n" + "    u.Avatar,\r\n"
-				+ "    CONCAT(u.FirstName, ' ', u.LastName) AS Name\r\n" + "FROM\r\n" + "    DETAIL d\r\n" + "JOIN\r\n"
-				+ "    AZShop.ORDER o ON d.OrderID = o.OrderID\r\n" + "JOIN\r\n"
-				+ "    USER u ON u.UserID = o.CustomerID\r\n" + "JOIN ITEM i ON i.ItemID = d.ItemID\r\n"
-				+ "WHERE i.ProductID=?;";
+		String sql = "SELECT d.ItemID, d.Content, d.Rating, d.EvaluationDate, u.Avatar, CONCAT(u.FirstName, ' ', u.LastName) AS Name " +
+	             "FROM DETAIL d " +
+	             "JOIN [ORDER] o ON d.OrderID = o.OrderID " +
+	             "JOIN [USER] u ON u.UserID = o.CustomerID " +
+	             "JOIN ITEM i ON i.ItemID = d.ItemID " +
+	             "WHERE i.ProductID = ?;";
 		List<DetailModel> listDetail = new ArrayList<>();
 		try {
 			new DBConnection();
