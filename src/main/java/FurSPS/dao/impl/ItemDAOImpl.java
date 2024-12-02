@@ -21,7 +21,7 @@ public class ItemDAOImpl implements IItemDAO {
 			new DBConnection();
 			conn = DBConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery(sql);
+			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				ItemModel model = new ItemModel();
 
@@ -156,17 +156,51 @@ public class ItemDAOImpl implements IItemDAO {
 
 	@Override
 	public void deleteItem(int ItemId) {
-		String sql = "Delete from ITEM where ItemID=?";
-		try {
-			new DBConnection();
-			conn = DBConnection.getConnection();
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, ItemId);
-			ps.executeUpdate();
-			conn.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		String sql = "Delete from ITEM where ItemID=?";
+//		try {
+//			new DBConnection();
+//			conn = DBConnection.getConnection();
+//			PreparedStatement ps = conn.prepareStatement(sql);
+//			ps.setInt(1, ItemId);
+//			ps.executeUpdate();
+//			conn.close();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+		String deleteDetailSQL = "DELETE FROM DETAIL WHERE ItemID = ?";  // Xóa các bản ghi trong bảng DETAIL
+	    String deleteItemSQL = "DELETE FROM ITEM WHERE ItemID = ?";  // Xóa bản ghi trong bảng ITEM
+
+	    try {
+	        new DBConnection();
+	        conn = DBConnection.getConnection();
+	        
+	        // Bắt đầu một transaction
+	        conn.setAutoCommit(false); // Tắt tự động commit để xử lý transaction
+
+	        // Xóa các bản ghi trong bảng DETAIL
+	        PreparedStatement psDetail = conn.prepareStatement(deleteDetailSQL);
+	        psDetail.setInt(1, ItemId);
+	        psDetail.executeUpdate();
+
+	        // Xóa bản ghi trong bảng ITEM
+	        PreparedStatement psItem = conn.prepareStatement(deleteItemSQL);
+	        psItem.setInt(1, ItemId);
+	        psItem.executeUpdate();
+
+	        // Commit transaction sau khi xóa thành công
+	        conn.commit();
+	        conn.close();
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        try {
+	            if (conn != null) {
+	                conn.rollback(); // Nếu có lỗi, rollback transaction
+	            }
+	        } catch (Exception rollbackEx) {
+	            rollbackEx.printStackTrace();
+	        }
+	    }
 	}
 
 	@Override
@@ -280,5 +314,23 @@ public class ItemDAOImpl implements IItemDAO {
 			e.printStackTrace();
 		}
 		return list;
+	}
+
+	@Override
+	public int getMaxItemID() {
+		String sql = "SELECT MAX(ItemID) FROM Item";
+	    int maxItemID = 0; // Giá trị mặc định nếu không có dữ liệu
+	    try {
+	        conn = DBConnection.getConnection();
+	        PreparedStatement ps = conn.prepareStatement(sql);
+	        ResultSet rs = ps.executeQuery();
+	        if (rs.next()) {
+	            maxItemID = rs.getInt(1); // Lấy giá trị MAX của ItemID
+	        }
+	        conn.close();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return maxItemID;
 	}
 }

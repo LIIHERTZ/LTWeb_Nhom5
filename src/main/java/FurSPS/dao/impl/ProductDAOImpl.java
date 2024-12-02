@@ -172,15 +172,28 @@ public class ProductDAOImpl implements IProductDAO {
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
-		String deleteItemSql = "DELETE FROM ITEM WHERE ProductID = ?";
+		// Các câu lệnh xóa cho từng bảng
+	    String deleteDetailSql = "DELETE FROM DETAIL WHERE ItemID IN (SELECT ItemID FROM ITEM WHERE ProductID = ?)";
+	    String deleteItemImageSql = "DELETE FROM ItemImage WHERE ItemID IN (SELECT ItemID FROM ITEM WHERE ProductID = ?)";
+	    String deleteItemSql = "DELETE FROM ITEM WHERE ProductID = ?";
 	    String deleteProductSql = "DELETE FROM PRODUCT WHERE ProductID = ?";
-	    
+
 	    try {
 	        new DBConnection();
 	        conn = DBConnection.getConnection();
 	        conn.setAutoCommit(false); // Bắt đầu giao dịch
 
-	        // Xóa các bản ghi liên quan trong bảng ITEM trước
+	        // Xóa các bản ghi trong bảng DETAIL liên quan đến ProductID
+	        PreparedStatement psDetail = conn.prepareStatement(deleteDetailSql);
+	        psDetail.setInt(1, ProId);
+	        psDetail.executeUpdate();
+	        
+	        // Xóa các bản ghi trong bảng ItemImage liên quan đến ProductID
+	        PreparedStatement psItemImage = conn.prepareStatement(deleteItemImageSql);
+	        psItemImage.setInt(1, ProId);
+	        psItemImage.executeUpdate();
+
+	        // Xóa các bản ghi trong bảng ITEM có ProductID tương ứng
 	        PreparedStatement psItem = conn.prepareStatement(deleteItemSql);
 	        psItem.setInt(1, ProId);
 	        psItem.executeUpdate();

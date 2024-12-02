@@ -25,43 +25,43 @@
 									<div class="col-md-6">
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="productID"
-												readonly="readonly" value="${item.productID}" /> <label>Mã
+												readonly="readonly" value="${item.productID}" required/> <label>Mã
 												sản phẩm</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="color"
-												value="${item.color}" /> <label>Màu sắc</label>
+												value="${item.color}" required/> <label>Màu sắc</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="color" name="colorCode"
-												id="colorCodeInput" value="${ item.colorCode}" /> <label>Mã
+												id="colorCodeInput" value="${ item.colorCode}" required/> <label>Mã
 												màu</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="size"
-												value="${item.size}" /> <label>Kích thước</label>
+												value="${item.size}" required/> <label>Kích thước</label>
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="stock"
-												value="${item.stock}" /> <label>Số lượng tồn</label>
+											<input class="form-control" type="number" name="stock"
+												value="${item.stock}" required min="0" step="1"/> <label>Số lượng tồn</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="originalPrice"
-												id="originalPriceInput" value="${item.originalPrice}" /> <label>
+											<input class="form-control" type="number" name="originalPrice"
+												id="originalPriceInput" value="${item.originalPrice}" required min="0" step="1"/> <label>
 												Giá gốc</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="promotionPrice"
-												value="${item.promotionPrice}" /> <label>Giá khuyến
+											<input class="form-control" type="number" name="promotionPrice"
+												value="${item.promotionPrice}" required min="0" step="1"/> <label>Giá khuyến
 												mãi</label>
 										</div>
 										<div class="form-floating mb-3">
 											<c:if test="${empty images}">
 												<div class="input-group" onclick="selectFile()"
 													style="height: 58px;">
-													<input id="fileInput" name="image" type="file"
+													<input id="fileInput" name="file" type="file" required
 														style="display: none;" multiple> <label
 														class="input-group-btn"
 														style="align-items: center; display: flex;"> <span
@@ -78,8 +78,8 @@
 								</div>
 
 								<div class="text-center mt-4">
-									<c:forEach var="i" items="${ images}">
-										<img src="${i.image}" height="80px">
+									<c:forEach var="i" items="${images}">
+										<img src="${i.image}" height="100px">
 									</c:forEach>
 									<c:if test="${not empty images}">
 									<div class="text-center mt-4">

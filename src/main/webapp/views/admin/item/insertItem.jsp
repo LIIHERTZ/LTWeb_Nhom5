@@ -30,40 +30,40 @@
 									<div class="col-md-6">
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="productID"
-												readonly="readonly" value="${ProID}" /> <label>Mã
+												readonly="readonly" value="${ProID}" required/> <label>Mã
 												sản phẩm</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="color" /> <label>Màu
+											<input class="form-control" type="text" name="color" required/> <label>Màu
 												sắc</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="color" name="colorCode"
-												id="colorCodeInput" /> <label>Mã màu</label>
+												id="colorCodeInput" required/> <label>Mã màu</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="size" /> <label>Kích
+											<input class="form-control" type="text" name="size" required/> <label>Kích
 												thước</label>
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="stock" /> <label>Số
+											<input class="form-control" type="number" name="stock" required min="0" step="1"/> <label>Số
 												lượng tồn</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="originalPrice"
-												id="originalPriceInput" /> <label>Giá gốc</label>
+											<input class="form-control" type="number" name="originalPrice"
+												id="originalPriceInput" required min="0" step="1"/> <label>Giá gốc</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="promotionPrice" />
+											<input class="form-control" type="number" name="promotionPrice" required min="0" step="1"/>
 											<label>Giá khuyến mãi</label>
 										</div>
 										<div class="form-floating mb-3">
 											<div class="input-group" onclick="selectFile()"
 												style="height: 58px;">
-												<input id="fileInput" name="image" type="file"
-													style="display: none;" multiple> <label
+												<input id="fileInput" name="file" type="file"
+													style="display: none;" multiple required> <label
 													class="input-group-btn"
 													style="align-items: center; display: flex;"> <span
 													class="btn btn-primary"

@@ -9,4 +9,5 @@ public interface IItemImageDAO {
     void insertItemImage (ItemImageModel ItemId);
 	void deleteItemImage (int IteamId);
 	void updateItemImage (ItemImageModel ItemId);
+	int CreateItemimageID(int Id);
 }

@@ -55,4 +55,43 @@ public class ImageUploader {
 			return "Error uploading image: " + e.getMessage(); // Trả về thông báo lỗi nếu có lỗi
 		}
 	}
+	
+	public static String uploadImage(String fileName, InputStream fileContent) throws IOException, ServletException {
+	    if (fileContent == null) {
+	        return "No file uploaded."; // Nếu không có file
+	    }
+
+	    // Khởi tạo Cloudinary và cấu hình
+	    Cloudinary cloudinary = CloudinaryConfig.getCloudinary();
+
+	    try {
+	        // Tạo một tên tệp duy nhất để tránh trùng lặp (sử dụng UUID)
+	        String uniqueFileName = UUID.randomUUID().toString() + "_" + fileName;
+
+	        // Tạo File tạm tại thư mục D:/images với tên tệp duy nhất
+	        File tempFile = new File("D:/images/" + uniqueFileName);
+	        try (OutputStream out = new FileOutputStream(tempFile)) {
+	            byte[] buffer = new byte[1024];
+	            int length;
+	            while ((length = fileContent.read(buffer)) != -1) {
+	                out.write(buffer, 0, length);
+	            }
+	        }
+
+	        // Upload ảnh lên Cloudinary từ File tạm
+	        Map uploadResult = cloudinary.uploader().upload(tempFile, ObjectUtils.emptyMap());
+
+	        // Lấy URL của ảnh đã upload
+	        String imageUrl = (String) uploadResult.get("url");
+
+	        // Xóa file tạm sau khi upload
+	        tempFile.delete();
+
+	        // Trả về URL ảnh đã upload
+	        return imageUrl;
+
+	    } catch (Exception e) {
+	        return "Error uploading image: " + e.getMessage(); // Trả về thông báo lỗi nếu có lỗi
+	    }
+	}
 }
