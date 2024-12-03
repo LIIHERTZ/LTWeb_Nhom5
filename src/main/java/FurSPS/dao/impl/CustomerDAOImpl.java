@@ -112,7 +112,7 @@ public class CustomerDAOImpl implements ICustomerDAO {
 	@Override
 	public boolean updateCustomer(UserModel customer) {
 		String sql = "UPDATE [USER] SET FirstName = ?, LastName = ?, Address = ?, Gender = ?, "
-				+ "Phone = ?, DoB = ?, Cid = ?, Avatar = ? , Email = ? WHERE UserID = ?";
+				+ "Phone = ?, DoB = ?, Cid = ?, Email = ? WHERE UserID = ?";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();
@@ -125,9 +125,9 @@ public class CustomerDAOImpl implements ICustomerDAO {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			ps.setString(6, sdf.format(customer.getDob()));
 			ps.setString(7, customer.getCid());
-			ps.setString(8, customer.getAvatar());
-			ps.setString(9, customer.getEmail());
-			ps.setInt(10, customer.getUserID());
+//			ps.setString(8, customer.getAvatar());
+			ps.setString(8, customer.getEmail());
+			ps.setInt(9, customer.getUserID());
 			ps.executeUpdate();
 			conn.close();
 		}catch(Exception e) {
@@ -138,20 +138,41 @@ public class CustomerDAOImpl implements ICustomerDAO {
 	}
 
 	@Override
-	public boolean deleteCustomer(UserModel customerMd) {		
-		String sql = "DELETE FROM [USER] WHERE (`UserID` = ?)";
-		try {
-			new DBConnection();
-			Connection conn = DBConnection.getConnection();
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, customerMd.getUserID());
-			ps.executeUpdate();
-			conn.close();
-		} catch (Exception e) {
-			System.out.println(e);
-			return false;
-		}
-		return true;
+	public boolean deleteCustomer(UserModel customerMd) {
+		// 1. Xóa các bản ghi trong bảng ACCOUNT có liên quan đến UserID của khách hàng
+	    String deleteAccountSQL = "DELETE FROM [Account] WHERE UserID = ?";
+	    try {
+	        new DBConnection();
+	        Connection conn = DBConnection.getConnection();
+	        PreparedStatement psAccount = conn.prepareStatement(deleteAccountSQL);
+	        psAccount.setInt(1, customerMd.getUserID());
+	        psAccount.executeUpdate();  // Xóa tài khoản trong bảng Account
+
+	        // 2. Xóa khách hàng trong bảng USER
+	        String deleteUserSQL = "DELETE FROM [USER] WHERE UserID = ?";
+	        PreparedStatement psUser = conn.prepareStatement(deleteUserSQL);
+	        psUser.setInt(1, customerMd.getUserID());
+	        psUser.executeUpdate();  // Xóa khách hàng trong bảng USER
+
+	        conn.close();
+	    } catch (Exception e) {
+	        System.out.println(e);
+	        return false;
+	    }
+	    return true;
+//		String sql = "DELETE FROM [USER] WHERE (UserID = ?)";
+//		try {
+//			new DBConnection();
+//			Connection conn = DBConnection.getConnection();
+//			PreparedStatement ps = conn.prepareStatement(sql);
+//			ps.setInt(1, customerMd.getUserID());
+//			ps.executeUpdate();
+//			conn.close();
+//		} catch (Exception e) {
+//			System.out.println(e);
+//			return false;
+//		}
+//		return true;
 	}
 
 }

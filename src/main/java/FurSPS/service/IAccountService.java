@@ -16,4 +16,8 @@ public interface IAccountService {
 	UserModel login(String username,String password);
 	AccountModel findByEmail(String email);
 	boolean checkPassword(int userID, String password);
+	
+	
+	boolean isUserExistInAccount(int userID);
+	boolean isUserExist(int userID);
 }

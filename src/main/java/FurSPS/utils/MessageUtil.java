@@ -37,6 +37,24 @@ public class MessageUtil {
 		} else if(typeMessage.equals("searchVoucherNull")) {
 			messageResponse = "Bạn đã dùng voucher này rồi";
 			alert = "danger";
+		} else if(typeMessage.equals("userExistInAccount")) {
+			messageResponse = "Tài khoản cho người dùng này đã tồn tại. Thêm thất bại";
+			alert = "danger";
+		} else if(typeMessage.equals("userExist")) {
+			messageResponse = "Người dùng không tồn tại. Thêm thất bại";
+			alert = "danger";
+		} else if(typeMessage.equals("phoneInvalid")) {
+			messageResponse = "Sai định dạng của số điện thoại";
+			alert = "danger";
+		} else if(typeMessage.equals("cidInvalid")) {
+			messageResponse = "Sai định dạng căn cước công dân";
+			alert = "danger";
+		} else if(typeMessage.equals("emailInvalid")) {
+			messageResponse = "Sai định dạng email";
+			alert = "danger";
+		} else if(typeMessage.equals("kpiInvalid")) {
+			messageResponse = "Sai định dạng KPI";
+			alert = "danger";
 		}
 		request.setAttribute("message", messageResponse);
 		request.setAttribute("alert", alert);

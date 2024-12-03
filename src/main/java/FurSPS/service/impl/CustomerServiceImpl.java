@@ -14,10 +14,12 @@ import FurSPS.dao.impl.CustomerDAOImpl;
 import FurSPS.models.UserModel;
 import FurSPS.service.ICustomerService;
 import FurSPS.other.City;
-
+import FurSPS.dao.IUserDAO;
+import FurSPS.dao.impl.UserDAOImpl;
 public class CustomerServiceImpl implements ICustomerService {
 	ICustomerDAO customerDao = new CustomerDAOImpl();
 	IAccountDAO accDAO = new AccountDAOImpl();
+	IUserDAO userDAO = new UserDAOImpl();
 
 	@Override
 	public List<UserModel> getAllCustomer() {
@@ -47,8 +49,11 @@ public class CustomerServiceImpl implements ICustomerService {
 
 	@Override
 	public int createCustomerID() {
-		List<UserModel> listCustomer = customerDao.getAllCustomer();
-		int id = listCustomer.get(listCustomer.size() - 1).getUserID();
+//		List<UserModel> listCustomer = customerDao.getAllCustomer();
+//		int id = listCustomer.get(listCustomer.size() - 1).getUserID();
+//		return id + 1;
+		List<UserModel> listUser = userDAO.findAllUser();
+		int id = listUser.get(listUser.size() - 1).getUserID();
 		return id + 1;
 	}
 

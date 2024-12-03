@@ -1,6 +1,8 @@
 package FurSPS.service;
 
 
+import java.util.List;
+
 import FurSPS.models.AccountModel;
 import FurSPS.models.UserModel;
 
@@ -11,4 +13,5 @@ public interface IUserService {
 	AccountModel getInfAccount(int userID);
 	void updateAccount(AccountModel accountMd);
 	boolean checkPassword(String oldPassword, String newPassword);
+	List<UserModel> findAllUser();
 }
