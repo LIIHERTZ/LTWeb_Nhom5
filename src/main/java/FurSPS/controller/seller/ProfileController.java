@@ -22,7 +22,7 @@ import FurSPS.service.IAccountService;
 import FurSPS.service.IUserService;
 import FurSPS.service.impl.AccountServiceImpl;
 import FurSPS.service.impl.UserServiceImpl;
-import FurSPS.other.UploadImage;
+import FurSPS.other.ImageUploader;
 
 @WebServlet(urlPatterns = { "/sellerInfor", "/sellerUpdateAvatar", "/sellerUpdateInfor", "/sellerUpdatePass" })
 @MultipartConfig
@@ -40,7 +40,7 @@ public class ProfileController extends HttpServlet {
 				int userID = user.getUserID();
 				String url = req.getRequestURI();
 				if (url.contains("sellerInfor")) {
-					getInforSeller(req, resp, user);
+					getInforSeller(req, resp);
 				} else if (url.contains("sellerUpdateInfor")) {
 					updateInfor(req, resp);
 				} else if (url.contains("sellerUpdatePass")) {
@@ -60,10 +60,9 @@ public class ProfileController extends HttpServlet {
 		resp.setCharacterEncoding("UTF-8");
 		HttpSession session = req.getSession();
 		UserModel user = (UserModel) session.getAttribute("user");
-		int userID = user.getUserID();
 		String url = req.getRequestURI().toString();
 		if (url.contains("sellerUpdateAvatar")) {
-			updateAvatar(req, resp, userID);
+			updateAvatar(req, resp);
 			resp.sendRedirect("sellerInfor");
 		} else if (url.contains("sellerUpdateInfor")) {
 			createUserModel(req, resp);
@@ -74,26 +73,31 @@ public class ProfileController extends HttpServlet {
 
 	}
 
-	private void getInforSeller(HttpServletRequest req, HttpServletResponse resp, UserModel user)
-			throws ServletException, IOException {
-		req.setAttribute("userModel", user);
-		req.getRequestDispatcher("/views/seller/profile/profile.jsp").forward(req, resp);
+	private void getInforSeller(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		HttpSession session = req.getSession(false);
+		UserModel user = (UserModel) session.getAttribute("user");
+		UserModel seller = userService.getInfoUser(user.getUserID());
+		req.setAttribute("user", seller);
+		RequestDispatcher rd = req.getRequestDispatcher("/views/seller/profile/profile.jsp");
+		rd.forward(req, resp);
 	}
 
-	private void updateAvatar(HttpServletRequest req, HttpServletResponse resp, int userID)
-			throws ServletException, IOException {
-		Part filepart = req.getPart("image");
-		Random rnd = new Random();
-		String rdCode = String.valueOf(rnd.nextInt(100, 999));
-		UploadImage.uploadImage("mysql-web", "web-budget", "Image/Avatar/" + userID + rdCode + ".jpg",
-				filepart.getInputStream());
-		String avatar = "https://storage.googleapis.com/web-budget/Image/Avatar/" + userID + rdCode + ".jpg";
-
-		userService.updateAvatar(userID, avatar);
-		UserModel user = userService.getInfoUser(userID);
+	private void updateAvatar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
 		HttpSession session = req.getSession();
-		session.setAttribute("user", user);
-		getInforSeller(req, resp, user);
+		UserModel user = (UserModel) session.getAttribute("user");
+
+		// Gọi hàm uploadImage mới
+		try {
+		    String avatarUrl = ImageUploader.uploadImage(req);  // Gọi hàm uploadImage để lấy URL ảnh đã upload
+
+		    // Cập nhật avatar cho người dùng
+		    userService.updateAvatar(user.getUserID(), avatarUrl);
+		} catch (IOException | ServletException e) {
+		    e.printStackTrace();
+		    // Xử lý lỗi nếu cần
+		}		
 	}
 
 	private void updatePassword(HttpServletRequest req, HttpServletResponse resp, int userID)

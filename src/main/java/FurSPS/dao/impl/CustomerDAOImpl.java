@@ -139,7 +139,7 @@ public class CustomerDAOImpl implements ICustomerDAO {
 
 	@Override
 	public boolean deleteCustomer(UserModel customerMd) {		
-		String sql = "DELETE FROM [USER] WHERE (`UserID` = ?)";
+		String sql = "DELETE FROM [USER] WHERE (UserID = ?)";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();

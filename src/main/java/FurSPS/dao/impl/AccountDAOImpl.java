@@ -99,7 +99,7 @@ public class AccountDAOImpl implements IAccountDAO{
 
 	@Override
 	public boolean deleteAccount(AccountModel account) {
-		String sql = "DELETE FROM ACCOUNT WHERE (`UserID` = ?)";
+		String sql = "DELETE FROM ACCOUNT WHERE (UserID = ?)";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();

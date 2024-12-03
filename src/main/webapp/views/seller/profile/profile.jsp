@@ -112,8 +112,8 @@ a{
 		</a>
 	</div>
 	<div class="seller-avt">
-		<img src="${user.avatar}" id="myImage" alt="User Image">
-		<input class="hind" type="file" id="imageInput" accept="image/*"> 
+		<img src="${user.avatar}" id="myImage"  alt="User Image">
+		<input class="hind" type="file" id="imageInput" name ="file" accept="image/*"> 
 		<label class="seller-btn seller-button-img" for="imageInput">Sửa ảnh</label>
 	</div>
 </div>
@@ -124,7 +124,7 @@ a{
 				// Đối tượng hình ảnh
 
 				var formData = new FormData();
-				formData.append('image', $('#imageInput')[0].files[0]);
+				formData.append('file', $('#imageInput')[0].files[0]);
 
 				$.ajax({
 					type : 'POST',

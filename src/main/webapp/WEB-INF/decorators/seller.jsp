@@ -39,25 +39,17 @@
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
 
 </head>
-<body class="sb-nav-fixed">
-    <!-- header -->
-    <%@ include file="/common/seller/header.jsp"%>
-    <!-- header -->
+<body class="sb-nav-fixed">    
+    <%@ include file="/common/seller/header.jsp"%>   
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
             <%@ include file="/common/seller/menu.jsp"%>
-        </div>
-
-        <!-- Nội dung chính của trang sẽ được chèn vào đây -->
-        <div id="layoutSidenav_content">
-            <!-- Sử dụng sitemesh để viết nội dung động vào đây -->
+        </div>      
+        <div id="layoutSidenav_content">           
             <sitemesh:write property="body" />
-        </div>
-
-        <!-- footer -->
-        <%@ include file="/common/seller/footer.jsp"%>
-        <!-- footer -->
+        </div>   
     </div>
+    <%@ include file="/common/seller/footer.jsp"%>
 </body>
 
 </html>

@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.io.Console;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -192,22 +193,17 @@ public class ReportDAOImpl implements IReportDAO {
 		return list;
 	}
 	@Override
-	public List<List<Object>> reportSellerOrderByYear(int sellerID) {
-//		String sql = "SELECT DATE_FORMAT(OrderDate, '%Y-%m') AS Thang, SUM(TotalMoney) AS Tong, COUNT(OrderID) AS SL\r\n"
-//				+ "FROM FurSPS.`ORDER`\r\n"
-//				+ "WHERE YEAR(OrderDate) = YEAR(CURDATE()) AND SellerID = ?\r\n"
-//				+ "GROUP BY Thang\r\n"
-//				+ "ORDER BY Thang;";
-		
+	public List<List<Object>> reportSellerOrderByYear(int sellerID) {		
 		String sql
-		= "SELECT DATE_FORMAT(OrderDate, '%Y-%m') AS Thang, SUM(TotalMoney) AS Tong, COUNT(OrderID) AS SL"
+		= "SELECT FORMAT(OrderDate, 'yyyy-MM') AS Thang, SUM(TotalMoney) AS Tong, COUNT(OrderID) AS SL"
 		+ "FROM [ORDER]"
-		+ "WHERE YEAR(OrderDate) = YEAR(CURDATE()) AND SellerID = ?"
-		+ "GROUP BY Thang"
-		+ "ORDER BY Thang;";
+		+ "WHERE YEAR(OrderDate) = YEAR(GETDATE()) AND SellerID = ?"
+		+ "GROUP BY FORMAT(OrderDate, 'yyyy-MM')"
+		+ "ORDER BY FORMAT(OrderDate, 'yyyy-MM')";
+		System.out.println(sql);
 
 		List<List<Object>> list = new ArrayList<List<Object>>();
-		try {
+		try {		
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -226,5 +222,4 @@ public class ReportDAOImpl implements IReportDAO {
 		}
 		return list;
 	}
-
 }

@@ -69,13 +69,13 @@ public class OrderDAOImpl implements IOrderDAO {
 				+ "		 sh.Email AS EmailShipper, sh.Avatar AS AvatarShipper " + "    FROM [ORDER] o "
 				+ "    LEFT JOIN ( "
 				+ "        SELECT DISTINCT USER.UserID, USER.FirstName, USER.LastName , USER.Phone, USER.CID, USER.Email, USER.Avatar "
-				+ "        FROM [ORDER] " + "        INNER JOIN USER ON `ORDER`.CustomerID = USER.UserID "
+				+ "        FROM [ORDER] " + "        INNER JOIN USER ON ORDER.CustomerID = USER.UserID "
 				+ "    ) AS c ON o.CustomerID = c.UserID " + "    LEFT JOIN ( "
 				+ "        SELECT DISTINCT USER.UserID, USER.FirstName, USER.LastName, USER.Phone, USER.CID, USER.Email, USER.Avatar "
-				+ "        FROM [ORDER] " + "        INNER JOIN USER ON `ORDER`.SellerID = USER.UserID "
+				+ "        FROM [ORDER] " + "        INNER JOIN USER ON ORDER.SellerID = USER.UserID "
 				+ "    ) AS se ON o.SellerID = se.UserID " + "    LEFT JOIN ( "
 				+ "        SELECT DISTINCT USER.UserID, USER.FirstName, USER.LastName, USER.Phone, USER.CID, USER.Email, USER.Avatar "
-				+ "        FROM [ORDER] " + "        INNER JOIN USER ON `ORDER`.ShipperID = USER.UserID "
+				+ "        FROM [ORDER] " + "        INNER JOIN USER ON ORDER.ShipperID = USER.UserID "
 				+ "    ) AS sh ON o.ShipperID = sh.UserID " + ") AS k ON p.OrderID = k.OrderID;";
 		try {
 			new DBConnection();
@@ -159,7 +159,7 @@ public class OrderDAOImpl implements IOrderDAO {
 
 	@Override
 	public void updateStatusOrder(int orderID, int status) {
-		String sql = "UPDATE `ORDER` SET Status = ? WHERE OrderID = ?";
+		String sql = "UPDATE ORDER SET Status = ? WHERE OrderID = ?";
 		try {
 			new DBConnection();
 			conn = DBConnection.getConnection();
@@ -176,8 +176,8 @@ public class OrderDAOImpl implements IOrderDAO {
 	@Override
 	public List<OrderModel> listOrderByCustomerID(int customerID) {
 		List<OrderModel> listOrder = new ArrayList<OrderModel>();
-		String sql = "SELECT O.OrderID, O.CustomerID, O.OrderDate, O.`Status`, O.Discount, O.TotalMoney, O.SellerID, O.ShipperID, O.CustomerConfirmation "
-				+ "FROM `ORDER` O " + "WHERE O.CustomerID = ?";
+		String sql = "SELECT O.OrderID, O.CustomerID, O.OrderDate, O.Status, O.Discount, O.TotalMoney, O.SellerID, O.ShipperID, O.CustomerConfirmation "
+				+ "FROM ORDER O " + "WHERE O.CustomerID = ?";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();
@@ -207,7 +207,7 @@ public class OrderDAOImpl implements IOrderDAO {
 
 	@Override
 	public void confirmOrder(int orderID, int confirm) {
-		String sql = "UPDATE `ORDER` SET CustomerConfirmation = ? WHERE OrderID = ?";
+		String sql = "UPDATE ORDER SET CustomerConfirmation = ? WHERE OrderID = ?";
 		try {
 			new DBConnection();
 			conn = DBConnection.getConnection();
@@ -406,7 +406,7 @@ public class OrderDAOImpl implements IOrderDAO {
 	@Override
 	public OrderModel getOrderByID(int orderID) {
 		OrderModel order = new OrderModel();
-		String sql = "SELECT O.OrderID, O.CustomerID, O.OrderDate, O.`Status`, O.CustomerConfirmation, O.Discount, O.TotalMoney, O.SellerID, O.ShipperID, O.TransportFee "
+		String sql = "SELECT O.OrderID, O.CustomerID, O.OrderDate, O.Status, O.CustomerConfirmation, O.Discount, O.TotalMoney, O.SellerID, O.ShipperID, O.TransportFee "
 				+ "FROM [ORDER] O " + "WHERE O.OrderID = ?";
 		try {
 			new DBConnection();
@@ -463,7 +463,7 @@ public class OrderDAOImpl implements IOrderDAO {
 
 	private OrderModel getLastOrderOfCustomer(int customerId) {
 		OrderModel order = new OrderModel();
-		String sql = "SELECT O.OrderID, O.CustomerID, O.OrderDate, O.`Status`, O.CustomerConfirmation, O.Discount, O.TotalMoney, O.SellerID, O.ShipperID, O.TransportFee "
+		String sql = "SELECT O.OrderID, O.CustomerID, O.OrderDate, O.Status, O.CustomerConfirmation, O.Discount, O.TotalMoney, O.SellerID, O.ShipperID, O.TransportFee "
 				+ "FROM [ORDER] O " + "WHERE O.CustomerID = ? ORDER BY OrderID DESC LIMIT 1";
 		try {
 			new DBConnection();

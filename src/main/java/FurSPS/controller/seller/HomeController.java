@@ -53,7 +53,7 @@ public class HomeController extends HttpServlet {
 		
 		
 		
-		List<List<Object>> listTotal = reportService.reportSellerOrderByYear(sellerID);
+		List<List<Object>> listOrderByMonth = reportService.reportSellerOrderByYear(sellerID);
 		
 		for (OrderModel orderModel : listOrder1) {
 			if (orderModel.getStatus() == 0) {
@@ -73,7 +73,7 @@ public class HomeController extends HttpServlet {
 				.filter(OrderModel -> OrderModel.getStatus() == 4 && OrderModel.getPayment().getStatus() == 1)
 				.collect(Collectors.toList()).size();
 
-		req.setAttribute("listOrderByMonth", listTotal);
+		req.setAttribute("listOrderByMonth", listOrderByMonth);
 		req.setAttribute("orderCanceled", orderCanceled);
 		req.setAttribute("orderUnconfirm", orderUnconfirm);
 		req.setAttribute("orderUnpre", orderUnpre);
