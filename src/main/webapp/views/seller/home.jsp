@@ -93,17 +93,6 @@
                                     ]
 
                                 };    
-								var barChartData = {
-	                                    labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5'], // Dữ liệu giả cho tháng
-	                                    datasets: [
-	                                        {
-	                                            label: 'Đơn hàng',
-	                                            data: [50, 70, 60, 80, 75], // Số đơn hàng cho mỗi tháng (dữ liệu giả)
-	                                            backgroundColor: 'rgba(27, 245, 71, 1)',
-	                                            lineTension: 0.3
-	                                        }
-	                                    ]
-	                                };
                                 new Chart(document.getElementById("myTotalMoneyChart").getContext("2d"), {
                                     type: 'line',
                                     data: lineChartData
@@ -123,12 +112,12 @@
 							<script>
 								var barChartData = {
                             		
-                                    labels: [<c:forEach var="item" items="${listOrderByMonth[0]}">'${item}',</c:forEach>],
+                                    labels: [<c:forEach var="item" items="${listOrderByMonth}">'${item.get(0)}',</c:forEach>],
                                     datasets: [
                                         {
                                         	fillColor: "#FC8213",
                                         	label:'Đơn hàng',
-                                            data: [<c:forEach var="item" items="${listOrderByMonth[2]}">${item[2]},</c:forEach>],
+                                            data: [<c:forEach var="item" items="${listOrderByMonth}">${item.get(2)},</c:forEach>],
                                             backgroundColor:'rgba(27, 245, 71, 1)',
                                             lineTension: 0.3 
                                         }
