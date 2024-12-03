@@ -2,8 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/common/taglib.jsp"%>
 <!DOCTYPE html>
-
-
 <style>
 .shipper-profile {
 	padding: 20px;

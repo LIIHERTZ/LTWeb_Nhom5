@@ -172,18 +172,7 @@ public class PersonalInfoController extends HttpServlet {
 	}
 
 	private void updateAvatar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-//		HttpSession session = req.getSession();
-//		UserModel user = (UserModel) session.getAttribute("user");
-//		Part filepart = req.getPart("image");
-//		Random rnd = new Random();
-//		String rdCode = String.valueOf(rnd.nextInt(100, 999));
-//		UploadImage.uploadImage("mysql-web", "web-budget", "Image/Avatar/" + user.getUserID() + rdCode + ".jpg",
-//				filepart.getInputStream());
-//		String avatar = "https://storage.googleapis.com/web-budget/Image/Avatar/" + user.getUserID() + rdCode + ".jpg";
-//		userService.updateAvatar(user.getUserID(), avatar);
-		
-		
+			
 		HttpSession session = req.getSession();
 		UserModel user = (UserModel) session.getAttribute("user");
 

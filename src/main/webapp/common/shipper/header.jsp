@@ -1,7 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@include file="/common/taglib.jsp"%>
-<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+
+<style>
+.navbar-dark {
+            background-color: #5C86B8;  /* Màu nền navbar */
+        }
+</style>
+<!-- <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark"> -->
+
+<nav class="sb-topnav navbar navbar-expand navbar-dark">
     <!-- Navbar Brand-->
     <a class="navbar-brand ps-3" href="${pageContext.request.contextPath}/shipper-list-shipping">Trang người giao hàng</a>
 
@@ -20,3 +28,4 @@
         </li>
     </ul>
 </nav>
+
