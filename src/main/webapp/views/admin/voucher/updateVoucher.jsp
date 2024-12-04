@@ -30,29 +30,29 @@
 												value="${voucher.voucherID}" readonly="readonly" /> <label>Mã</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="description"
+											<input class="form-control" type="text" name="description" required
 												value="${voucher.description}" /> <label>Mô tả</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="discount"
+											<input class="form-control" type="number" name="discount" min="0" step="1" required
 												value="${voucher.discount}" /> <label>Giảm giá</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="minimumPrice"
+											<input class="form-control" type="number" name="minimumPrice" min="0" step="1" required
 												value="${voucher.minimumPrice}" /> <label>Giá tiền tối thiểu</label>
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="quantity"
+											<input class="form-control" type="number" name="quantity" min="0" step="1" required
 												value="${voucher.quantity}" /> <label>Số lượng</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="date" name="mfg"
+											<input class="form-control" type="date" name="mfg" required
 												value="${voucher.mfg}" /> <label>Ngày bắt đầu</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="date" name="exp"
+											<input class="form-control" type="date" name="exp" required
 												value="${voucher.exp}" /> <label>Ngày kết thúc</label>
 										</div>
 									</div>

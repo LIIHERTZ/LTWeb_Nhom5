@@ -227,7 +227,7 @@ public class OrderDAOImpl implements IOrderDAO {
 
 	@Override
 	public void updateStatusOrder(int orderID, int status) {
-		String sql = "UPDATE ORDER SET Status = ? WHERE OrderID = ?";
+		String sql = "UPDATE [ORDER] SET Status = ? WHERE OrderID = ?";
 		try {
 			new DBConnection();
 			conn = DBConnection.getConnection();

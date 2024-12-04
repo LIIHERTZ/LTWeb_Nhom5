@@ -25,31 +25,31 @@
 							<form action="adminInsertVoucher" method="post">
 								<div class="row">
 									<div class="col-md-6">
+<!-- 										<div class="form-floating mb-3"> -->
+<!-- 											<input class="form-control" type="text" name="voucherID" -->
+<!-- 												readonly="readonly" /> <label>Mã</label> -->
+<!-- 										</div> -->
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="voucherID"
-												readonly="readonly" /> <label>Mã</label>
-										</div>
-										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="description" />
+											<input class="form-control" type="text" name="description" required/>
 											<label>Mô tả</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="discount" /> <label>Giảm giá</label>
+											<input class="form-control" type="number" name="discount" min="0" step="1" required/> <label>Giảm giá</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="minimumPrice" />
+											<input class="form-control" type="number" name="minimumPrice" min="0" step="1" required/>
 											<label>Giá tiền tối thiểu</label>
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-floating mb-3">
-											<input class="form-control" type="text" name="quantity" /> <label>Sổ lượng</label>
+											<input class="form-control" type="number" name="quantity"  min="0" step="1" required/> <label>Sổ lượng</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="date" name="mfg" /> <label>Ngày bắt đầu</label>
+											<input class="form-control" type="date" name="mfg" required/> <label>Ngày bắt đầu</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="date" name="exp" /> <label>Ngày kết thúc</label>
+											<input class="form-control" type="date" name="exp" required/> <label>Ngày kết thúc</label>
 										</div>
 									</div>
 								</div>
