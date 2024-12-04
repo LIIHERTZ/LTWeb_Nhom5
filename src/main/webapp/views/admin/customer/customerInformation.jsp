@@ -132,7 +132,7 @@ a{
 						$
 								.ajax({
 									type : 'POST',
-									url : 'customer-update-avatar', // Gọi đến URL servlet của bạn
+									url : 'admin-customer-update-avatar', // Gọi đến URL servlet của bạn
 									data : formData,
 									processData : false,
 									contentType : false,

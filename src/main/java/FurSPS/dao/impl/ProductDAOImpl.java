@@ -176,12 +176,18 @@ public class ProductDAOImpl implements IProductDAO {
 	    String deleteDetailSql = "DELETE FROM DETAIL WHERE ItemID IN (SELECT ItemID FROM ITEM WHERE ProductID = ?)";
 	    String deleteItemImageSql = "DELETE FROM ItemImage WHERE ItemID IN (SELECT ItemID FROM ITEM WHERE ProductID = ?)";
 	    String deleteItemSql = "DELETE FROM ITEM WHERE ProductID = ?";
+	    String deleteCartSql = "DELETE FROM Cart WHERE ItemID IN (SELECT ItemID FROM ITEM WHERE ProductID = ?)";
 	    String deleteProductSql = "DELETE FROM PRODUCT WHERE ProductID = ?";
 
 	    try {
 	        new DBConnection();
 	        conn = DBConnection.getConnection();
 	        conn.setAutoCommit(false); // Bắt đầu giao dịch
+	        
+	     // Xóa các bản ghi trong bảng Cart có liên kết với ProductID
+	        PreparedStatement psCart = conn.prepareStatement(deleteCartSql);
+	        psCart.setInt(1, ProId);
+	        psCart.executeUpdate();
 
 	        // Xóa các bản ghi trong bảng DETAIL liên quan đến ProductID
 	        PreparedStatement psDetail = conn.prepareStatement(deleteDetailSql);

@@ -29,7 +29,7 @@
 						<div
 							class="card-footer d-flex align-items-center justify-content-between">
 							<a
-								href="/AZShopFurni/adminInformationCustomer?customerID=${list3[0].id}"
+								href="adminInformationCustomer?customerID=${list3[0].id}"
 								class="small text-white">Xem chi tiết</a>
 							<div class="small text-white">
 								<i class="fas fa-angle-right"> </i>

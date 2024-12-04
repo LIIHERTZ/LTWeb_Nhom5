@@ -27,7 +27,7 @@ import FurSPS.models.AccountModel;
 import FurSPS.service.IAccountService;
 import FurSPS.service.impl.AccountServiceImpl;
 @WebServlet(urlPatterns = { "/adminShipper", "/adminUpdateShipper", "/adminDeleteShipper", "/adminInsertShipper",
-		"/adminInformationShipper", "/shipper-update-avatar" })
+		"/adminInformationShipper", "/admin-shipper-update-avatar" })
 
 @MultipartConfig
 public class ShipperController extends HttpServlet {
@@ -115,7 +115,7 @@ public class ShipperController extends HttpServlet {
 			updateShipper(req, resp);
 		} else if (url.contains("adminInsertShipper")) {
 			insertShipper(req, resp);
-		} else if (url.contains("shipper-update-avatar")) {
+		} else if (url.contains("admin-shipper-update-avatar")) {
 	        updateAvatar(req, resp);  // Gọi phương thức updateAvatar
 	    }else
 			resp.sendRedirect("adminInformationShipper");
@@ -284,7 +284,10 @@ public class ShipperController extends HttpServlet {
 				e.printStackTrace();
 			}
 
-			UserModel newUser = new UserModel();
+//			UserModel newUser = new UserModel();
+			UserModel newUser = userService.getInfoUser(id);
+			
+			
 			newUser.setUserID(id);
 			newUser.setFirstName(firstName);
 			newUser.setLastName(lastName);

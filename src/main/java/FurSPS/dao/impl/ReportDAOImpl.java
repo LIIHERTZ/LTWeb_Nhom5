@@ -31,7 +31,8 @@ public class ReportDAOImpl implements IReportDAO {
 	}
 
 	private int countItemByDate(Date d) {
-		String sql = "SELECT COUNT(*) FROM AZShop.ORDER WHERE DATE_FORMAT(OrderDate, '%Y-%m-%d') = ?";
+//		String sql = "SELECT COUNT(*) FROM ORDER WHERE DATE_FORMAT(OrderDate, '%Y-%m-%d') = ?";
+		String sql = "SELECT COUNT(*) FROM [ORDER] WHERE CONVERT(varchar, OrderDate, 23) = ?";
 		int itemCount = 0;
 		try {
 			new DBConnection();
@@ -66,8 +67,8 @@ public class ReportDAOImpl implements IReportDAO {
 				+ "   OrderDate AS Ngay, " 
 				+ "    SUM(TotalMoney) AS Tong, "
 				+ "    COUNT(OrderID) AS SL " 
-				+ "FROM AZShop.`ORDER` WHERE MONTH(OrderDate) = MONTH(CURDATE()) AND YEAR(OrderDate) = YEAR(CURDATE()) " + "GROUP BY Ngay " 
-				+ "ORDER BY Ngay ";
+				+ "FROM [ORDER] WHERE MONTH(OrderDate) = MONTH(GETDATE()) AND YEAR(OrderDate) = YEAR(GETDATE()) " + "GROUP BY OrderDate " 
+				+ "ORDER BY OrderDate   ";
 
 		List<List<Object>> list = new ArrayList<List<Object>>();
 		try {
@@ -90,8 +91,20 @@ public class ReportDAOImpl implements IReportDAO {
 	}
 	@Override
 	public List<Top3Customer> reportTop3Customer() {
-		String sql = "SELECT U.UserID, U.FirstName, U.LastName, Sum(TotalMoney) AS TotalMoney FROM `ORDER` O, `USER` U \r\n"
-				   + "WHERE U.UserID = O.CustomerID GROUP BY CustomerID ORDER BY TotalMoney DESC LIMIT 3 ";
+//		String sql = "SELECT U.UserID, U.FirstName, U.LastName, Sum(TotalMoney) AS TotalMoney FROM ORDER O, USER U \r\n"
+//				   + "WHERE U.UserID = O.CustomerID GROUP BY CustomerID ORDER BY TotalMoney DESC LIMIT 3 ";
+		
+		// Câu lệnh SQL đã được sửa lại cho SQL Server
+	    String sql = "SELECT TOP 3 "
+	               + "   U.UserID, "
+	               + "   U.FirstName, "
+	               + "   U.LastName, "
+	               + "   SUM(O.TotalMoney) AS TotalMoney "
+	               + "FROM [ORDER] O "
+	               + "JOIN [USER] U ON U.UserID = O.CustomerID "
+	               + "GROUP BY U.UserID, U.FirstName, U.LastName "
+	               + "ORDER BY TotalMoney DESC";
+		
 		List<Top3Customer> list = new ArrayList<Top3Customer>();
 		try {
 			new DBConnection();

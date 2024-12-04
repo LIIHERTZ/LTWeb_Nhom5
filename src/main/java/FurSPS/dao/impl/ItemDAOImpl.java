@@ -167,6 +167,7 @@ public class ItemDAOImpl implements IItemDAO {
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
+		String deleteCartSQL = "DELETE FROM Cart WHERE ItemID = ?";  // Xóa các bản ghi trong bảng Cart
 		String deleteDetailSQL = "DELETE FROM DETAIL WHERE ItemID = ?";  // Xóa các bản ghi trong bảng DETAIL
 	    String deleteItemSQL = "DELETE FROM ITEM WHERE ItemID = ?";  // Xóa bản ghi trong bảng ITEM
 
@@ -176,7 +177,12 @@ public class ItemDAOImpl implements IItemDAO {
 	        
 	        // Bắt đầu một transaction
 	        conn.setAutoCommit(false); // Tắt tự động commit để xử lý transaction
-
+	        
+	        // Xóa các bản ghi trong bảng Cart có ItemID tương ứng
+	        PreparedStatement psCart = conn.prepareStatement(deleteCartSQL);
+	        psCart.setInt(1, ItemId);
+	        psCart.executeUpdate();
+	        
 	        // Xóa các bản ghi trong bảng DETAIL
 	        PreparedStatement psDetail = conn.prepareStatement(deleteDetailSQL);
 	        psDetail.setInt(1, ItemId);

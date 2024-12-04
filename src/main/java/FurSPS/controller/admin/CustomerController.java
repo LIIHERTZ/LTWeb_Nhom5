@@ -31,7 +31,7 @@ import FurSPS.utils.MessageUtil;
 
 
 @WebServlet(urlPatterns = { "/adminCustomer", "/adminInsertCustomer", "/adminUpdateCustomer", "/adminDeleteCustomer",
-		"/adminInformationCustomer", "/customer-update-avatar" })
+		"/adminInformationCustomer", "/admin-customer-update-avatar" })
 @MultipartConfig
 public class CustomerController extends HttpServlet {
 
@@ -86,7 +86,7 @@ public class CustomerController extends HttpServlet {
 			insertCustomer(req, resp);
 		} else if (url.contains("adminUpdateCustomer")) {
 			updateCustomer(req, resp);
-		}else if (url.contains("customer-update-avatar")) {
+		}else if (url.contains("admin-customer-update-avatar")) {
 	        updateAvatar(req, resp);  // Gọi phương thức updateAvatar
 	    }
 	}
@@ -150,7 +150,7 @@ public class CustomerController extends HttpServlet {
 
 	        if (!email.matches(emailPattern)) {
 	            MessageUtil.showMessage(req, "emailInvalid");
-getCustomerUpdate(req, resp);
+	            getCustomerUpdate(req, resp);
 	            return;
 	        }
 					
@@ -223,7 +223,7 @@ getCustomerUpdate(req, resp);
 	            req.setAttribute("phone", phone);
 	            req.setAttribute("avatar", avatar);
 	            req.setAttribute("cid", cid);
-req.setAttribute("email", email);
+	            req.setAttribute("email", email);
 	            req.setAttribute("dob", dobString);
 	            req.getRequestDispatcher("/views/admin/customer/customerInsert.jsp").forward(req, resp);
 	            return;

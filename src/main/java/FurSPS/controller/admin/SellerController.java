@@ -28,7 +28,7 @@ import FurSPS.service.IAccountService;
 import FurSPS.service.impl.AccountServiceImpl;
 
 @WebServlet(urlPatterns = { "/adminSeller", "/adminUpdateSeller", "/adminDeleteSeller", "/adminInsertSeller",
-		"/adminInformationSeller", "/seller-update-avatar" })
+		"/adminInformationSeller", "/admin-seller-update-avatar" })
 @MultipartConfig
 public class SellerController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -71,7 +71,7 @@ public class SellerController extends HttpServlet {
 			resp.sendRedirect(req.getContextPath() + "/login");
 		}
 	}
-private void deleteSeller(HttpServletRequest req, HttpServletResponse resp) {
+	private void deleteSeller(HttpServletRequest req, HttpServletResponse resp) {
 		try {
 			int id = Integer.parseInt(req.getParameter("userID"));
 			sellerService.deleteSeller(id);
@@ -105,7 +105,7 @@ private void deleteSeller(HttpServletRequest req, HttpServletResponse resp) {
 			updateSeller(req, resp);
 		} else if (url.contains("adminInsertSeller")) {
 			insertSeller(req, resp);
-		} else if (url.contains("seller-update-avatar")) {
+		} else if (url.contains("admin-seller-update-avatar")) {
 	        updateAvatar(req, resp);  // Gọi phương thức updateAvatar
 	    }
 	}
