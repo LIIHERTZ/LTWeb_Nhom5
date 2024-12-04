@@ -69,11 +69,11 @@ public class DetailDAOImpl implements IDetailDAO {
 		List<DetailModel> listDetail = new ArrayList<DetailModel>();
 		String sql =  "SELECT  P.ProductID,P.Description, I.ItemID, O.OrderID, P.ProductName, I.Color, I.Size, D.Quantity, I.OriginalPrice, I.PromotionPrice, IM.Image\r\n"
 					+ "FROM PRODUCT AS P \r\n"
-					+ "			INNER JOIN ITEM I ON P.ProductID = I.ProductID \r\n"
-					+ "			INNER JOIN DETAIL D on I.ItemID = D.ItemID\r\n"
-					+ "			INNER JOIN `ORDER` O on O.OrderID = D.OrderID\r\n"
+					+ "			INNER JOIN [ITEM] I ON P.ProductID = I.ProductID \r\n"
+					+ "			INNER JOIN [DETAIL] D on I.ItemID = D.ItemID\r\n"
+					+ "			INNER JOIN [ORDER] O on O.OrderID = D.OrderID\r\n"
 					+ "    		INNER JOIN (SELECT MIN(II.ItemImageID) AS ItemImageID, II.ItemID, MIN(II.Image) AS Image\r\n"
-					+ "						FROM ITEMIMAGE II, ITEM IT\r\n"
+					+ "						FROM [ITEMIMAGE] II, [ITEM] IT\r\n"
 					+ "						WHERE II.ItemID = IT.ItemID\r\n"
 					+ "						GROUP BY II.ItemID) IM ON IM.ItemID = I.ItemID \r\n"
 					+ "WHERE O.OrderID = ?";

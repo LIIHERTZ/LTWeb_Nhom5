@@ -147,10 +147,16 @@ public class OrderController extends HttpServlet {
 		int countNoPay = 0;
 		HttpSession session = req.getSession(true);
 		Date currentDate = new Date();
-		int monthNow = currentDate.getMonth() + 1;
-		int today = currentDate.getDate();
+	
+//		int monthNow = currentDate.getMonth() + 1;
+//		int today = currentDate.getDate();
 		
-
+		 Calendar currentCalendar = Calendar.getInstance();
+		    currentCalendar.setTime(currentDate);
+		    int monthNow = currentCalendar.get(Calendar.MONTH) + 1; // Tháng hiện tại
+		    int yearNow = currentCalendar.get(Calendar.YEAR);
+		
+		
 		for (List<Object> list : listTotal) {
 			sumTotal += (long) list.get(1);
 			sumOrder += (int) list.get(2);
@@ -161,31 +167,64 @@ public class OrderController extends HttpServlet {
 		calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 		calendar.add(Calendar.DATE, -calendar.get(Calendar.DAY_OF_WEEK)); // Lấy ngày đầu tiên của tuần
 		Date firstDayOfWeek = calendar.getTime();
+		
 		for (OrderModel list : listOrder) {
 			if (list.getOrderDate().compareTo(firstDayOfWeek) > 0)
 				listOrder1.add(list);
-			if (list.getOrderDate().getMonth() > currentDate.getMonth() - 6
-					&& list.getOrderDate().getYear() == currentDate.getYear()) {
-				List<Object> row = new ArrayList<>();
-				row.add((list.getOrderDate().getMonth()) + 1);
-				row.add(list.getStatus());
-				listOrder2.add(row);
-			}
-			if (list.getOrderDate().getMonth() == currentDate.getMonth()
-					&& list.getOrderDate().getYear() == currentDate.getYear()) {
-				if (list.getPayment().getStatus() == 1) {
-					if (list.getPayment().getMethod() == 1) {
-						countPaymentCard += 1;
-						totalPaymentCard += list.getTotalMoney();
-					} else {
-						countPaymentNormal += 1;
-						totalPayMentNormal += list.getTotalMoney();
-					}
-				}
-				if (list.getStatus() != 5 && list.getPayment().getStatus() == 0) {
-					countNoPay += 1;
-				}
-			}
+			
+			Calendar orderCalendar = Calendar.getInstance();
+	        orderCalendar.setTime(list.getOrderDate());
+	        int orderMonth = orderCalendar.get(Calendar.MONTH); // Tháng của đơn hàng
+	        int orderYear = orderCalendar.get(Calendar.YEAR); // Năm của đơn hàng
+			
+//			if (list.getOrderDate().getMonth() > currentDate.getMonth() - 6
+//					&& list.getOrderDate().getYear() == currentDate.getYear()) {
+//				List<Object> row = new ArrayList<>();
+//				row.add((list.getOrderDate().getMonth()) + 1);
+//				row.add(list.getStatus());
+//				listOrder2.add(row);
+//			}
+	        
+	        if (orderMonth > (monthNow - 6) && orderYear == yearNow) {
+	            List<Object> row = new ArrayList<>();
+	            row.add(orderMonth + 1); // Tháng (thêm 1 vì Calendar.MONTH bắt đầu từ 0)
+	            row.add(list.getStatus());
+	            listOrder2.add(row);
+	        }
+	        
+//			if (list.getOrderDate().getMonth() == currentDate.getMonth()
+//					&& list.getOrderDate().getYear() == currentDate.getYear()) {
+//				if (list.getPayment().getStatus() == 1) {
+//					if (list.getPayment().getMethod() == 1) {
+//						countPaymentCard += 1;
+//						totalPaymentCard += list.getTotalMoney();
+//					} else {
+//						countPaymentNormal += 1;
+//						totalPayMentNormal += list.getTotalMoney();
+//					}
+//				}
+//				if (list.getStatus() != 5 && list.getPayment().getStatus() == 0) {
+//					countNoPay += 1;
+//				}
+//			}
+	        
+	        
+	     // Xử lý đơn hàng trong tháng hiện tại
+	        if (orderMonth == monthNow - 1 && orderYear == yearNow) {
+	            if (list.getPayment().getStatus() == 1) {
+	                if (list.getPayment().getMethod() == 1) {
+	                    countPaymentCard += 1;
+	                    totalPaymentCard += list.getTotalMoney();
+	                } else {
+	                    countPaymentNormal += 1;
+	                    totalPayMentNormal += list.getTotalMoney();
+	                }
+	            }
+	            if (list.getStatus() != 5 && list.getPayment().getStatus() == 0) {
+	                countNoPay += 1;
+	            }
+	        }
+	        
 		}
 		for (int i = monthNow - 6; i <= monthNow; i++) {
 			List<Object> row = new ArrayList<>();

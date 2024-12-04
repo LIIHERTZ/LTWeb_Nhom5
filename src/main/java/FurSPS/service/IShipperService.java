@@ -13,7 +13,7 @@ public interface IShipperService {
 
 	void deleteShipper(int id);
 
-	void insertShipper(UserModel model);
+	boolean insertShipper(UserModel model);
 
 	int createShipperID();
 }

@@ -170,19 +170,27 @@ public class SellerDAOImpl implements ISellerDAO {
 	@Override
 	public List<UserModel> findBestSeller() {
 		Connection conn = null;
-		String sql = "Select AZShop.USER.*, count(AZShop.DETAIL.ItemID) as SL\r\n"
-				+ "from AZShop.USER \r\n"
-				+ "join AZShop.ORDER on AZShop.USER.UserID = AZShop.ORDER.SellerID\r\n"
-				+ "join AZShop.DETAIL on AZShop.ORDER.OrderID = AZShop.DETAIL.OrderID\r\n"
-				+ "where AZShop.USER.Type=1 AND AZShop.ORDER.Status=4\r\n"
-				+ "GROUP BY AZShop.USER.UserID\r\n"
-				+ "ORDER BY SL DESC LIMIT 10;";
+//		String sql = "Select AZShop.USER.*, count(AZShop.DETAIL.ItemID) as SL\r\n"
+//				+ "from AZShop.USER \r\n"
+//				+ "join AZShop.ORDER on AZShop.USER.UserID = AZShop.ORDER.SellerID\r\n"
+//				+ "join AZShop.DETAIL on AZShop.ORDER.OrderID = AZShop.DETAIL.OrderID\r\n"
+//				+ "where AZShop.USER.Type=1 AND AZShop.ORDER.Status=4\r\n"
+//				+ "GROUP BY AZShop.USER.UserID\r\n"
+//				+ "ORDER BY SL DESC LIMIT 10;";
+		
+		String sql = "SELECT TOP 10 [USER].UserID, [User].FirstName, [user].LastName, [user].Address, [user].Gender, [user].Phone, [user].DoB, [user].cid, [user].Avatar, [user].KPI, [user].Email, COUNT([DETAIL].ItemID) AS SL" +
+				" FROM [USER]" +
+				" JOIN [ORDER] ON [USER].UserID = [ORDER].SellerID"+
+				" JOIN [DETAIL] ON [ORDER].OrderID = [DETAIL].OrderID"+
+				" WHERE [USER].Type = 1 AND [ORDER].Status = 4"+
+				" GROUP BY [USER].UserID, [user].FirstName, [user].LastName, [user].Address, [user].Gender, [user].Phone, [user].DoB, [user].CID, [user].Avatar, [user].KPI, [user].Email "+
+				" ORDER BY SL DESC;";
 		List<UserModel> listSeller = new ArrayList<UserModel>();
 		try {
 			new DBConnection();
 			conn = DBConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery(sql);
+			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				UserModel seller = new UserModel();
 

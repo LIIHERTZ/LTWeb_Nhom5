@@ -31,7 +31,8 @@ public class ReportDAOImpl implements IReportDAO {
 	}
 
 	private int countItemByDate(Date d) {
-		String sql = "SELECT COUNT(*) FROM AZShop.ORDER WHERE DATE_FORMAT(OrderDate, '%Y-%m-%d') = ?";
+//		String sql = "SELECT COUNT(*) FROM ORDER WHERE DATE_FORMAT(OrderDate, '%Y-%m-%d') = ?";
+		String sql = "SELECT COUNT(*) FROM [ORDER] WHERE CONVERT(varchar, OrderDate, 23) = ?";
 		int itemCount = 0;
 		try {
 			new DBConnection();
@@ -66,7 +67,7 @@ public class ReportDAOImpl implements IReportDAO {
 				+ "   OrderDate AS Ngay, " 
 				+ "    SUM(TotalMoney) AS Tong, "
 				+ "    COUNT(OrderID) AS SL " 
-				+ "FROM AZShop.`ORDER` WHERE MONTH(OrderDate) = MONTH(CURDATE()) AND YEAR(OrderDate) = YEAR(CURDATE()) " + "GROUP BY Ngay " 
+				+ "FROM [ORDER] WHERE MONTH(OrderDate) = MONTH(GetDate()) AND YEAR(OrderDate) = YEAR(GetDate()) " + "GROUP BY OrderDate " 
 				+ "ORDER BY Ngay ";
 
 		List<List<Object>> list = new ArrayList<List<Object>>();
@@ -90,8 +91,20 @@ public class ReportDAOImpl implements IReportDAO {
 	}
 	@Override
 	public List<Top3Customer> reportTop3Customer() {
-		String sql = "SELECT U.UserID, U.FirstName, U.LastName, Sum(TotalMoney) AS TotalMoney FROM `ORDER` O, `USER` U \r\n"
-				   + "WHERE U.UserID = O.CustomerID GROUP BY CustomerID ORDER BY TotalMoney DESC LIMIT 3 ";
+//		String sql = "SELECT U.UserID, U.FirstName, U.LastName, Sum(TotalMoney) AS TotalMoney FROM ORDER O, USER U \r\n"
+//				   + "WHERE U.UserID = O.CustomerID GROUP BY CustomerID ORDER BY TotalMoney DESC LIMIT 3 ";
+		
+		// Câu lệnh SQL đã được sửa lại cho SQL Server
+	    String sql = "SELECT TOP 3 "
+	               + "   U.UserID, "
+	               + "   U.FirstName, "
+	               + "   U.LastName, "
+	               + "   SUM(O.TotalMoney) AS TotalMoney "
+	               + "FROM [ORDER] O "
+	               + "JOIN [USER] U ON U.UserID = O.CustomerID "
+	               + "GROUP BY U.UserID, U.FirstName, U.LastName "
+	               + "ORDER BY TotalMoney DESC";
+		
 		List<Top3Customer> list = new ArrayList<Top3Customer>();
 		try {
 			new DBConnection();
@@ -141,10 +154,15 @@ public class ReportDAOImpl implements IReportDAO {
 	    return formattedDate;
 	}
 	private int countItemByMonth(int year, int month, int id) {
+//		String sql = "SELECT COUNT(*)\r\n"
+//				+ "FROM [ORDER]\r\n"
+//				+ "JOIN [DETAIL] ON [ORDER].OrderID = [DETAIL].OrderID\r\n"
+//				+ "WHERE DATE_FORMAT(OrderDate, '%Y-%m') = ? and SellerID=? and Status=4";
 		String sql = "SELECT COUNT(*)\r\n"
-				+ "FROM AZShop.ORDER\r\n"
-				+ "JOIN AZShop.DETAIL ON AZShop.ORDER.OrderID = AZShop.DETAIL.OrderID\r\n"
-				+ "WHERE DATE_FORMAT(OrderDate, '%Y-%m') = ? and SellerID=? and Status=4";
+				+ "FROM [ORDER]\r\n"
+				+ "JOIN [DETAIL] ON [ORDER].OrderID = [DETAIL].OrderID\r\n"
+				+ "WHERE FORMAT([ORDER].OrderDate, 'yyyy-MM') = ? and SellerID = ? and Status = 4";
+
 		int itemCount = 0;
 		try {
 			new DBConnection();
@@ -165,14 +183,14 @@ public class ReportDAOImpl implements IReportDAO {
 	@Override
 	public List<MyItem> reportBestItemSeller(int id) {
 		List<MyItem> list = new ArrayList<>();
-		String sql ="SELECT AZShop.PRODUCT.ProductID,AZShop.PRODUCT.ProductName, COUNT(AZShop.ORDER.OrderID) AS OrderCount "
-				+ "FROM AZShop.ORDER "
-				+ "JOIN AZShop.DETAIL ON AZShop.ORDER.OrderID = AZShop.DETAIL.OrderID "
-				+ "join AZShop.ITEM on AZShop.DETAIL.ItemID = AZShop.ITEM.ItemID "
-				+ "join AZShop.PRODUCT on AZShop.ITEM.ProductID = AZShop.PRODUCT.ProductID "
-				+ "WHERE AZShop.ORDER.SellerID = ? AND AZShop.ORDER.Status=4 "
-				+ "GROUP BY AZShop.PRODUCT.ProductID "
-				+ "ORDER BY OrderCount DESC LIMIT 5";
+		String sql ="SELECT TOP 5 [PRODUCT].ProductID, [PRODUCT].ProductName, COUNT([ORDER].OrderID) AS OrderCount "
+				+ "FROM [ORDER] "
+				+ "JOIN [DETAIL] ON [ORDER].OrderID = [DETAIL].OrderID "
+				+ "join [ITEM] on [DETAIL].ItemID = [ITEM].ItemID "
+				+ "join [PRODUCT] on [ITEM].ProductID = [PRODUCT].ProductID "
+				+ "WHERE [ORDER].SellerID = ? AND [ORDER].Status=4 "
+				+ "GROUP BY [PRODUCT].ProductID, [PRODUCT].ProductName "
+				+ "ORDER BY OrderCount DESC";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();

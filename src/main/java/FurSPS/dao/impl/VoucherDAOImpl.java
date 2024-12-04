@@ -16,13 +16,13 @@ public class VoucherDAOImpl implements IVoucherDAO {
 
 	@Override
 	public List<VoucherModel> findAllVoucher() {
-		String sql = "SELECT * FROM AZShop.VOUCHER";
+		String sql = "SELECT * FROM [VOUCHER]";
 		List<VoucherModel> listVoucher = new ArrayList<VoucherModel>();
 		try {
 			new DBConnection();
 			conn = DBConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery(sql);
+			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				VoucherModel voucher = new VoucherModel();
 
@@ -46,7 +46,7 @@ public class VoucherDAOImpl implements IVoucherDAO {
 
 	@Override
 	public void insertVoucher(VoucherModel model) {
-		String sql = "Insert into AZShop.VOUCHER(Description, Discount, MinimumPrice, Quantity, Mfg, Exp) Values (?,?,?,?,?,?)";
+		String sql = "Insert into [VOUCHER](Description, Discount, MinimumPrice, Quantity, Mfg, Exp) Values (?,?,?,?,?,?)";
 		try {
 			conn = DBConnection.getConnection();// ket noi csdl
 			PreparedStatement ps = conn.prepareStatement(sql);// nem cau lenh sql bang phat bieu prepare
@@ -69,7 +69,7 @@ public class VoucherDAOImpl implements IVoucherDAO {
 
 	@Override
 	public void updateVoucher(VoucherModel model) {
-		String sql = "Update AZShop.VOUCHER set Description=?, Discount=?, MinimumPrice=?, Quantity=?, Mfg=?, Exp=? where VoucherID=?";
+		String sql = "Update [VOUCHER] set Description=?, Discount=?, MinimumPrice=?, Quantity=?, Mfg=?, Exp=? where VoucherID=?";
 		try {
 			conn = DBConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -93,7 +93,7 @@ public class VoucherDAOImpl implements IVoucherDAO {
 
 	@Override
 	public VoucherModel findOne(int id) {
-		String sql = "Select * from AZShop.VOUCHER where VoucherID=?";
+		String sql = "Select * from [VOUCHER] where VoucherID=?";
 		VoucherModel voucher = new VoucherModel();
 
 		try {
