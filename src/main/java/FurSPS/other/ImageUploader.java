@@ -1,16 +1,23 @@
 package FurSPS.other;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Map;
+import java.util.UUID;
+
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+
 import FurSPS.configs.CloudinaryConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
-import java.io.*;
-import java.util.Map;
-import java.util.UUID;
 
 public class ImageUploader {
+
 	public static String uploadImage(HttpServletRequest request) throws IOException, ServletException {
 		// Kiểm tra xem có tệp gửi lên không
 		Part filePart = request.getPart("file"); // Đảm bảo "file" là tên của input trong form HTML

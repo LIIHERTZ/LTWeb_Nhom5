@@ -284,10 +284,7 @@ public class ShipperController extends HttpServlet {
 				e.printStackTrace();
 			}
 
-//			UserModel newUser = new UserModel();
 			UserModel newUser = userService.getInfoUser(id);
-			
-			
 			newUser.setUserID(id);
 			newUser.setFirstName(firstName);
 			newUser.setLastName(lastName);

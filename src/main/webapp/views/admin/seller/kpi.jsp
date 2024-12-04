@@ -93,7 +93,7 @@
 								<th>Số điện thoại</th>
 								<th>Ngày sinh</th>
 								<th>CCCD</th>
-								<th>Ảnh đại diện</th>
+<!-- 								<th>Ảnh đại diện</th> -->
 								<th>KPI</th>
 								<th>Chi tiết</th>
 							</tr>
@@ -113,7 +113,7 @@
 									<td>${i.phone}</td>
 									<td>${i.dob}</td>
 									<td>${i.cid}</td>
-									<td>${i.avatar}</td>
+<%-- 									<td>${i.avatar}</td> --%>
 									<td>${i.kpi}</td>
 									<td>
 										<div class="hidden-sm hidden-xs btn-group">

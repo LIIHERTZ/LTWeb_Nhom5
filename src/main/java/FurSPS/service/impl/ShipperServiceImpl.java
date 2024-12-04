@@ -3,12 +3,11 @@ package FurSPS.service.impl;
 import java.util.List;
 
 import FurSPS.dao.IShipperDAO;
+import FurSPS.dao.IUserDAO;
 import FurSPS.dao.impl.ShipperDAOImpl;
+import FurSPS.dao.impl.UserDAOImpl;
 import FurSPS.models.UserModel;
 import FurSPS.service.IShipperService;
-
-import FurSPS.dao.IUserDAO;
-import FurSPS.dao.impl.UserDAOImpl;
 
 public class ShipperServiceImpl implements IShipperService {
 
@@ -40,7 +39,6 @@ public class ShipperServiceImpl implements IShipperService {
 	@Override
 	public boolean insertShipper(UserModel model) {
 		return shipperDAO.insertShipper(model);
-
 	}
 
 	@Override

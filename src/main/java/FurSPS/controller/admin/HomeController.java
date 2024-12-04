@@ -3,6 +3,8 @@ package FurSPS.controller.admin;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -59,7 +61,10 @@ public class HomeController extends HttpServlet {
 					List<List<Object>> listOrderSta = new ArrayList<>();
 					List<List<Object>> listTotal = reportService.reportTotalMoneyInMonth();
 					
+					
 					req.setAttribute("productrating", prod.ProductRating());
+					
+									
 					
 									
 					int sumTotal = 0;
@@ -70,7 +75,9 @@ public class HomeController extends HttpServlet {
 					int totalPayMentNormal = 0;
 					int countNoPay = 0;
 					
+					
 					session = req.getSession(true);
+					
 					
 					Date currentDate = new Date();
 					int monthNow = currentDate.getMonth() + 1;
@@ -87,9 +94,12 @@ public class HomeController extends HttpServlet {
 					calendar.setTime(currentDate); // Đặt ngày trong tuần về ngày đầu tiên (Chủ Nhật) và trừ đi số ngày
 													// đã qua
 //					calendar.setTime(new Date());	// trong tuần
+//					calendar.setTime(new Date());	// trong tuần
 					calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 					calendar.add(Calendar.DATE, -calendar.get(Calendar.DAY_OF_WEEK)); // Lấy ngày đầu tiên của tuần
 					Date firstDayOfWeek = calendar.getTime();
+					
+					
 					
 					
 					for (OrderModel list : listOrder) {
@@ -114,11 +124,34 @@ public class HomeController extends HttpServlet {
 						///////////////////////////////////////////
 					    
 					    if (list.getOrderDate().compareTo(firstDayOfWeek) > 0)
+						//////////////////////////////////////////
+						// Chuyển java.sql.Date sang LocalDate
+//					    LocalDate orderLocalDate = new java.sql.Date(list.getOrderDate().getTime()).toInstant()
+//					                                      .atZone(ZoneId.systemDefault())
+//					                                      .toLocalDate();
+//						// Chuyển java.sql.Date sang LocalDate
+//					    java.sql.Date sqlDate = list.getOrderDate(); // Giả sử getOrderDate() trả về java.sql.Date
+//					    Calendar calendar = Calendar.getInstance();
+//					    calendar.setTime(sqlDate); // Chuyển sqlDate thành thời gian Calendar
+//
+//					    // Sau đó chuyển Calendar thành LocalDate
+//					    LocalDate orderLocalDate = calendar.toInstant()
+//					                                      .atZone(ZoneId.systemDefault())
+//					                                      .toLocalDate();
+//					    // Lấy tháng và năm từ LocalDate
+//					    int orderMonth = orderLocalDate.getMonthValue();  // Tháng từ 1 đến 12
+//					    int orderYear = orderLocalDate.getYear();         // Năm
+						
+						///////////////////////////////////////////
+					    
+					    if (list.getOrderDate().compareTo(firstDayOfWeek) > 0)
 							listOrder1.add(list);
+						
 						
 						if (list.getOrderDate().getMonth() > currentDate.getMonth() - 6
 								&& list.getOrderDate().getYear() == currentDate.getYear()) {
 							List<Object> row = new ArrayList<>();
+							row.add((list.getOrderDate().getMonth()) + 1); // Ban đầu là (list.getOrderDate().getMonth()) + 1
 							row.add((list.getOrderDate().getMonth()) + 1); // Ban đầu là (list.getOrderDate().getMonth()) + 1
 							row.add(list.getStatus());
 							listOrder2.add(row);
@@ -144,7 +177,7 @@ public class HomeController extends HttpServlet {
 						row.add(i);
 						int countHuy = 0;
 						int countTC = 0;
-						for (List<Object> list : listOrder2) {
+for (List<Object> list : listOrder2) {
 							if ((int) list.get(1) == 5 && (int) list.get(0) == i) {
 								countHuy += 1;
 							}

@@ -15,14 +15,14 @@ public class ShipperDAOImpl implements IShipperDAO {
 
 	@Override
 	public List<UserModel> findAllShipper() {
-//		Connection conn = null;
+		//Connection conn = null;
 //		String sql = "Select UserID, FirstName, LastName, Address, Gender, Phone, DoB, CID, Avatar, Area, Email from FurSPS.USER where Type=2";
 //		List<UserModel> listShipper = new ArrayList<UserModel>();
 //		try {
 //			new DBConnection();
 //			conn = DBConnection.getConnection();
 //			PreparedStatement ps = conn.prepareStatement(sql);
-//			ResultSet rs = ps.executeQuery();
+//			ResultSet rs = ps.executeQuery(sql);
 //			while (rs.next()) {
 //				UserModel shipper = new UserModel();
 //
@@ -44,9 +44,6 @@ public class ShipperDAOImpl implements IShipperDAO {
 //
 //		} catch (Exception e) {
 //			e.printStackTrace();
-//		}
-//		if (listShipper == null || listShipper.isEmpty()) {
-//		    System.out.println("No shippers found.");
 //		}
 //		return listShipper;
 		String sql = "SELECT * FROM [USER] WHERE Type = 2";
@@ -137,7 +134,6 @@ public class ShipperDAOImpl implements IShipperDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override

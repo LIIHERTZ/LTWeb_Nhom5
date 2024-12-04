@@ -173,7 +173,7 @@ public class ProductDAOImpl implements IProductDAO {
 //			e.printStackTrace();
 //		}
 		// Các câu lệnh xóa cho từng bảng
-	    String deleteDetailSql = "DELETE FROM DETAIL WHERE ItemID IN (SELECT ItemID FROM ITEM WHERE ProductID = ?)";
+		String deleteDetailSql = "DELETE FROM DETAIL WHERE ItemID IN (SELECT ItemID FROM ITEM WHERE ProductID = ?)";
 	    String deleteItemImageSql = "DELETE FROM ItemImage WHERE ItemID IN (SELECT ItemID FROM ITEM WHERE ProductID = ?)";
 	    String deleteItemSql = "DELETE FROM ITEM WHERE ProductID = ?";
 	    String deleteCartSql = "DELETE FROM Cart WHERE ItemID IN (SELECT ItemID FROM ITEM WHERE ProductID = ?)";
