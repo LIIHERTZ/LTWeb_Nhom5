@@ -69,12 +69,13 @@ public class ProductController extends HttpServlet {
 			if (session.getAttribute("user") != null) {
 				UserModel user = (UserModel) session.getAttribute("user");
 				List<CartModel> listCart = cartService.findByCustomerId(user.getUserID());
-
+				int quantity =0;
 				int subTotal = 0;
 				for (CartModel cart : listCart) {
 					subTotal += cart.getTotalPrice();
+					quantity += 1;
 				}
-
+				getServletContext().setAttribute("totalQuantity", quantity);
 				getServletContext().setAttribute("carts", listCart);
 				getServletContext().setAttribute("subTotal", subTotal);
 			}

@@ -2,6 +2,7 @@ package FurSPS.controller.user;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -37,18 +38,19 @@ public class HomeController extends HttpServlet {
 		if (session.getAttribute("user") != null) {
 			UserModel user = (UserModel) session.getAttribute("user");
 			List<CartModel> listCart = cartService.findByCustomerId(user.getUserID());
-			
+			int quantity =0;
 			int subTotal = 0;
 			for (CartModel cart : listCart) {
 				subTotal += cart.getTotalPrice();
+				quantity += 1;
 			}
-
+			getServletContext().setAttribute("totalQuantity", quantity);
 			getServletContext().setAttribute("carts", listCart);
 			getServletContext().setAttribute("subTotal", subTotal);
 		}
-		List<List<Object>> listBestSeller = detailService.listBestSeller();
+		List<Map<String, Object>> listBestSeller = detailService.listBestSeller();
 		List<CategoryModel> listRootCategory = categoryService.getRootCategories();
-		req.setAttribute("list", listBestSeller);
+		getServletContext().setAttribute("list", listBestSeller);
 		getServletContext().setAttribute("rootCategories", listRootCategory);
 		RequestDispatcher rd = req.getRequestDispatcher("/views/user/home.jsp");
 		rd.forward(req, resp);

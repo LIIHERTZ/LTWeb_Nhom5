@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import FurSPS.dao.IDetailDAO;
 import FurSPS.models.DetailModel;
@@ -144,31 +146,30 @@ public class DetailDAOImpl implements IDetailDAO {
 		return detail;
 	}
 	@Override
-	public List<List<Object>> listBestSeller() {
-		List<List<Object>> listBestSeller = new ArrayList<List<Object>>();
-		String sql = "SELECT P.ProductID, I.ItemID, P.ProductName, P.Description, I.OriginalPrice, I.PromotionPrice, IM.Image \r\n"
-				   + "FROM PRODUCT AS P \r\n"
-				   + "			INNER JOIN ITEM I ON P.ProductID = I.ProductID \r\n"
-				   + "			INNER JOIN (SELECT itemID AS ItemID, COUNT(ItemID) AS SL\r\n"
-				   + "						FROM DETAIL GROUP BY itemID\r\n"
-				   + "						ORDER BY SL DESC LIMIT 10) AS D on I.ItemID = D.ItemID \r\n"
-				   + "			INNER JOIN (SELECT MIN(II.ItemImageID) AS ItemImageID, II.ItemID, MIN(II.Image) AS Image \r\n"
-				   + "						FROM ITEMIMAGE II, ITEM IT WHERE II.ItemID = IT.ItemID \r\n"
-			       + "						GROUP BY II.ItemID) IM ON IM.ItemID = I.ItemID";
+	public List<Map<String, Object>> listBestSeller() {
+		List<Map<String, Object>> listBestSeller = new ArrayList<>();
+		String sql =  "SELECT P.ProductID, I.ItemID, P.ProductName, P.Description, I.OriginalPrice, I.PromotionPrice, " +
+	             "IM.Image, COALESCE(D.AverageRating, 0) AS Rating " +
+	             "FROM PRODUCT AS P " +
+	             "INNER JOIN ITEM I ON P.ProductID = I.ProductID " +
+	             "INNER JOIN (SELECT itemID AS ItemID, COUNT(ItemID) AS SL, AVG(Rating) AS AverageRating FROM DETAIL GROUP BY itemID) AS D ON I.ItemID = D.ItemID " +
+	             "INNER JOIN (SELECT MIN(II.ItemImageID) AS ItemImageID, II.ItemID, MIN(II.Image) AS Image FROM ITEMIMAGE II INNER JOIN ITEM IT ON II.ItemID = IT.ItemID GROUP BY II.ItemID) AS IM ON IM.ItemID = I.ItemID " +
+	             "ORDER BY D.SL DESC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				List<Object> row = new ArrayList<Object>();
-				row.add(rs.getInt("ProductID"));
-				row.add(rs.getInt("ItemID"));
-				row.add(rs.getString("ProductName"));
-				row.add(rs.getString("Description"));
-				row.add(rs.getInt("OriginalPrice"));
-				row.add(rs.getInt("PromotionPrice"));
-				row.add(rs.getString("Image"));
+				Map<String, Object> row = new HashMap<>();
+			    row.put("ProductID", rs.getInt("ProductID"));
+			    row.put("ItemID", rs.getInt("ItemID"));
+			    row.put("ProductName", rs.getString("ProductName"));
+			    row.put("Description", rs.getString("Description"));
+			    row.put("OriginalPrice", rs.getInt("OriginalPrice"));
+			    row.put("PromotionPrice", rs.getInt("PromotionPrice"));
+			    row.put("Image", rs.getString("Image"));
+			    row.put("Rating", rs.getString("Rating"));
 				
 				listBestSeller.add(row);
 			}

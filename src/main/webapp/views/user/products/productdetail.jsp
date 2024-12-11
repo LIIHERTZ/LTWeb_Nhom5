@@ -223,52 +223,6 @@
 										</c:forEach>
 									</div>
 								</c:if>
-								<div class="blog-comments-form">
-									<h4 class="mb-4">Leave A Review</h4>
-									<form action="#">
-										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group">
-													<input type="text" class="form-control"
-														placeholder="Your Name*">
-												</div>
-											</div>
-											<div class="col-md-6">
-												<div class="form-group">
-													<input type="email" class="form-control"
-														placeholder="Your Email*">
-												</div>
-											</div>
-											<div class="col-md-6">
-												<div class="form-group">
-													<input type="text" class="form-control"
-														placeholder="Your Subject*">
-												</div>
-											</div>
-											<div class="col-md-6">
-												<div class="form-group">
-													<select class="form-control form-select">
-														<option value="">Your Rating</option>
-														<option value="5">5 Stars</option>
-														<option value="4">4 Stars</option>
-														<option value="3">3 Stars</option>
-														<option value="2">2 Stars</option>
-														<option value="1">1 Star</option>
-													</select>
-												</div>
-											</div>
-											<div class="col-md-12">
-												<div class="form-group">
-													<textarea class="form-control" rows="5"
-														placeholder="Your Review*"></textarea>
-												</div>
-												<button type="submit" class="theme-btn">
-													<span class="far fa-paper-plane"></span> Submit Review
-												</button>
-											</div>
-										</div>
-									</form>
-								</div>
 							</div>
 						</div>
 					</div>

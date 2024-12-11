@@ -27,7 +27,8 @@
 						<div class="col-12 col-md-6 col-lg-6 col-xl-7">
 							<div class="header-top-right">
 								<ul class="header-top-list">
-									<li><a ><i></i> Xin chào! ${user.firstName} ${user.lastName}</a></li>
+									<li><a><i></i> Xin chào! ${user.firstName}
+											${user.lastName}</a></li>
 									<li>
 									<li><a href="<c:url value='/logout'/>"><i
 											class="far fa-sign-in"></i> Đăng xuất</a></li>
@@ -69,20 +70,7 @@
 					<a class="navbar-brand" href="/FurSPS_Nhom5/user/home"> <img
 						src="/FurSPS_Nhom5/assets/img/logo/logo.png" alt="logo">
 					</a>
-					<div class="mobile-menu-right">
-						<div class="mobile-menu-btn">
-							<a href="#" class="nav-right-link search-box-outer"><i
-								class="far fa-search"></i></a> <a href="wishlist.html"
-								class="nav-right-link"><i class="far fa-heart"></i><span>0</span></a>
-							<a href="shop-cart.html" class="nav-right-link"><i
-								class="far fa-shopping-bag"></i><span>0</span></a>
-						</div>
-						<button class="navbar-toggler" type="button"
-							data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-							aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-							<span></span> <span></span> <span></span>
-						</button>
-					</div>
+
 					<div class="offcanvas offcanvas-start" tabindex="-1"
 						id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
 						<div class="offcanvas-header">
@@ -126,8 +114,48 @@
 											href="<c:url value='/logout'/>">Đăng xuất</a></li>
 									</ul></li>
 							</ul>
-
 						</div>
+					</div>
+
+					<div class="nav-right">
+						<ul class="nav-right-list">
+							<li class="dropdown-cart"><a href="#"
+								class="list-link shop-cart"> <i class="far fa-shopping-bag"></i><span>${totalQuantity}</span>
+							</a>
+								<div class="dropdown-cart-menu">
+									<div class="dropdown-cart-header">
+										<span>subTotal</span> <a href="shop-cart.html">View Cart</a>
+									</div>
+									<c:forEach items="${carts}" var="item">
+									<ul class="dropdown-cart-list">
+										<li>
+											<div class="dropdown-cart-item">
+												<div class="cart-img">
+													<a href="#"><img
+														src="${item.image}" alt="#"></a>
+												</div>
+												<div class="cart-info">
+													<h4>
+														<a href="#">${item.productName}</a>
+													</h4>
+													<p class="cart-qty">
+														${item.quantity} x - <span class="cart-amount">${item.totalPrice} VNĐ</span>
+													</p>
+												</div>
+												<a href="#" class="cart-remove" title="Remove this item"><i
+													class="far fa-times-circle"></i></a>
+											</div>
+										</li>
+									</ul>
+									</c:forEach>
+									<div class="dropdown-cart-bottom">
+										<div class="dropdown-cart-total">
+											<span>Total</span> <span class="total-amount">${subTotal} VNĐ</span>
+										</div>
+										<a href="shop-checkout.html" class="theme-btn">Checkout</a>
+									</div>
+								</div></li>
+						</ul>
 					</div>
 				</div>
 			</nav>
@@ -136,27 +164,6 @@
 
 	</header>
 	<!-- header area end -->
-
-
-	<!-- popup search -->
-	<div class="search-popup">
-		<button class="close-search">
-			<span class="far fa-times"></span>
-		</button>
-		<form action="#">
-			<div class="form-group">
-				<input type="search" name="search-field" class="form-control"
-					placeholder="Search Here..." required>
-				<button type="submit">
-					<i class="far fa-search"></i>
-				</button>
-			</div>
-		</form>
-	</div>
-	<!-- popup search end -->
-
-
-
 
 	<!-- scroll-top -->
 	<a href="#" id="scroll-top"><i class="far fa-arrow-up-from-arc"></i></a>
