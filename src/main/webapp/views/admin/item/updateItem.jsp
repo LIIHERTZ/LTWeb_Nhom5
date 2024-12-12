@@ -10,6 +10,22 @@
 </head>
 <body>
 	<main>
+
+		<div class="col-4">
+			<div class="col-4">
+				<div class="btn btn-dark"
+					style="text-align: left; display: inline-block; margin: 0;">
+					<a
+						href="${pageContext.request.contextPath}/adminviewItem?ProductID=${item.productID}">
+						<img
+						style="display: inline-block; vertical-align: middle; width: 30px; height: auto; cursor: pointer; transition: all 0.2s ease;"
+						src="https://www.iconeasy.com/icon/png/Business/Pretty%20Office%205/Go%20back.png"
+						alt="">
+					</a>
+				</div>
+			</div>
+		</div>
+
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-lg-8">
@@ -25,37 +41,39 @@
 									<div class="col-md-6">
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="productID"
-												readonly="readonly" value="${item.productID}" required/> <label>Mã
+												readonly="readonly" value="${item.productID}" required /> <label>Mã
 												sản phẩm</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="color"
-												value="${item.color}" required/> <label>Màu sắc</label>
+												value="${item.color}" required /> <label>Màu sắc</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="color" name="colorCode"
-												id="colorCodeInput" value="${ item.colorCode}" required/> <label>Mã
+												id="colorCodeInput" value="${ item.colorCode}" required /> <label>Mã
 												màu</label>
 										</div>
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="size"
-												value="${item.size}" required/> <label>Kích thước</label>
+												value="${item.size}" required /> <label>Kích thước</label>
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-floating mb-3">
 											<input class="form-control" type="number" name="stock"
-												value="${item.stock}" required min="0" step="1"/> <label>Số lượng tồn</label>
+												value="${item.stock}" required min="0" step="1" /> <label>Số
+												lượng tồn</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="number" name="originalPrice"
-												id="originalPriceInput" value="${item.originalPrice}" required min="0" step="1"/> <label>
+											<input class="form-control" type="number"
+												name="originalPrice" id="originalPriceInput"
+												value="${item.originalPrice}" required min="0" step="1" /> <label>
 												Giá gốc</label>
 										</div>
 										<div class="form-floating mb-3">
-											<input class="form-control" type="number" name="promotionPrice"
-												value="${item.promotionPrice}" required min="0" step="1"/> <label>Giá khuyến
-												mãi</label>
+											<input class="form-control" type="number"
+												name="promotionPrice" value="${item.promotionPrice}"
+												required min="0" step="1" /> <label>Giá khuyến mãi</label>
 										</div>
 										<div class="form-floating mb-3">
 											<c:if test="${empty images}">
@@ -70,7 +88,8 @@
 															ảnh</span>
 													</label> <input id="fileCountInput" type="text"
 														class="form-control" readonly
-														placeholder="Chưa có ảnh nào được chọn" style="height: 58px">
+														placeholder="Chưa có ảnh nào được chọn"
+														style="height: 58px">
 												</div>
 											</c:if>
 										</div>
@@ -82,10 +101,11 @@
 										<img src="${i.image}" height="100px">
 									</c:forEach>
 									<c:if test="${not empty images}">
-									<div class="text-center mt-4">
-										<a href="<c:url value="/updateimage?ItemID=${item.itemID}"/>"><button
-												type="button" class="btn btn-primary">Xóa ảnh</button></a>
-									</div></c:if>
+										<div class="text-center mt-4">
+											<a href="<c:url value="/updateimage?ItemID=${item.itemID}"/>"><button
+													type="button" class="btn btn-primary">Xóa ảnh</button></a>
+										</div>
+									</c:if>
 								</div>
 								<div class="text-center mt-4">
 									<input type="hidden" name="itemID" value="${item.itemID}" /> <input

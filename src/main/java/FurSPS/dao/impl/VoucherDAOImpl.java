@@ -167,7 +167,7 @@ public class VoucherDAOImpl implements IVoucherDAO {
 				voucher.setDiscount(rs.getInt("Discount"));
 				voucher.setMinimumPrice(rs.getInt("MinimumPrice"));
 				voucher.setQuantity(rs.getInt("Quantity"));
-				voucher.setMfg(rs.getDate("Mfg"));
+				voucher.setMfg(rs.getDate("Mfg"));	
 				voucher.setExp(rs.getDate("Exp"));
 			}
 			conn.close();

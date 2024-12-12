@@ -302,6 +302,8 @@ public class ItemController extends HttpServlet {
 	}
 
 	private void update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//		req.setAttribute("ProID", req.getParameter("ProID"));
+		
 		int itemID = Integer.parseInt(req.getParameter("ItemID"));
 		ItemModel model = item.findOne(itemID);
 		List<ItemImageModel> images = itemImage.findByProductID(itemID);

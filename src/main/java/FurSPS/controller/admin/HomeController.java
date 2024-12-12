@@ -177,7 +177,7 @@ public class HomeController extends HttpServlet {
 						row.add(i);
 						int countHuy = 0;
 						int countTC = 0;
-for (List<Object> list : listOrder2) {
+						for (List<Object> list : listOrder2) {
 							if ((int) list.get(1) == 5 && (int) list.get(0) == i) {
 								countHuy += 1;
 							}

@@ -16,6 +16,20 @@
 </head>
 <body>
 	<main>
+
+		<div class="col-4">
+			<div class="col-4">
+				<div class="btn btn-dark"
+					style="text-align: left; display: inline-block; margin: 0;">
+					<a href="${pageContext.request.contextPath}/adminviewItem?ProductID=${ProID}"> <img
+						style="display: inline-block; vertical-align: middle; width: 30px; height: auto; cursor: pointer; transition: all 0.2s ease;"
+						src="https://www.iconeasy.com/icon/png/Business/Pretty%20Office%205/Go%20back.png"
+						alt="">
+					</a>
+				</div>
+			</div>
+		</div>
+
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-lg-8">

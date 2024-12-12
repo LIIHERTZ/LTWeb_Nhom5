@@ -41,7 +41,6 @@ button, .seller-btn {
 	border-radius: 10px;
 	cursor: pointer;
 	font-size: 16;
-	
 }
 
 button:hover, .seller-btn:hover {
@@ -49,8 +48,8 @@ button:hover, .seller-btn:hover {
 	border: #d9d9d9 solid 0.5px;
 }
 
-.seller-avt label{
- 	display: flex;
+.seller-avt label {
+	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
@@ -66,7 +65,8 @@ button:hover, .seller-btn:hover {
 	background-size: cover;
 	background-position: center;
 }
-.update-pass{
+
+.update-pass {
 	margin-left: 30px;
 	width: 200px !important;
 }
@@ -75,15 +75,30 @@ button:hover, .seller-btn:hover {
 	visibility: hidden;
 	position: absolute;
 }
-a{
+
+a {
 	text-decoration: none;
 }
 </style>
+
+<div class="col-4">
+	<div class="col-4">
+		<div class="btn btn-dark"
+			style="text-align: left; display: inline-block; margin: 0;">
+			<a href="${pageContext.request.contextPath}/adminShipper"> <img
+				style="display: inline-block; vertical-align: middle; width: 30px; height: auto; cursor: pointer; transition: all 0.2s ease;"
+				src="https://www.iconeasy.com/icon/png/Business/Pretty%20Office%205/Go%20back.png"
+				alt="">
+			</a>
+		</div>
+	</div>
+</div>
+
 <c:if test="${not empty message }">
-				<div class="alert alert-${alert}">
-					<strong>${message}!</strong>
-				</div>
-			</c:if>
+	<div class="alert alert-${alert}">
+		<strong>${message}!</strong>
+	</div>
+</c:if>
 <div class="seller-profile">
 	<div class="seller-info">
 		<p>
@@ -114,53 +129,58 @@ a{
 		<div id="paragraphContainer"></div>
 		<a href="adminUpdateShipper?userID=${user.userID}">
 			<button class="update">Cập nhật</button>
-		</a>
-		<a href="adminUpdateAccount?userID=${user.userID}">
+		</a> <a href="adminUpdateAccount?userID=${user.userID}">
 			<button class="update-pass">Đổi mật khẩu</button>
 		</a>
 	</div>
-<!-- 	<div class="seller-avt"> -->
-<%-- 		<img src="${user.avatar}" id="myImage" alt="User Image"> --%>
-<!-- 		<input class="hind" type="file" id="imageInput" accept="image/*">  -->
-		
-<!-- 	</div> -->
-<!-- </div> -->
-<!-- <script> -->
-	
-<!-- // 	function closePage() { -->
-<!-- // 		// JavaScript để chuyển trang -->
-<!-- // 		window.location.href = 'adminShipper'; // Thay 'url_moi' bằng URL mới bạn muốn chuyển đến -->
-<!-- // 	} -->
-<!-- </script> -->
+	<!-- 	<div class="seller-avt"> -->
+	<%-- 		<img src="${user.avatar}" id="myImage" alt="User Image"> --%>
+	<!-- 		<input class="hind" type="file" id="imageInput" accept="image/*">  -->
+
+	<!-- 	</div> -->
+	<!-- </div> -->
+	<!-- <script> -->
+
+	<!-- // 	function closePage() { -->
+	<!-- // 		// JavaScript để chuyển trang -->
+	<!-- // 		window.location.href = 'adminShipper'; // Thay 'url_moi' bằng URL mới bạn muốn chuyển đến -->
+	<!-- // 	} -->
+	<!-- </script> -->
 	<div class="seller-avt">
-		<img src="${user.avatar}" id="myImage" alt="User Image">
-		<input class="hind" type="file" id="imageInput" name = "file" accept="image/*"> 
-		<label class="seller-btn seller-button-img mt-4" for="imageInput">Sửa ảnh</label>
-	</div> 
+		<img src="${user.avatar}" id="myImage" alt="User Image"> <input
+			class="hind" type="file" id="imageInput" name="file" accept="image/*">
+		<label class="seller-btn seller-button-img mt-4" for="imageInput">Sửa
+			ảnh</label>
+	</div>
 </div>
 <script>
 	//JavaScript để xử lý sự kiện khi giá trị của input file thay đổi
-	document.getElementById('imageInput').addEventListener('change',
-			function(e) {
-				// Đối tượng hình ảnh
-				var formData = new FormData();
-				formData.append('file', $('#imageInput')[0].files[0]);
+	document
+			.getElementById('imageInput')
+			.addEventListener(
+					'change',
+					function(e) {
+						// Đối tượng hình ảnh
+						var formData = new FormData();
+						formData.append('file', $('#imageInput')[0].files[0]);
 
-				$.ajax({
-					type : 'POST',
-					url : 'admin-shipper-update-avatar', // Gọi đến URL servlet của bạn
-					data : formData,
-					processData : false,
-					contentType : false,
-					success : function(response) {
-						console.log('POST thành công!', response);
-						window.location.href = 'adminInformationShipper?userID=${user.userID}'; // Tải lại trang sau khi upload thành công
-					},
-					error : function(error) {
-						console.error('Lỗi POST:', error);
-					}
-				});
-			});
+						$
+								.ajax({
+									type : 'POST',
+									url : 'admin-shipper-update-avatar', // Gọi đến URL servlet của bạn
+									data : formData,
+									processData : false,
+									contentType : false,
+									success : function(response) {
+										console.log('POST thành công!',
+												response);
+										window.location.href = 'adminInformationShipper?userID=${user.userID}'; // Tải lại trang sau khi upload thành công
+									},
+									error : function(error) {
+										console.error('Lỗi POST:', error);
+									}
+								});
+					});
 
 	function closePage() {
 		// JavaScript để chuyển trang

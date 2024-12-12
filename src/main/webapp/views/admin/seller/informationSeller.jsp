@@ -41,7 +41,6 @@ button, .seller-btn {
 	border-radius: 10px;
 	cursor: pointer;
 	font-size: 16;
-	
 }
 
 button:hover, .seller-btn:hover {
@@ -49,8 +48,8 @@ button:hover, .seller-btn:hover {
 	border: #d9d9d9 solid 0.5px;
 }
 
-.seller-avt label{
- 	display: flex;
+.seller-avt label {
+	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
@@ -66,7 +65,8 @@ button:hover, .seller-btn:hover {
 	background-size: cover;
 	background-position: center;
 }
-.update-pass{
+
+.update-pass {
 	margin-left: 30px;
 	width: 200px !important;
 }
@@ -75,10 +75,24 @@ button:hover, .seller-btn:hover {
 	visibility: hidden;
 	position: absolute;
 }
-a{
+
+a {
 	text-decoration: none;
 }
 </style>
+
+<div class="col-4">
+	<div class="col-4">
+		<div class="btn btn-dark"
+			style="text-align: left; display: inline-block; margin: 0;">
+			<a href="${pageContext.request.contextPath}/adminSeller"> <img
+				style="display: inline-block; vertical-align: middle; width: 30px; height: auto; cursor: pointer; transition: all 0.2s ease;"
+				src="https://www.iconeasy.com/icon/png/Business/Pretty%20Office%205/Go%20back.png"
+				alt="">
+			</a>
+		</div>
+	</div>
+</div>
 <div class="seller-profile">
 	<div class="seller-info">
 		<p>
@@ -109,8 +123,7 @@ a{
 		<div id="paragraphContainer"></div>
 		<a href="adminUpdateSeller?userID=${user.userID}">
 			<button class="update">Cập nhật</button>
-		</a>
-		<a href="adminUpdateAccount?userID=${user.userID}">
+		</a> <a href="adminUpdateAccount?userID=${user.userID}">
 			<button class="update-pass">Đổi mật khẩu</button>
 		</a>
 	</div>
@@ -158,11 +171,11 @@ a{
 <!-- 	<div class="seller-avt"> -->
 <%-- 		<img src="${user.avatar}" id="myImage" alt="User Image"> --%>
 <!-- 		<input class="hind" type="file" id="imageInput" accept="image/*">  -->
-		
+
 <!-- 	</div> -->
 <!-- </div> -->
 <!-- <script> -->
-	
+
 <!-- // 	function closePage() { -->
 <!-- // 		// JavaScript để chuyển trang -->
 <!-- // 		window.location.href = 'adminSeller'; // Thay 'url_moi' bằng URL mới bạn muốn chuyển đến -->
