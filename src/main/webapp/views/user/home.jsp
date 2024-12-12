@@ -9,163 +9,63 @@
 	<div class="hero-section hs-1">
 		<div class="container">
 			<div class="hero-slider owl-carousel owl-theme">
-				<div class="hero-single">
-					<div class="container">
-						<div class="row align-items-center">
-							<div class="col-lg-6">
-								<div class="hero-content">
-									<h6 class="hero-sub-title" data-animation="fadeInUp"
-										data-delay=".25s">Welcome to FurSPS!</h6>
-									<h1 class="hero-title" data-animation="fadeInRight"
-										data-delay=".50s">
-										We offers modern <span>furniture</span> for you
-									</h1>
-									<p data-animation="fadeInLeft" data-delay=".75s">There are
-										many variations of passages orem psum available but the
-										majority have suffered alteration in some form by injected
-										humour.</p>
-									<div class="hero-btn" data-animation="fadeInUp" data-delay="1s">
-										<a href="FurSPS_Nhom5/user/products" class="theme-btn">Shop
-											Now<i class="fas fa-arrow-right"></i>
-										</a> <a href="about.html" class="theme-btn theme-btn2">Learn
-											More<i class="fas fa-arrow-right"></i>
-										</a>
+
+				<c:forEach items="${list}" var="item">
+					<div class="hero-single">
+						<div class="container">
+							<div class="row align-items-center">
+								<div class="col-lg-6">
+									<div class="hero-content">
+										<h6 class="hero-sub-title" data-animation="fadeInUp"
+											data-delay=".25s">Welcome to FurSPS!</h6>
+										<h1 class="hero-title" data-animation="fadeInRight"
+											data-delay=".50s">
+											We offers modern <span>furniture</span> for you
+										</h1>
+										<p data-animation="fadeInLeft" data-delay=".75s">${item.Description}</p>
+										<div class="hero-btn" data-animation="fadeInUp"
+											data-delay="1s">
+											<a href='<c:url value="/user/products?id=${item.ProductID}"/>' class="theme-btn">Detail<i class="fas fa-arrow-right"></i>
+											</a> <a href="/FurSPS_Nhom5/user/products" class="theme-btn theme-btn2">Show
+												More<i class="fas fa-arrow-right"></i>
+											</a>
+										</div>
 									</div>
 								</div>
-							</div>
-							<div class="col-lg-6">
-								<div class="hero-right" data-animation="fadeInRight"
-									data-delay=".25s">
-									<div class="hero-img">
-										<div class="hero-img-item">
-											<button type="button">
-												<i class="far fa-plus"></i>
-											</button>
-											<div class="hero-img-content">
-												<img src="/FurSPS_Nhom5/assets/img/hero/01.png" alt="">
-												<div class="hero-img-info">
-													<h6>
-														<a href="#">Modern Chair</a>
-													</h6>
-													<p>
-														Price: <span>$230</span>
-													</p>
-													<a href="#" class="theme-btn">Buy Now<i
-														class="fas fa-arrow-right"></i></a>
+								<div class="col-lg-6">
+									<div class="hero-right" data-animation="fadeInRight"
+										data-delay=".25s">
+										<div class="hero-img">
+											<div class="hero-img-item">
+												<button type="button">
+													<i class="far fa-plus"></i>
+												</button>
+												<div class="hero-img-content">
+													<img src="${item.Image}" alt="">
+													<div class="hero-img-info">
+														<h6>
+															<a
+																href='<c:url value="/user/products?id=${item.ProductID}"/>'>${item.ProductName}</a>
+														</h6>
+														<p>
+															Price: <span><fmt:formatNumber type="currency"
+																	value="${item.PromotionPrice}" currencyCode="VND"
+																	pattern="#,##0 VND" var="formattedPrice" />
+																${formattedPrice}</span>
+														</p>
+														<a href="" class="theme-btn">Add Cart<i
+															class="far fa-shopping-bag"></i></a>
+													</div>
 												</div>
 											</div>
+											<img src="${item.Image}" alt="">
 										</div>
-										<img src="/FurSPS_Nhom5/assets/img/hero/01.png" alt="">
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="hero-single">
-					<div class="container">
-						<div class="row align-items-center">
-							<div class="col-lg-6">
-								<div class="hero-content">
-									<h6 class="hero-sub-title" data-animation="fadeInUp"
-										data-delay=".25s">Welcome to fameo!</h6>
-									<h1 class="hero-title" data-animation="fadeInRight"
-										data-delay=".50s">
-										We offers modern <span>furniture</span> for you
-									</h1>
-									<p data-animation="fadeInLeft" data-delay=".75s">There are
-										many variations of passages orem psum available but the
-										majority have suffered alteration in some form by injected
-										humour.</p>
-									<div class="hero-btn" data-animation="fadeInUp" data-delay="1s">
-										<a href="shop-grid.html" class="theme-btn">Shop Now<i
-											class="fas fa-arrow-right"></i></a> <a href="about.html"
-											class="theme-btn theme-btn2">Learn More<i
-											class="fas fa-arrow-right"></i></a>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-6">
-								<div class="hero-right" data-animation="fadeInRight"
-									data-delay=".25s">
-									<div class="hero-img">
-										<div class="hero-img-item">
-											<button type="button">
-												<i class="far fa-plus"></i>
-											</button>
-											<div class="hero-img-content">
-												<img src="/FurSPS_Nhom5/assets/img/hero/02.png" alt="">
-												<div class="hero-img-info">
-													<h6>
-														<a href="#">Modern Chair</a>
-													</h6>
-													<p>
-														Price: <span>$230</span>
-													</p>
-													<a href="#" class="theme-btn">Buy Now<i
-														class="fas fa-arrow-right"></i></a>
-												</div>
-											</div>
-										</div>
-										<img src="/FurSPS_Nhom5/assets/img/hero/02.png" alt="">
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="hero-single">
-					<div class="container">
-						<div class="row align-items-center">
-							<div class="col-lg-6">
-								<div class="hero-content">
-									<h6 class="hero-sub-title" data-animation="fadeInUp"
-										data-delay=".25s">Welcome to fameo!</h6>
-									<h1 class="hero-title" data-animation="fadeInRight"
-										data-delay=".50s">
-										We offers modern <span>furniture</span> for you
-									</h1>
-									<p data-animation="fadeInLeft" data-delay=".75s">There are
-										many variations of passages orem psum available but the
-										majority have suffered alteration in some form by injected
-										humour.</p>
-									<div class="hero-btn" data-animation="fadeInUp" data-delay="1s">
-										<a href="shop-grid.html" class="theme-btn">Shop Now<i
-											class="fas fa-arrow-right"></i></a> <a href="about.html"
-											class="theme-btn theme-btn2">Learn More<i
-											class="fas fa-arrow-right"></i></a>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-6">
-								<div class="hero-right" data-animation="fadeInRight"
-									data-delay=".25s">
-									<div class="hero-img">
-										<div class="hero-img-item">
-											<button type="button">
-												<i class="far fa-plus"></i>
-											</button>
-											<div class="hero-img-content">
-												<img src="/FurSPS_Nhom5/assets/img/hero/03.png" alt="">
-												<div class="hero-img-info">
-													<h6>
-														<a href="#">Modern Chair</a>
-													</h6>
-													<p>
-														Price: <span>$230</span>
-													</p>
-													<a href="#" class="theme-btn">Buy Now<i
-														class="fas fa-arrow-right"></i></a>
-												</div>
-											</div>
-										</div>
-										<img src="/FurSPS_Nhom5/assets/img/hero/03.png" alt="">
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+				</c:forEach>
 			</div>
 		</div>
 	</div>
@@ -237,9 +137,9 @@
 					<c:forEach items="${list}" var="item">
 						<div class="product-item">
 							<div class="product-img">
-								<a href='<c:url value="/user/products?id=${item.ProductID}"/>' ><img src="${item.Image}" alt=""></a>
-								<div class="product-action-wrap">
-								</div>
+								<a href='<c:url value="/user/products?id=${item.ProductID}"/>'><img
+									src="${item.Image}" alt=""></a>
+								<div class="product-action-wrap"></div>
 							</div>
 							<div class="product-content">
 								<h3 class="product-title">
@@ -295,7 +195,7 @@
 								</h2>
 								<p>at our outlet stores</p>
 							</div>
-							<a href="#" class="theme-btn">Shop Now<i
+							<a href="/FurSPS_Nhom5/user/products" class="theme-btn">Shop Now<i
 								class="fas fa-arrow-right"></i></a>
 						</div>
 					</div>
@@ -376,7 +276,7 @@
 					<p>There are many variations of passages available but the
 						majority have suffered you are going to use a passage you need to
 						be sure alteration in some form by injected humour randomised
-						words even slightly believable.</p>
+						words even slightly believable</p>
 				</div>
 				<div class="col-lg-4">
 					<div class="choose-img">
