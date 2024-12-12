@@ -134,15 +134,16 @@ public class CartController extends HttpServlet {
 
 		UserModel user = (UserModel) session.getAttribute("user");
 		List<CartModel> listCart = cartService.findByCustomerId(user.getUserID());
-
+		int quantity =0;
 		int subTotal = 0;
 		for (CartModel cart : listCart) {
 			subTotal += cart.getTotalPrice();
+			quantity += 1;
 		}
-
+		req.setAttribute("totalQuantity", quantity);
 		req.setAttribute("carts", listCart);
 		req.setAttribute("subTotal", subTotal);
-		rd = req.getRequestDispatcher("/views/web/carts/carts.jsp");
+		rd = req.getRequestDispatcher("/views/user/carts/carts.jsp");
 		rd.forward(req, resp);
 	}
 

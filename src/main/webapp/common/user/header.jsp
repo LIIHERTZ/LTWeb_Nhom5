@@ -68,9 +68,9 @@
 									<li class="social">
 										<div class="header-top-social">
 											<span>Follow Us: </span> <a href="#"><i
-												class="fab fa-facebook"></i></a> <a href="#"><i
-												class="fab fa-x-twitter"></i></a> <a href="#"><i
-												class="fab fa-instagram"></i></a> <a href="#"><i
+												class="fab fa-facebook"></i></a> <a ><i
+												class="fab fa-x-twitter"></i></a> <a ><i
+												class="fab fa-instagram"></i></a> <a ><i
 												class="fab fa-linkedin"></i></a>
 										</div>
 									</li>
@@ -115,7 +115,7 @@
 									href="<c:url value='/user/products'/>">Sản phẩm</a></li>
 								<li class="nav-item dropdown"><a
 									class="nav-link dropdown-toggle" href="#"
-									data-bs-toggle="dropdown">Tài khoản,  ${user.firstName}</a>
+									data-bs-toggle="dropdown">Hồ sơ,${user.lastName} ${user.firstName}</a>
 									<ul class="dropdown-menu fade-down">
 										<li><a class="dropdown-item"
 											href="<c:url value='/user/infoUser'/>">Thông tin cá nhân</a></li>
@@ -127,25 +127,27 @@
 												<li><a class="dropdown-item" href="order-detail.html">Chi
 														tiết đơn</a></li>
 											</ul></li>
-										<li><a class="dropdown-item" href="wishlist.html">Danh
-												sách yêu thích</a></li>
+										<li><a class="dropdown-item"
+											href="<c:url value='/userCarts'/>">Giỏ hàng</a></li>
 										<li><a class="dropdown-item" href="track-order.html">Theo
 												dõi đơn hàng</a></li>
 										<li><a class="dropdown-item"
 											href="<c:url value='/logout'/>">Đăng xuất</a></li>
 									</ul></li>
+								<li class="nav-item"><a
+									class="nav-link"></a></li>
 							</ul>
 						</div>
 					</div>
 
 					<div class="nav-right">
 						<ul class="nav-right-list">
-							<li class="dropdown-cart"><a
-								class="list-link shop-cart"> <i class="far fa-shopping-bag"></i><span>${totalQuantity}</span>
+							<li class="dropdown-cart"><a class="list-link shop-cart">
+									<i class="far fa-shopping-bag"></i><span>${totalQuantity}</span>
 							</a>
 								<div class="dropdown-cart-menu">
 									<div class="dropdown-cart-header">
-										<span>subTotal</span> <a href="shop-cart.html">View Cart</a>
+										<span>subTotal</span> <a href="<c:url value='/userCarts'/>">View Cart</a>
 									</div>
 									<ul class="dropdown-cart-list">
 										<c:forEach items="${carts}" var="item">
@@ -200,32 +202,36 @@
 	<!-- scroll-top end -->
 	<script src="/FurSPS_Nhom5/assets/js/jquery-3.7.1.min.js"></script>
 	<script>
-		$(document).on('click', '.cart-remove', function(e) {
-			e.preventDefault();
+		$(document).on(
+				'click',
+				'.cart-remove',
+				function(e) {
+					e.preventDefault();
 
-			let customerID = $(this).data('customer-id');
-			let itemID = $(this).data('item-id');
+					let customerID = $(this).data('customer-id');
+					let itemID = $(this).data('item-id');
 
-			$.ajax({
-				url : '/FurSPS_Nhom5/userDeleteItem',
-				type : 'POST',
-				data : {
-					customerID : customerID,
-					itemID : itemID
-				},
-				success : function(response) {
-					$('#cart-item-' + itemID).remove();
-					$('.shop-cart span').text(response.totalQuantity);
-					
-			        const formatter = new Intl.NumberFormat('vi-VN', {
-			            style: 'currency',
-			            currency: 'VND'
-			        });
-			        const formattedSubTotal = formatter.format(response.subTotal).replace('₫', 'VNĐ');
-			        $('.total-amount').text(formattedSubTotal);
-				},
-			});
-		});
+					$.ajax({
+						url : '/FurSPS_Nhom5/userDeleteItem',
+						type : 'POST',
+						data : {
+							customerID : customerID,
+							itemID : itemID
+						},
+						success : function(response) {
+							$('#cart-item-' + itemID).remove();
+							$('.shop-cart span').text(response.totalQuantity);
+
+							const formatter = new Intl.NumberFormat('vi-VN', {
+								style : 'currency',
+								currency : 'VND'
+							});
+							const formattedSubTotal = formatter.format(
+									response.subTotal).replace('₫', 'VNĐ');
+							$('.total-amount').text(formattedSubTotal);
+						},
+					});
+				});
 	</script>
 
 </body>

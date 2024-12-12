@@ -2,88 +2,152 @@
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt"%>
-<div class="container padding-bottom-3x mt-5 mb-1">
-	<div class="table-responsive shopping-cart">
-		<table class="table">
-			<thead>
-				<tr class="table_head">
-					<th>Tên sản phẩm</th>
-					<th class="text-center">Giá một sản phẩm</th>
-					<th class="text-center">Số lượng</th>
-					<th class="text-center">Tổng tiền</th>
-					<th class="text-center"><a
-						class="btn btn-sm btn-outline-danger"
-						href="<c:url value='/deleteCarts' />">Xóa tất cả</a></th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach var="i" items="${carts}">
-					<tr>
-						<td>
-							<div class="product-item">
-								<a class="product-thumb"
-									href="<c:url value='/products?id=${i.productID}' />"><img
-									style="width: 150px; height: 130px;" src="${i.image}"
-									alt="Product"></a>
-								<div class="product-info">
-									<h4 class="product-title">
-										<a href="#">${i.productName}</a>
-									</h4>
-									<span><em>Cỡ:</em>${i.size}</span><span><em>Màu:</em>${i.color}</span>
-								</div>
-							</div>
-						</td>
 
-						<td class="text-center text-lg text-medium"><fmt:formatNumber
-								type="currency" value="${i.promotionPrice}" currencyCode="VND"
-								pattern="#,##0 VND" var="formattedPrice" /> ${formattedPrice}</td>
-						<td class="text-center">
-							<div class="input-group" style="justify-content: center;">
 
-								<a class="remove-from-cart" style="display: flex;"
-									href="<c:url value='/updateCart?customerID=${i.customerID}&itemID=${i.itemID}&quantity=${i.quantity - 1} '/>"
-									data-toggle="tooltip" title=""
-									data-original-title="Remove item"><button class="px-3"
-										type="button" id="button-addon1" data-mdb-ripple-color="dark">
-										<i class="fas fa-minus"></i>
-									</button></a> <input type="text" style="flex: 0.2 1 auto;"
-									class="form-control text-center border border-secondary"
-									id="quantityInput" placeholder="${i.quantity}"
-									aria-label="example" aria-describedby="button-addon1" /> <a
-									class="remove-from-cart" style="display: flex;"
-									href="<c:url value='/updateCart?customerID=${i.customerID}&itemID=${i.itemID}&quantity=${i.quantity + 1} '/>"
-									data-toggle="tooltip" title=""
-									data-original-title="Remove item"><button class="px-3"
-										type="button" id="button-addon1" data-mdb-ripple-color="dark">
-										<i class="fas fa-plus"></i>
-									</button></a>
-							</div>
-						</td>
-						<td class="text-center text-lg text-medium"><fmt:formatNumber
-								type="currency" value="${i.totalPrice}" currencyCode="VND"
-								pattern="#,##0 VND" var="formattedPrice" /> ${formattedPrice}</td>
-						<td class="text-center"><a class="remove-from-cart"
-							href="<c:url value='/deleteCart?customerID=${i.customerID}&itemID=${i.itemID}' />"
-							data-toggle="tooltip" title="" data-original-title="Remove item"><i
-								class="fa fa-trash"></i></a></td>
-					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
-	</div>
-	<div class="shopping-cart-footer">
-		<div class="column">
-			<div style="padding: 1.3rem; font-size: 1.2rem;"
-				class="column text-lg">
-				Tổng (chưa tính phí vận chuyển): <span style="font-weight: 500; font-size: 1.5rem;"
-					class="text-lg"><fmt:formatNumber type="currency"
-						value="${subTotal}" currencyCode="VND" pattern="#,##0 VND"
-						var="formattedPrice" /> ${formattedPrice}</span>
+<main class="main">
+
+	<!-- breadcrumb -->
+	<div class="site-breadcrumb">
+		<div class="site-breadcrumb-bg"
+			style="background: url(/FurSPS_Nhom5/assets/img/breadcrumb/01.jpg)"></div>
+		<div class="container">
+			<div class="site-breadcrumb-wrap">
+				<h4 class="breadcrumb-title">Shop Cart</h4>
+				<ul class="breadcrumb-menu">
+					<li><a href="index.html"><i class="far fa-home"></i> Home</a></li>
+					<li class="active">Shop Cart</li>
+				</ul>
 			</div>
-			<a style="float: right;" href="<c:url value='/checkout' />"><button
-					style="width: 260px; float: right; padding: 1.2rem;"
-					class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-					Tiến hành thanh toán</button></a>
 		</div>
 	</div>
-</div>
+	<!-- breadcrumb end -->
+
+
+	<!-- shop cart -->
+	<div class="shop-cart py-90">
+		<div class="container">
+			<div class="shop-cart-wrap">
+				<div class="row">
+					<div class="col-lg-8">
+						<div class="cart-table">
+							<div class="table-responsive">
+								<table class="table">
+									<thead>
+										<tr>
+											<th>Ảnh</th>
+											<th>Tên hàng</th>
+											<th>Giá bán</th>
+											<th>Số lượng</th>
+											<th>Thành tiền</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach var="item" items="${carts}">
+											<tr>
+												<td>
+													<div class="shop-cart-img">
+														<a href="<c:url value='/user/products?id=${item.productID}' />"><img src="${item.image}" alt=""></a>
+													</div>
+												</td>
+												<td>
+													<div class="shop-cart-content">
+														<h5 class="shop-cart-name">
+															<a href="<c:url value='/user/products?id=${item.productID}' />">${item.productName}</a>
+														</h5>
+														<div class="shop-cart-info">
+															<p>
+																<span>Size:</span>${item.size}
+															</p>
+															<p>
+																<span>Color:</span>${item.color}
+															</p>
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="shop-cart-price">
+														<span> <fmt:formatNumber
+																value="${item.promotionPrice}" currencyCode="VND"
+																pattern="#,##0 VND" var="formattedPrice" />
+															${formattedPrice}
+														</span>
+													</div>
+												</td>
+												<td>
+													<div class="shop-cart-qty">
+														<a
+															href="<c:url value='/userUpdateCart?customerID=${item.customerID}&itemID=${item.itemID}&quantity=${item.quantity - 1} '/>"
+															class="minus-btn"> <i class="fal fa-minus"></i>
+														</a> <input class="quantity" type="text"
+															value="${item.quantity}"> <a
+															href="<c:url value='/userUpdateCart?customerID=${item.customerID}&itemID=${item.itemID}&quantity=${item.quantity + 1} '/>"
+															class="plus-btn"> <i class="fal fa-plus"></i>
+														</a>
+													</div>
+												</td>
+												<td>
+													<div class="shop-cart-subtotal">
+														<span> <fmt:formatNumber value="${item.totalPrice}"
+																currencyCode="VND" pattern="#,##0 VND"
+																var="formattedPrice" /> ${formattedPrice}
+														</span>
+													</div>
+												</td>
+												<td><a
+													href="<c:url value='/userDeleteCart?customerID=${item.customerID}&itemID=${item.itemID}' />"
+													class="shop-cart-remove"><i class="far fa-times"></i></a></td>
+											</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="shop-cart-footer">
+							<div class="row">
+								<div class="col-md-6 col-lg-3">
+									<div class="shop-cart-btn text-md-end">
+										<a href="<c:url value='/userDeleteCarts' />" class="theme-btn"> <span></span> Xóa tất cả hàng
+										</a>
+									</div>
+								</div>
+
+								<div class="col-md-6 col-lg-4">
+									<div class="shop-cart-btn text-md-end">
+										<a href="<c:url value='/user/products' />" class="theme-btn"> <span
+											class="fas fa-arrow-left"></span> Mua hàng khác
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<div class="shop-cart-summary">
+							<h5>Hóa đơn tổng</h5>
+							<ul>
+								<li><strong>Tổng tiền:</strong><span
+									class="total-amount"> <fmt:formatNumber type="currency"
+											value="${subTotal}" currencyCode="VND" pattern="#,##0 VND"
+											var="formattedPrice" /> ${formattedPrice}
+								</span></li>
+								<li><strong>Giảm giá:</strong> <span>Chưa có</span></li>
+								<li><strong>Phí vận chuyển:</strong> <span>Chưa có</span></li>
+								<li class="shop-cart-total"><strong>Tổng tiền:</strong> <span
+									class="total-amount"> <fmt:formatNumber type="currency"
+											value="${subTotal}" currencyCode="VND" pattern="#,##0 VND"
+											var="formattedPrice" /> ${formattedPrice}
+								</span></li>
+							</ul>
+							<div class="text-end mt-40">
+								<a href="<c:url value='/userCheckout' />" class="theme-btn">Thanh toán<i
+									class="fas fa-arrow-right"></i></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- shop cart end -->
+</main>
