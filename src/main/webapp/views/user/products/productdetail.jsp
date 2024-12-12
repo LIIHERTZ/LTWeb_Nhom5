@@ -102,33 +102,22 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-md-3 col-lg-4 col-xl-3"
-									style="margin-right: 20px;">
-									<div class="shop-single-size">
-										<h6>Size</h6>
-										<select class="select">
-											<c:forEach items="${product.listItem}" var="item">
-												<option value="${item.size}">${item.size}</option>
-											</c:forEach>
-										</select>
-									</div>
-								</div>
 								<div class="col-md-6 col-lg-12 col-xl-7">
 									<div class="shop-single-color">
 										<h6>Color</h6>
-										<ul class="shop-checkbox-list color">
-											<c:forEach items="${product.listItem}" var="item">
-												<li>
-													<div class="form-check">
-														<input class="form-check-input" type="radio"
-															id="color${item.itemID}" name="color"
-															data-stock="${item.stock}"> <label
-															class="form-check-label" for="color${item.itemID}">
-															<span style="background-color: ${item.colorCode}"></span>
-														</label>
-													</div>
-												</li>
-											</c:forEach>
+										<ul class="shop-checkbox-list color" id="color-list">
+										    <c:forEach items="${product.listItem}" var="item">
+										        <li data-size="${item.size}">
+										            <div class="form-check">
+										                <input class="form-check-input" type="radio"
+										                    id="color${item.itemID}" name="color"
+										                    data-stock="${item.stock}" data-size="${item.size}" value="${item.itemID}">
+										                <label class="form-check-label" for="color${item.itemID}">
+										                    <span style="background-color: ${item.colorCode}"></span>
+										                </label>
+										            </div>
+										        </li>
+										    </c:forEach>
 										</ul>
 									</div>
 								</div>
@@ -139,20 +128,27 @@
 								<li>Stock: <span id="stock-info">???</span></li>
 							</ul>
 						</div>
+						<div class="shop-single-sortinfo">
+							<ul>
+								<li>Size: <span id="size-info">???</span></li>
+							</ul>
+						</div>
 						<div class="shop-single-action">
 							<div class="row align-items-center">
 								<div class="col-md-6 col-lg-12 col-xl-6">
-									<div class="shop-single-btn">
-										<a href="#" class="theme-btn"><span
-											class="far fa-shopping-bag"></span>Add To Cart</a>
-									</div>
+								    <div class="shop-single-btn">
+								        <a href="javascript:void(0);" 
+								           class="theme-btn add-to-cart-btn">
+								            <span class="far fa-shopping-bag"></span>Add To Cart
+								        </a>
+								    </div>
 								</div>
 								<div class="col-md-6 col-lg-12 col-xl-6">
 									<div class="shop-single-share">
-										<span>Share:</span> <a href="#"><i
-											class="fab fa-facebook-f"></i></a> <a href="#"><i
-											class="fab fa-x-twitter"></i></a> <a href="#"><i
-											class="fab fa-linkedin-in"></i></a> <a href="#"><i
+										<span>Share:</span> <a><i
+											class="fab fa-facebook-f"></i></a> <a><i
+											class="fab fa-x-twitter"></i></a> <a><i
+											class="fab fa-linkedin-in"></i></a> <a><i
 											class="fab fa-pinterest-p"></i></a>
 									</div>
 								</div>
@@ -538,15 +534,72 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Lắng nghe sự kiện khi người dùng chọn màu
+    // Hàm xử lý khi chọn màu
     document.querySelectorAll('input[name="color"]').forEach(function(radio) {
         radio.addEventListener('change', function() {
-            // Lấy giá trị của stock từ data-stock của radio button được chọn
             var stock = this.getAttribute('data-stock');
-            // Cập nhật giá trị stock vào phần tử span có id="stock-info"
-            document.getElementById('stock-info').textContent = stock;
+            var size = this.getAttribute('data-size');
+            document.getElementById('stock-info').textContent = stock; // Cập nhật thông tin stock
+            document.getElementById('size-info').textContent = size; // Cập nhật thông tin size
         });
     });
+
+    // Hàm xử lý khi nhấn "Add To Cart"
+    document.querySelectorAll('.add-to-cart-btn').forEach(function(button) {
+        button.addEventListener('click', function(e) {
+            e.preventDefault(); // Ngăn hành vi mặc định của nút
+
+            // Lấy giá trị Quantity
+            const quantityInput = document.querySelector('.quantity');
+            const selectedQuantity = quantityInput ? quantityInput.value : 1;
+
+            // Lấy giá trị Item ID từ radio button được chọn
+            const selectedColorRadio = document.querySelector('input[name="color"]:checked');
+            const selectedItemID = selectedColorRadio ? selectedColorRadio.value : null;
+            const urlParams = new URLSearchParams(window.location.search);
+            const productID = urlParams.get('id');
+		
+            if (!selectedItemID) {
+                alert('Vui lòng chọn màu!');
+                return;
+            }
+            $.ajax({
+				url : '/FurSPS_Nhom5/userAddToCart',
+				type : 'POST',
+				data : {
+					selectedItemID: selectedItemID,
+					selectedQuantity: selectedQuantity,
+					productID: productID
+				},
+				success: function (response) {
+	                if (response.success) {
+	                	alert('Thêm vào giỏ hàng thành công!!!');
+	                    window.location.href = response.redirect; // Chuyển hướng
+	                } else {
+	                    alert(response.message); // Hiển thị thông báo lỗi
+	                }
+	            },
+			    error: function (xhr, status, error) {
+			        console.error('Error:', error);
+			        console.log('Response:', xhr.responseText);
+			    },
+			});
+        });
+    });
+    const minusBtn = document.querySelector('.minus-btn');
+    const plusBtn = document.querySelector('.plus-btn');
+    const quantityInput = document.querySelector('.quantity');
+
+    if (minusBtn && plusBtn && quantityInput) {
+        // Xử lý sự kiện nút trừ
+        minusBtn.addEventListener('click', function () {
+            let currentQuantity = parseInt(quantityInput.value);
+            if (currentQuantity < 1) {
+            	alert('Số lượng không thể nhỏ hơn 1!');
+            	quantityInput.value = 1;
+            }
+        });
+    }
 });
 </script>
 <!-- modal quick shop end -->

@@ -234,15 +234,15 @@
 											<div class="product-bottom">
 												<div class="product-price">
 													<span><fmt:formatNumber type="currency"
-															value="${item.displayedPromotionPrice}" currencyCode="VND"
-															pattern="#,##0 VND" var="formattedPrice" />
-														${formattedPrice}</span>
+															value="${item.displayedPromotionPrice}"
+															currencyCode="VND" pattern="#,##0 VND"
+															var="formattedPrice" /> ${formattedPrice}</span>
 												</div>
-												<button type="button" class="product-cart-btn"
+												<a class="product-cart"
+													href="<c:url value='/user/products?id=${item.productID}' />"
 													data-bs-placement="left" data-tooltip="tooltip"
-													title="Add To Cart">
-													<i class="far fa-shopping-bag"></i>
-												</button>
+													title="Add To Cart"> <i class="far fa-shopping-bag"></i>
+												</a>
 											</div>
 										</div>
 									</div>
@@ -311,7 +311,7 @@
 																<li><strong>Xuất xứ:</strong> ${item.origin}</li>
 															</ul>
 															<div class="quickview-cart">
-																<a href="#" class="theme-btn">Add to cart</a>
+																<a href="<c:url value='/user/products?id=${item.productID}' />" class="theme-btn">Buy This Product</a>
 															</div>
 															<div class="quickview-social">
 																<span>Share:</span> <a href="#"><i

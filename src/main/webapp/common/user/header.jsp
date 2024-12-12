@@ -3,6 +3,27 @@
 <%@include file="/common/taglib.jsp"%>
 <!DOCTYPE html>
 <html lang="en">
+<style>
+.dropdown-cart-list {
+	max-height: 300px; /* Chiều cao tối đa của danh sách */
+	overflow-y: auto; /* Thêm thanh cuộn dọc */
+	overflow-x: hidden; /* Ẩn thanh cuộn ngang nếu có */
+}
+
+/* Tùy chỉnh giao diện thanh cuộn (tùy chọn) */
+.dropdown-cart-list::-webkit-scrollbar {
+	width: 6px; /* Độ rộng thanh cuộn */
+}
+
+.dropdown-cart-list::-webkit-scrollbar-thumb {
+	background-color: #ccc; /* Màu của thanh cuộn */
+	border-radius: 3px; /* Góc bo tròn */
+}
+
+.dropdown-cart-list::-webkit-scrollbar-thumb:hover {
+	background-color: #999; /* Màu khi hover thanh cuộn */
+}
+</style>
 
 <body>
 
@@ -88,13 +109,13 @@
 									href="<c:url value='/user/home'/>">Trang chủ</a></li>
 								<li class="nav-item"><a
 									class="nav-link <c:if test='${fn:contains(pageContext.request.requestURI, "home")}'>active</c:if>"
-									href="about.html">Giới thiệu</a></li>
+									href="<c:url value='/user/about'/>">Giới thiệu</a></li>
 								<li class="nav-item"><a
 									class="nav-link<c:if test='${fn:contains(pageContext.request.requestURI, "products")}'>active</c:if>"
 									href="<c:url value='/user/products'/>">Sản phẩm</a></li>
 								<li class="nav-item dropdown"><a
 									class="nav-link dropdown-toggle" href="#"
-									data-bs-toggle="dropdown">Tài khoản</a>
+									data-bs-toggle="dropdown">Tài khoản,  ${user.firstName}</a>
 									<ul class="dropdown-menu fade-down">
 										<li><a class="dropdown-item"
 											href="<c:url value='/user/infoUser'/>">Thông tin cá nhân</a></li>
@@ -119,40 +140,49 @@
 
 					<div class="nav-right">
 						<ul class="nav-right-list">
-							<li class="dropdown-cart"><a href="#"
+							<li class="dropdown-cart"><a
 								class="list-link shop-cart"> <i class="far fa-shopping-bag"></i><span>${totalQuantity}</span>
 							</a>
 								<div class="dropdown-cart-menu">
 									<div class="dropdown-cart-header">
 										<span>subTotal</span> <a href="shop-cart.html">View Cart</a>
 									</div>
-									<c:forEach items="${carts}" var="item">
 									<ul class="dropdown-cart-list">
-										<li>
-											<div class="dropdown-cart-item">
-												<div class="cart-img">
-													<a href="#"><img
-														src="${item.image}" alt="#"></a>
+										<c:forEach items="${carts}" var="item">
+											<li class="cart-item-row" id="cart-item-${item.itemID}">
+												<div class="dropdown-cart-item">
+													<div class="cart-img">
+														<a href="#"><img src="${item.image}" alt="#"></a>
+													</div>
+													<div class="cart-info">
+														<h4>
+															<a href="#">${item.productName}</a>
+														</h4>
+														<p class="cart-qty">
+															${item.quantity} x - <span><fmt:formatNumber
+																	type="currency" value="${item.totalPrice}"
+																	currencyCode="VND" pattern="#,##0 VND"
+																	var="formattedPrice" /> ${formattedPrice}</span>
+														</p>
+													</div>
+													<a href="javascript:void(0);" class="cart-remove"
+														data-customer-id="${user.userID}"
+														data-item-id="${item.itemID}" title="Remove this item">
+														<i class="far fa-times-circle"></i>
+													</a>
 												</div>
-												<div class="cart-info">
-													<h4>
-														<a href="#">${item.productName}</a>
-													</h4>
-													<p class="cart-qty">
-														${item.quantity} x - <span class="cart-amount">${item.totalPrice} VNĐ</span>
-													</p>
-												</div>
-												<a href="#" class="cart-remove" title="Remove this item"><i
-													class="far fa-times-circle"></i></a>
-											</div>
-										</li>
+											</li>
+										</c:forEach>
 									</ul>
-									</c:forEach>
 									<div class="dropdown-cart-bottom">
 										<div class="dropdown-cart-total">
-											<span>Total</span> <span class="total-amount">${subTotal} VNĐ</span>
+											<span>Total</span> <span class="total-amount"> <fmt:formatNumber
+													type="currency" value="${subTotal}" currencyCode="VND"
+													pattern="#,##0 VND" var="formattedPrice" />
+												${formattedPrice}
+											</span>
 										</div>
-										<a href="shop-checkout.html" class="theme-btn">Checkout</a>
+										<a href="#" class="theme-btn">Checkout</a>
 									</div>
 								</div></li>
 						</ul>
@@ -168,7 +198,35 @@
 	<!-- scroll-top -->
 	<a href="#" id="scroll-top"><i class="far fa-arrow-up-from-arc"></i></a>
 	<!-- scroll-top end -->
+	<script src="/FurSPS_Nhom5/assets/js/jquery-3.7.1.min.js"></script>
+	<script>
+		$(document).on('click', '.cart-remove', function(e) {
+			e.preventDefault();
 
+			let customerID = $(this).data('customer-id');
+			let itemID = $(this).data('item-id');
+
+			$.ajax({
+				url : '/FurSPS_Nhom5/userDeleteItem',
+				type : 'POST',
+				data : {
+					customerID : customerID,
+					itemID : itemID
+				},
+				success : function(response) {
+					$('#cart-item-' + itemID).remove();
+					$('.shop-cart span').text(response.totalQuantity);
+					
+			        const formatter = new Intl.NumberFormat('vi-VN', {
+			            style: 'currency',
+			            currency: 'VND'
+			        });
+			        const formattedSubTotal = formatter.format(response.subTotal).replace('₫', 'VNĐ');
+			        $('.total-amount').text(formattedSubTotal);
+				},
+			});
+		});
+	</script>
 
 </body>
 

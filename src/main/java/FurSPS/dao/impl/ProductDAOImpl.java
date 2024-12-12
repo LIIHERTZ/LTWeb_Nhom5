@@ -430,10 +430,8 @@ public class ProductDAOImpl implements IProductDAO {
 				model.setDisplayedOriginalPrice(rs.getInt("MinOriginalPrice"));
 				model.setListItem(itemDAO.findByProductID(productID));
 			
-
-
-				conn.close();
 			}
+			conn.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

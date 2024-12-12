@@ -25,9 +25,12 @@
 										<p data-animation="fadeInLeft" data-delay=".75s">${item.Description}</p>
 										<div class="hero-btn" data-animation="fadeInUp"
 											data-delay="1s">
-											<a href='<c:url value="/user/products?id=${item.ProductID}"/>' class="theme-btn">Detail<i class="fas fa-arrow-right"></i>
-											</a> <a href="/FurSPS_Nhom5/user/products" class="theme-btn theme-btn2">Show
-												More<i class="fas fa-arrow-right"></i>
+											<a
+												href='<c:url value="/user/products?id=${item.ProductID}"/>'
+												class="theme-btn">Detail<i class="fas fa-arrow-right"></i>
+											</a> <a href="/FurSPS_Nhom5/user/products"
+												class="theme-btn theme-btn2">Show More<i
+												class="fas fa-arrow-right"></i>
 											</a>
 										</div>
 									</div>
@@ -53,7 +56,9 @@
 																	pattern="#,##0 VND" var="formattedPrice" />
 																${formattedPrice}</span>
 														</p>
-														<a href="" class="theme-btn">Add Cart<i
+														<a
+															href="<c:url value='/user/products?id=${item.ProductID}' />"
+															class="theme-btn">Add Cart<i
 															class="far fa-shopping-bag"></i></a>
 													</div>
 												</div>
@@ -85,7 +90,7 @@
 							<h3>
 								Eames Lounge Chair <br> Collectons
 							</h3>
-							<a href="#">Shop Now</a>
+							<a>Shop Now</a>
 						</div>
 					</div>
 				</div>
@@ -98,7 +103,7 @@
 							<h3>
 								Best Couch Sale <br> Collections
 							</h3>
-							<a href="#">Discover Now</a>
+							<a>Discover Now</a>
 						</div>
 					</div>
 				</div>
@@ -111,7 +116,7 @@
 							<h3>
 								Best Chair <br> Up To <span>50%</span> Off
 							</h3>
-							<a href="#">Discover Now</a>
+							<a>Discover Now</a>
 						</div>
 					</div>
 				</div>
@@ -128,7 +133,7 @@
 				<div class="col-12 wow fadeInDown" data-wow-delay=".25s">
 					<div class="site-heading-inline">
 						<h2 class="site-title">Trending Items</h2>
-						<a href="#">View More <i class="fas fa-angle-double-right"></i></a>
+						<a href="/FurSPS_Nhom5/user/products">View More <i class="fas fa-angle-double-right"></i></a>
 					</div>
 				</div>
 			</div>
@@ -164,11 +169,11 @@
 												pattern="#,##0 VND" var="formattedPrice" />
 											${formattedPrice}</span>
 									</div>
-									<button type="button" class="product-cart-btn"
+									<a class="product-cart"
+										href="<c:url value='/user/products?id=${item.ProductID}' />"
 										data-bs-placement="left" data-tooltip="tooltip"
-										title="Add To Cart">
-										<i class="far fa-shopping-bag"></i>
-									</button>
+										title="Add To Cart"> <i class="far fa-shopping-bag"></i>
+									</a>
 								</div>
 							</div>
 						</div>
@@ -195,8 +200,9 @@
 								</h2>
 								<p>at our outlet stores</p>
 							</div>
-							<a href="/FurSPS_Nhom5/user/products" class="theme-btn">Shop Now<i
-								class="fas fa-arrow-right"></i></a>
+							<a href="/FurSPS_Nhom5/user/products" class="theme-btn">Shop
+								Now<i class="fas fa-arrow-right"></i>
+							</a>
 						</div>
 					</div>
 				</div>
