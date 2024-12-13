@@ -55,15 +55,15 @@
 								<h5>${user.firstName}${user.lastName}</h5>
 							</div>
 							<ul class="sidebar-list">
-							<li><a href="/FurSPS_Nhom5/user/infoUser"><i
-									class="far fa-user"></i> My Profile</a></li>
-							<li><a  class="active"><i
-									class="far fa-shopping-bag"></i> My Order List <span
-									class="badge badge-danger"></span></a></li>
-							<li><a href="/FurSPS_Nhom5/userAddress"><i
-									class="far fa-location-dot"></i> Address List</a></li>
-							<li><a href="/FurSPS_Nhom5/logout"><i class="far fa-sign-out"></i> Logout</a></li>
-						</ul>
+								<li><a href="/FurSPS_Nhom5/user/infoUser"><i
+										class="far fa-user"></i> My Profile</a></li>
+								<li><a class="active"><i class="far fa-shopping-bag"></i>
+										My Order List <span class="badge badge-danger"></span></a></li>
+								<li><a href="/FurSPS_Nhom5/userAddress"><i
+										class="far fa-location-dot"></i> Address List</a></li>
+								<li><a href="/FurSPS_Nhom5/logout"><i
+										class="far fa-sign-out"></i> Logout</a></li>
+							</ul>
 						</div>
 					</div>
 					<!-- main content -->
@@ -89,7 +89,7 @@
 															<td>${order.orderDate}</td>
 															<td>${order.deliveryTime}</td>
 															<td class="text-center"><a
-																href="<c:url value='/userdetailOrder?id=${order.orderID}'/>"
+																href="<c:url value='/userdetailOrder?orderID=${order.orderID}'/>"
 																class="btn btn-outline-secondary btn-sm rounded-2"
 																data-tooltip="tooltip" title="Details"> <i
 																	class="far fa-eye"></i>
