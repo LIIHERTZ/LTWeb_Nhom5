@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import FurSPS.models.UserModel;
+import FurSPS.models.VoucherModel;
+import FurSPS.utils.MessageUtil;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -12,12 +15,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import FurSPS.models.UserModel;
-import FurSPS.models.VoucherModel;
-import FurSPS.service.IVoucherService;
-import FurSPS.service.impl.VoucherServiceImpl;
-import FurSPS.utils.MessageUtil;
+import FurSPS.service.*;
+import FurSPS.service.impl.*;
 
 @WebServlet(urlPatterns = { "/listVoucher", "/searchVoucher" })
 @MultipartConfig
@@ -47,7 +46,7 @@ public class VoucherController extends HttpServlet {
 		List<VoucherModel> listVoucher = voucherService.findVoucherByCustomerID(user.getUserID());
 		
 		req.setAttribute("listVoucher", listVoucher);
-		RequestDispatcher rd = req.getRequestDispatcher("/views/web/voucher/listVoucher.jsp");
+		RequestDispatcher rd = req.getRequestDispatcher("/views/user/voucher/listVoucher.jsp");
 		rd.forward(req, resp);
 
 	}
@@ -72,7 +71,7 @@ public class VoucherController extends HttpServlet {
 			} else {
 				listVoucher.add(voucher);
 				req.setAttribute("listVoucher", listVoucher);
-				RequestDispatcher rd = req.getRequestDispatcher("/views/web/voucher/listVoucher.jsp");
+				RequestDispatcher rd = req.getRequestDispatcher("/views/user/voucher/listVoucher.jsp");
 				rd.forward(req, resp);
 			}
 		} else {

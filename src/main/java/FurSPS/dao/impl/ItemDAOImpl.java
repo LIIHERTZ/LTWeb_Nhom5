@@ -200,21 +200,7 @@ public class ItemDAOImpl implements IItemDAO {
 		}
 	}
 
-	public static void main(String[] args) {
-		IItemDAO itemDAO = new ItemDAOImpl();
-		
-		ItemModel model = new ItemModel();
-		model.setItemID(10100102);
-		model.setProductID(101001);
-		model.setColor("2");
-		model.setColorCode("#ffffff");
-		model.setSize("2");
-		model.setStock(2);
-		model.setOriginalPrice(2);
-		model.setPromotionPrice(2);
-		itemDAO.updateItem(model);
 
-	}
 
 	@Override
 	public int findDisplayedPromotionPrice(int productID) {
@@ -290,5 +276,22 @@ public class ItemDAOImpl implements IItemDAO {
 			e.printStackTrace();
 		}
 		return list;
+	}
+	
+	public void updateStock(int itemID, int quan) {
+		ItemModel it = this.findOne(itemID);
+		String sql = "Update ITEM SET Stock = ? where ItemID = ?";
+		try {
+			new DBConnection();
+			conn = DBConnection.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, it.getStock() - quan);
+			ps.setInt(2, itemID);
+
+			ps.executeUpdate();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

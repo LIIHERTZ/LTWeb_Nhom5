@@ -15,7 +15,7 @@ public class PaymentDAOImpl implements IPaymentDAO {
 	@Override
 	public List<PaymentModel> findAllPayment() {
 		List<PaymentModel> listPayment = new ArrayList<PaymentModel>();
-		String sql = "SELECT * FROM AZShop.PAYMENT";
+		String sql = "SELECT * FROM FurSPS.PAYMENT";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();
@@ -42,7 +42,7 @@ public class PaymentDAOImpl implements IPaymentDAO {
 	@Override
 	public PaymentModel findPaymentByID(int orderID) {
 		PaymentModel payment = new PaymentModel();
-		String sql = "SELECT * FROM AZShop.PAYMENT WHERE orderID = ? ";
+		String sql = "SELECT * FROM [PAYMENT] WHERE orderID = ? ";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();
@@ -66,7 +66,7 @@ public class PaymentDAOImpl implements IPaymentDAO {
 
 	@Override
 	public boolean updatePayment(PaymentModel pay) {
-		String sql = "UPDATE `AZShop`.`PAYMENT` SET `Method` = ? , `Time` = ? , `Bank` = ? , `CardOwner` = ? , `AccountNumber` = ? , `Status` = ? WHERE (`OrderID` = ? )";
+		String sql = "UPDATE [PAYMENT] SET Method = ? , Time = ? , Bank = ? , CardOwner = ? , AccountNumber = ? , Status = ? WHERE (OrderID = ? )";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();
@@ -89,7 +89,7 @@ public class PaymentDAOImpl implements IPaymentDAO {
 
 	@Override
 	public boolean insertPayment(PaymentModel pay) {
-		String sql = "INSERT INTO `AZShop`.`PAYMENT` (`OrderID`, `Method`, `Time`, `Bank`, `CardOwner`, `AccountNumber`, `Status`) VALUES ( ? , ? , ? , ? , ? , ? , ?)";
+		String sql = "INSERT INTO [PAYMENT] (OrderID, Method, Time, Bank, CardOwner, AccountNumber, Status) VALUES ( ? , ? , ? , ? , ? , ? , ?)";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();
@@ -113,7 +113,7 @@ public class PaymentDAOImpl implements IPaymentDAO {
 
 	@Override
 	public boolean deletePayment(int orderID) {
-		String sql = "DELETE FROM `AZShop`.`PAYMENT` WHERE (`OrderID` = ? );";
+		String sql = "DELETE FROM `FurSPS`.`PAYMENT` WHERE (`OrderID` = ? );";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();

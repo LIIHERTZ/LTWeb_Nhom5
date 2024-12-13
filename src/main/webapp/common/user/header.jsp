@@ -184,7 +184,7 @@
 												${formattedPrice}
 											</span>
 										</div>
-										<a href="#" class="theme-btn">Checkout</a>
+										<a href="<c:url value='/userCheckout' />" class="theme-btn">Checkout</a>
 									</div>
 								</div></li>
 						</ul>

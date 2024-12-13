@@ -5,6 +5,7 @@ import java.util.Map;
 
 import FurSPS.dao.IDetailDAO;
 import FurSPS.dao.impl.DetailDAOImpl;
+import FurSPS.models.CartModel;
 import FurSPS.models.DetailModel;
 import FurSPS.service.IDetailService;
 
@@ -33,5 +34,8 @@ public class DetailServiceImpl implements IDetailService {
 	public List<Map<String, Object>> listBestSeller() {
 		return detailDAO.listBestSeller();
 	}
-
+	@Override
+	public void insertDetail(List<CartModel> listCart, int orderID) {
+		detailDAO.insertDetail(listCart, orderID);
+	}
 }

@@ -11,7 +11,7 @@ public class VoucherCustomerDAOImpl implements IVoucherCustomerDAO {
 
 	@Override
 	public void insertVoucherCustomer(int voucherId, int customerId) {
-		String sql = "Insert into AZShop.VOUCHERCUSTOMER(VoucherID, CustomerID) Values (?,?)";
+		String sql = "Insert into [VOUCHERCUSTOMER](VoucherID, CustomerID) Values (?,?)";
 		try {
 			conn = DBConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -23,5 +23,4 @@ public class VoucherCustomerDAOImpl implements IVoucherCustomerDAO {
 			e.printStackTrace();
 		}
 	}
-
 }

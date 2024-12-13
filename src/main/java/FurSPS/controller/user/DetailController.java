@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import FurSPS.models.DetailModel;
+import FurSPS.models.OrderModel;
+import FurSPS.models.UserModel;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,16 +14,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import FurSPS.models.DetailModel;
-import FurSPS.models.OrderModel;
-import FurSPS.models.UserModel;
 import FurSPS.service.IDetailService;
 import FurSPS.service.IOrderService;
 import FurSPS.service.impl.DetailServiceImpl;
 import FurSPS.service.impl.OrderServiceImpl;
 
-@WebServlet("/submitReview")
+@WebServlet("/submitReview") //giu nguyen anotation
 public class DetailController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	IDetailService detailService = new DetailServiceImpl();
@@ -47,7 +46,7 @@ public class DetailController extends HttpServlet {
 		List<OrderModel> listOrder = orderService.listOrderByCustomerID(user.getUserID());
 
 		req.setAttribute("listOrder", listOrder);
-		RequestDispatcher rd = req.getRequestDispatcher("/views/web/order/listOrder.jsp");
+		RequestDispatcher rd = req.getRequestDispatcher("/views/user/order/listOrder.jsp");
 		rd.forward(req, resp);
 	}
 }

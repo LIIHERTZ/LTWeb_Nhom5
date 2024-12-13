@@ -8,6 +8,7 @@
 <!-- Mirrored from live.themewild.com/fameo/user-profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 03 Nov 2024 06:40:54 GMT -->
 <head>
 <body>
+
 	<!-- user dashboard -->
 	<div class="user-area bg pt-100 pb-80">
 		<div class="container">
@@ -16,8 +17,43 @@
 					<div class="sidebar">
 						<div class="sidebar-top">
 							<div class="sidebar-profile-img">
-								<img src="/FurSPS_Nhom5/assets/img/account/02.jpg" alt="">
-								<input type="file" class="profile-img-file">
+								<img src="${user.avatar}" alt="Profile Image"
+									class="profile-img"> <input type="file"
+									class="profile-img-file">
+								<style>
+.sidebar-profile-img {
+	position: relative;
+	width: 100px; /* Kích thước cố định cho phần tử chứa */
+	height: 100px; /* Kích thước cố định cho phần tử chứa */
+	overflow: hidden; /* Đảm bảo ảnh không tràn ra ngoài */
+	border-radius: 50%; /* Làm phần tử chứa thành hình tròn */
+}
+
+/* Định dạng ảnh */
+.profile-img {
+	width: 100%; /* Ảnh chiếm toàn bộ diện tích của phần tử chứa */
+	height: 100%; /* Ảnh chiếm toàn bộ diện tích của phần tử chứa */
+	object-fit: cover; /* Đảm bảo ảnh không bị méo và phù hợp với tỷ lệ */
+	border-radius: 50%; /* Làm ảnh thành hình tròn */
+}
+
+/* Định dạng input file */
+.profile-img-file {
+	position: absolute;
+	bottom: 5px; /* Đặt input file ở dưới cùng */
+	right: 5px; /* Đặt input file ở bên phải */
+	opacity: 0; /* Ẩn input file */
+	width: 30px; /* Kích thước của input file */
+	height: 30px; /* Kích thước của input file */
+	background-color: rgba(0, 0, 0, 0.5); /* Nền cho input file */
+	border-radius: 50%; /* Làm nút input thành hình tròn */
+	cursor: pointer; /* Hiển thị con trỏ dạng tay */
+}
+
+.sidebar-profile-img:hover .profile-img-file {
+	opacity: 1; /* Hiển thị input file khi hover */
+}
+</style>
 							</div>
 							<h5>${user.firstName}${user.lastName}</h5>
 						</div>

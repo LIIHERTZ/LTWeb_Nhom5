@@ -15,4 +15,5 @@ public interface IItemDAO {
 	void updateItem (ItemModel model);
 	int findDisplayedPromotionPrice(int productID);
 	int findDisplayedOriginalPrice(int productID);
+	
 }

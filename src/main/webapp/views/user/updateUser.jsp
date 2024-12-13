@@ -86,7 +86,7 @@
 	opacity: 1; /* Hiển thị input file khi hover */
 }
 </style>
-							<h5>${user.firstName}${user.lastName}</h5>
+							<h5>${user.firstName} ${user.lastName}</h5>
 						</div>
 						<ul class="sidebar-list">
 							<li><a class="active"><i class="far fa-user"></i> Cập
