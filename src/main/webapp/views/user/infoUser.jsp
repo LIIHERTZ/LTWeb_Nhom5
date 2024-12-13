@@ -21,38 +21,38 @@
 								<img src="${user.avatar}" alt="Profile Image"
 									class="profile-img"> <input type="file"
 									class="profile-img-file">
-									<style>
+								<style>
 .sidebar-profile-img {
-    position: relative;
-    width: 100px;  /* Kích thước cố định cho phần tử chứa */
-    height: 100px; /* Kích thước cố định cho phần tử chứa */
-    overflow: hidden; /* Đảm bảo ảnh không tràn ra ngoài */
-    border-radius: 50%; /* Làm phần tử chứa thành hình tròn */
+	position: relative;
+	width: 100px; /* Kích thước cố định cho phần tử chứa */
+	height: 100px; /* Kích thước cố định cho phần tử chứa */
+	overflow: hidden; /* Đảm bảo ảnh không tràn ra ngoài */
+	border-radius: 50%; /* Làm phần tử chứa thành hình tròn */
 }
 
 /* Định dạng ảnh */
 .profile-img {
-    width: 100%; /* Ảnh chiếm toàn bộ diện tích của phần tử chứa */
-    height: 100%; /* Ảnh chiếm toàn bộ diện tích của phần tử chứa */
-    object-fit: cover; /* Đảm bảo ảnh không bị méo và phù hợp với tỷ lệ */
-    border-radius: 50%; /* Làm ảnh thành hình tròn */
+	width: 100%; /* Ảnh chiếm toàn bộ diện tích của phần tử chứa */
+	height: 100%; /* Ảnh chiếm toàn bộ diện tích của phần tử chứa */
+	object-fit: cover; /* Đảm bảo ảnh không bị méo và phù hợp với tỷ lệ */
+	border-radius: 50%; /* Làm ảnh thành hình tròn */
 }
 
 /* Định dạng input file */
 .profile-img-file {
-    position: absolute;
-    bottom: 5px; /* Đặt input file ở dưới cùng */
-    right: 5px; /* Đặt input file ở bên phải */
-    opacity: 0; /* Ẩn input file */
-    width: 30px; /* Kích thước của input file */
-    height: 30px; /* Kích thước của input file */
-    background-color: rgba(0, 0, 0, 0.5); /* Nền cho input file */
-    border-radius: 50%; /* Làm nút input thành hình tròn */
-    cursor: pointer; /* Hiển thị con trỏ dạng tay */
+	position: absolute;
+	bottom: 5px; /* Đặt input file ở dưới cùng */
+	right: 5px; /* Đặt input file ở bên phải */
+	opacity: 0; /* Ẩn input file */
+	width: 30px; /* Kích thước của input file */
+	height: 30px; /* Kích thước của input file */
+	background-color: rgba(0, 0, 0, 0.5); /* Nền cho input file */
+	border-radius: 50%; /* Làm nút input thành hình tròn */
+	cursor: pointer; /* Hiển thị con trỏ dạng tay */
 }
 
 .sidebar-profile-img:hover .profile-img-file {
-    opacity: 1; /* Hiển thị input file khi hover */
+	opacity: 1; /* Hiển thị input file khi hover */
 }
 </style>
 							</div>
@@ -61,28 +61,17 @@
 						<ul class="sidebar-list">
 							<li><a href="user-dashboard.html"><i
 									class="far fa-gauge-high"></i> Dashboard</a></li>
-							<li><a class="active" href="user-profile.html"><i
-									class="far fa-user"></i> My Profile</a></li>
+							<li><a class="active"><i class="far fa-user"></i> My
+									Profile</a></li>
 							<li><a href="order-list.html"><i
 									class="far fa-shopping-bag"></i> My Order List <span
 									class="badge badge-danger">02</span></a></li>
-							<li><a href="wishlist.html"><i class="far fa-heart"></i>
-									My Wishlist <span class="badge badge-danger">02</span></a></li>
-							<li><a href="address-list.html"><i
+							<li><a href="/FurSPS_Nhom5/userAddress"><i
 									class="far fa-location-dot"></i> Address List</a></li>
-							<li><a href="support-ticket.html"><i
-									class="far fa-headset"></i> Support Tickets <span
-									class="badge badge-danger">02</span></a></li>
 							<li><a href="track-order.html"><i
 									class="far fa-map-location-dot"></i> Track My Order</a></li>
 							<li><a href="payment-method.html"><i
 									class="far fa-wallet"></i> Payment Methods</a></li>
-							<li><a href="user-notification.html"><i
-									class="far fa-bell"></i> Notification <span
-									class="badge badge-danger">02</span></a></li>
-							<li><a href="user-message.html"><i
-									class="far fa-envelope"></i> Messages <span
-									class="badge badge-danger">02</span></a></li>
 							<li><a href="user-setting.html"><i class="far fa-gear"></i>
 									Settings</a></li>
 							<li><a href="#"><i class="far fa-sign-out"></i> Logout</a></li>
