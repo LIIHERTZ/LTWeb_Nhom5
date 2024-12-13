@@ -21,6 +21,7 @@ public class DetailModel {
 	private ItemModel item = new ItemModel();
 	private ProductModel product = new ProductModel();
 	private OrderModel order = new OrderModel();
+	private CategoryModel category = new CategoryModel();
 	
 	public DetailModel(int itemID, int orderID, int quantity, String link, String content, Date evaluationDate,
 			int rating, String avatar, String name) {
@@ -135,6 +136,14 @@ public class DetailModel {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public CategoryModel getCategory() {
+		return category;
+	}
+
+	public void setCategory(CategoryModel category) {
+		this.category = category;
 	}
 
 }

@@ -13,4 +13,7 @@ public interface IDetailDAO {
 	DetailModel findDetailByItemID(int orderID, int itemID);
 	public List<Map<String, Object>> listBestSeller();
 	void insertDetail(List<CartModel> listCart, int orderID);
+	List<DetailModel> listDetailsByOrderID(int orderID);
+	boolean hasReviewed(int orderID, int itemID);
+	boolean addReview(DetailModel review);
 }

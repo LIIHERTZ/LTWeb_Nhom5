@@ -2,6 +2,7 @@ package FurSPS.service;
 
 import java.util.List;
 
+import FurSPS.models.DetailModel;
 import FurSPS.models.OrderModel;
 
 public interface IOrderService {
@@ -22,4 +23,7 @@ public interface IOrderService {
 	public List<OrderModel> findShipingByShipperID(int ShipperID);
 	public List<OrderModel> findHisDeliveryByShipperID(int ShipperID);
 	public OrderModel findShipByID(int OrderID);
+	int countOrdersByCustomerID(int userID);
+	List<OrderModel> listOrderByCustomerID(int customerID, int pageSize);
+	List<DetailModel> listDetailsByOrderID(int orderID);
 }

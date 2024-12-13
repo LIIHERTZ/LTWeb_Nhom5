@@ -691,7 +691,7 @@ public class OrderDAOImpl implements IOrderDAO {
 
 		List<Integer> datesInMonth = new ArrayList<>();
 		Calendar calendar = Calendar.getInstance();
-		calendar.set(date.getYear(), date.getMonth(), 1); // Tháng trong Java bắt đầu từ 0
+		calendar.set(date.getYear(), date.getMonth(), 1); 
 		while (calendar.get(Calendar.MONTH) == (date.getMonth())) {
 			datesInMonth.add(calendar.getTime().getDate());
 			calendar.add(Calendar.DAY_OF_MONTH, 1);
@@ -731,5 +731,62 @@ public class OrderDAOImpl implements IOrderDAO {
 			e.printStackTrace();
 		}
 		return list;
+	}
+
+	@Override
+	public int countOrdersByCustomerID(int customerID) {
+		int count = 0;
+		String sql = "SELECT COUNT(*) FROM [ORDER] WHERE CustomerID = ?";
+		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setInt(1, customerID);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					count = rs.getInt(1);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
+
+	@Override
+	public List<OrderModel> listOrderByCustomerID(int customerID, int page) {
+		List<OrderModel> listOrder = new ArrayList<>();
+		int pageSize = 5;
+		int offset = (page - 1) * pageSize;
+
+		String sql = "SELECT O.OrderID, O.CustomerID, O.OrderDate, O.Status, O.Discount, O.TotalMoney, O.SellerID, O.ShipperID, O.CustomerConfirmation, O.DeliveryTime "
+				+ "FROM [ORDER] O " + "WHERE O.CustomerID = ? " + "ORDER BY O.OrderID " + "OFFSET ? ROWS "
+				+ "FETCH NEXT ? ROWS ONLY";
+
+		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+			ps.setInt(1, customerID);
+			ps.setInt(2, offset);
+			ps.setInt(3, pageSize);
+
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					OrderModel order = new OrderModel();
+					order.setOrderID(rs.getInt("OrderID"));
+					order.setCustomerID(rs.getInt("CustomerID"));
+					order.setOrderDate(rs.getDate("OrderDate"));
+					order.setStatus(rs.getInt("Status"));
+					order.setDiscount(rs.getInt("Discount"));
+					order.setTotalMoney(rs.getInt("TotalMoney"));
+					order.setSellerID(rs.getInt("SellerID"));
+					order.setShipperID(rs.getInt("ShipperID"));
+					order.setCustomerConfirmation(rs.getInt("CustomerConfirmation"));
+					order.setDeliveryTime(rs.getDate("DeliveryTime"));
+
+					listOrder.add(order);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return listOrder;
 	}
 }

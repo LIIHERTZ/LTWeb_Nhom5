@@ -102,13 +102,13 @@
         <c:choose>
           <c:when test="${success}">
             <!-- Chuyển đến chi tiết đơn hàng -->
-            <a href="${pageContext.request.contextPath}/detailOrder?orderID=${orderID}" class="payment-button">
+            <a href="${pageContext.request.contextPath}/userdetailOrder?orderID=${orderID}" class="payment-button">
               Confirm
             </a>
           </c:when>
           <c:otherwise>
             <!-- Quay lại trang checkout -->
-            <a href="${pageContext.request.contextPath}/checkout" class="payment-button">
+            <a href="${pageContext.request.contextPath}/userCheckout" class="payment-button">
               Return
             </a>
           </c:otherwise>

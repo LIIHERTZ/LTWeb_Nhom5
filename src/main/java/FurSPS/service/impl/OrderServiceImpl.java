@@ -6,6 +6,7 @@ import FurSPS.dao.IDetailDAO;
 import FurSPS.dao.IOrderDAO;
 import FurSPS.dao.impl.DetailDAOImpl;
 import FurSPS.dao.impl.OrderDAOImpl;
+import FurSPS.models.DetailModel;
 import FurSPS.models.OrderModel;
 import FurSPS.service.IOrderService;
 
@@ -113,5 +114,20 @@ public class OrderServiceImpl implements IOrderService {
 	private List<OrderModel> addDetailToList(List<OrderModel> list){
 		list.forEach(order -> order.setDetails(detailDAO.listDetail(order.getOrderID())));
 		return list;
+	}
+
+	@Override
+	public int countOrdersByCustomerID(int customerID) {
+		return orderDAO.countOrdersByCustomerID(customerID);
+	}
+
+	@Override
+	public List<OrderModel> listOrderByCustomerID(int customerID, int page) {
+		return orderDAO.listOrderByCustomerID(customerID, page);
+	}
+
+	@Override
+	public List<DetailModel> listDetailsByOrderID(int orderID) {
+		return detailDAO.listDetailsByOrderID(orderID);
 	}
 }

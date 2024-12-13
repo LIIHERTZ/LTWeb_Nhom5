@@ -1,6 +1,7 @@
 package FurSPS.dao.impl;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,10 +11,12 @@ import java.util.List;
 import java.util.Map;
 
 import FurSPS.dao.IDetailDAO;
-import FurSPS.dao.impl.ItemDAOImpl;
 import FurSPS.models.CartModel;
+import FurSPS.models.CategoryModel;
 import FurSPS.models.DetailModel;
-
+import FurSPS.models.ItemModel;
+import FurSPS.models.OrderModel;
+import FurSPS.models.ProductModel;
 import FurSPS.configs.DBConnection;
 
 public class DetailDAOImpl implements IDetailDAO {
@@ -209,6 +212,89 @@ public class DetailDAOImpl implements IDetailDAO {
 		} catch (SQLException e) {
 		    e.printStackTrace();
 		}
+	}
+
+
+	@Override
+	public List<DetailModel> listDetailsByOrderID(int orderID) {
+		List<DetailModel> details = new ArrayList<>();
+		String sql = "SELECT d.Quantity, d.OrderID, o.TotalMoney, i.ItemID, i.Color, p.ProductID, p.ProductName, p.Material, c.CategoryName FROM [Detail] d JOIN [Order] o ON d.OrderID = o.OrderID JOIN [Item] i ON d.ItemID = i.ItemID JOIN [Product] p ON i.ProductID = p.ProductID JOIN [Category] c ON c.CategoryID = p.CategoryID WHERE d.OrderID = ?";
+		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setInt(1, orderID);
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					DetailModel detail = new DetailModel();
+					OrderModel order = new OrderModel();
+					ItemModel item = new ItemModel();
+					ProductModel product = new ProductModel();
+					CategoryModel category = new CategoryModel();
+					detail.setOrderID(rs.getInt("OrderID"));
+					detail.setQuantity(rs.getInt("Quantity"));
+					order.setTotalMoney(rs.getInt("TotalMoney"));
+					detail.setItemID(rs.getInt("ItemID"));
+					category.setCategoryName(rs.getString("CategoryName"));
+					item.setColor(rs.getString("Color"));
+					product.setMaterial(rs.getString("Material"));
+					product.setProductID(rs.getInt("ProductID"));
+					product.setProductName(rs.getString("ProductName"));
+					detail.setOrder(order);
+					detail.setItem(item);
+					detail.setProduct(product);
+					detail.setCategory(category);
+					details.add(detail);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return details;
+	}
+
+
+	@Override
+	public boolean hasReviewed(int orderID, int itemID) {
+		String sql = "SELECT COUNT(*) FROM Detail WHERE OrderID = ? AND ItemID = ? ";
+
+		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setInt(1, orderID);
+			ps.setInt(2, itemID);
+
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					int count = rs.getInt(1);
+					return count > 0;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+
+	@Override
+	public boolean addReview(DetailModel review) {
+		String sql = "INSERT INTO Detail ( ItemID, OrderID, Quantity, Link, Content, EvaluationDate, Rating) VALUES (?, ?, ?, ?, ?, ?);";
+		try {
+
+			new DBConnection();
+			Connection conn = DBConnection.getConnection();
+
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, review.getItemID());
+			ps.setInt(2, review.getOrderID());
+			ps.setInt(3, review.getQuantity());
+			ps.setString(4, review.getLink());
+			ps.setString(5, review.getContent());
+			ps.setDate(6, (Date) review.getEvaluationDate());
+			ps.setInt(7, review.getRating());
+			ps.executeUpdate();
+			conn.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			return false;
+		}
+		return true;
 	}
 	
 }

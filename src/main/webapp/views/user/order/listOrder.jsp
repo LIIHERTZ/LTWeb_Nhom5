@@ -1,297 +1,147 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@include file="/common/taglib.jsp"%>
-<title>Đơn mua</title>
-<style>
-body {
-	margin-top: 0px;
-	background-color: #f1f3f7;
-}
-
-.avatar-lg {
-	height: 5rem;
-	width: 5rem;
-}
-
-.font-size-18 {
-	font-size: 18px !important;
-}
-
-.font-size-20 {
-	font-size: 20px !important;
-}
-
-.text-truncate {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
-
-a {
-	text-decoration: none !important;
-}
-
-.w-xl {
-	min-width: 160px;
-}
-
-.card {
-	margin-bottom: 24px;
-	-webkit-box-shadow: 0 2px 3px #e4e8f0;
-	box-shadow: 0 2px 3px #e4e8f0;
-}
-
-.card {
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
+<html lang="en">
+<body>
+	<main class="main">
+		<!-- user dashboard -->
+		<div class="user-area bg pt-100 pb-80">
+			<div class="container">
+				<div class="row">
+					<!-- sidebar -->
+					<div class="col-lg-3">
+						<div class="sidebar">
+							<div class="sidebar-top">
+								<div class="sidebar-profile-img">
+									<img src="${user.avatar}" alt="Profile Image"
+										class="profile-img"> <input type="file"
+										class="profile-img-file">
+									<style>
+.sidebar-profile-img {
 	position: relative;
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-orient: vertical;
-	-webkit-box-direction: normal;
-	-ms-flex-direction: column;
-	flex-direction: column;
-	min-width: 0;
-	word-wrap: break-word;
-	background-color: #fff;
-	background-clip: border-box;
-	border: 1px solid #eff0f2;
-	border-radius: 1rem;
+	width: 100px; /* Kích thước cố định cho phần tử chứa */
+	height: 100px; /* Kích thước cố định cho phần tử chứa */
+	overflow: hidden; /* Đảm bảo ảnh không tràn ra ngoài */
+	border-radius: 50%; /* Làm phần tử chứa thành hình tròn */
 }
 
-.product-item {
-	display: flex;
-	flex-wrap: nowrap;
-	align-items: flex;
-	margin-top: 20px;
+/* Định dạng ảnh */
+.profile-img {
+	width: 100%; /* Ảnh chiếm toàn bộ diện tích của phần tử chứa */
+	height: 100%; /* Ảnh chiếm toàn bộ diện tích của phần tử chứa */
+	object-fit: cover; /* Đảm bảo ảnh không bị méo và phù hợp với tỷ lệ */
+	border-radius: 50%; /* Làm ảnh thành hình tròn */
 }
 
-.product-image {
-	margin-left: 30px;
-	margin-top: 10px;
-	margin-bottom: 0px;
+/* Định dạng input file */
+.profile-img-file {
+	position: absolute;
+	bottom: 5px; /* Đặt input file ở dưới cùng */
+	right: 5px; /* Đặt input file ở bên phải */
+	opacity: 0; /* Ẩn input file */
+	width: 30px; /* Kích thước của input file */
+	height: 30px; /* Kích thước của input file */
+	background-color: rgba(0, 0, 0, 0.5); /* Nền cho input file */
+	border-radius: 50%; /* Làm nút input thành hình tròn */
+	cursor: pointer; /* Hiển thị con trỏ dạng tay */
 }
 
-.product-info {
-	flex-grow: 2;
-}
-
-.price-info {
-	flex-grow: 10;
-	justify-content: flex-start;
-	text-align: center;
-	align-items: center;
-}
-
-.order-details-container {
-	margin-bottom: 0;
+.sidebar-profile-img:hover .profile-img-file {
+	opacity: 1; /* Hiển thị input file khi hover */
 }
 </style>
-
-<section class="sec-product-detail bg0 p-t-65 p-b-60">
-	<div class="container">
-		<div class="row">
-			<!-- Sidebar -->
-			<div class="col-md-3 col-lg-2 p-b-80">
-				<div class="side-menu">
-					<div class="p-t-55">
-						<h4 class="mtext-112 cl2 p-b-33" style="margin-top: -111px;">TÀI
-							KHOẢN</h4>
-						<ul>
-							<li class="bor18"><a
-								href="${pageContext.request.contextPath}/infoUser"
-								class="dis-block stext-115 cl6 hov-cl1 trans-04 p-tb-8 p-lr-4">
-									Hồ sơ cá nhân </a></li>
-							<li class="bor18"><a
-								href="${pageContext.request.contextPath}/listOrder"
-								class="dis-block stext-115 cl6 hov-cl1 trans-04 p-tb-8 p-lr-4"
-								style="color: #6C7AE0;"> Đơn mua </a></li>
-							<li class="bor18"><a
-								href="${pageContext.request.contextPath}/listVoucher"
-								class="dis-block stext-115 cl6 hov-cl1 trans-04 p-tb-8 p-lr-4">
-									Kho voucher </a></li>
+								</div>
+								<h5>${user.firstName}${user.lastName}</h5>
+							</div>
+							<ul class="sidebar-list">
+							<li><a href="/FurSPS_Nhom5/user/infoUser"><i
+									class="far fa-user"></i> My Profile</a></li>
+							<li><a  class="active"><i
+									class="far fa-shopping-bag"></i> My Order List <span
+									class="badge badge-danger"></span></a></li>
+							<li><a href="/FurSPS_Nhom5/userAddress"><i
+									class="far fa-location-dot"></i> Address List</a></li>
+							<li><a href="/FurSPS_Nhom5/logout"><i class="far fa-sign-out"></i> Logout</a></li>
 						</ul>
+						</div>
 					</div>
-				</div>
-			</div>
-			<!-- List order -->
-			<div class="col-xl-8">
-				<c:forEach var="i" items="${listOrder}">
-					<div class="card border shadow-none mb-4">
-						<div class="card-body">
+					<!-- main content -->
+					<div class="col-lg-9">
+						<div class="user-wrapper">
 							<div class="row">
-								<div class="col-md-12">
-									<fmt:formatDate value="${i.orderDate}" pattern="dd/MM/yyyy" />
-									<p class="mb-0 mt-1">
-										<span
-											class="fw-medium ${i.status == 0 ? 'text-orange' : ''} 
-													           ${i.status == 1 ? 'text-green' : ''} 
-													           ${i.status == 2 ? 'text-blue' : ''} 
-													           ${i.status == 3 ? 'text-purple' : ''} 
-													           ${i.status == 4 ? 'text-success' : ''} 
-													           ${i.status == 5 ? 'text-danger' : ''}">
-											${i.status == 0 ? 'Đơn hàng chờ xác nhận' :
-                                               i.status == 1 ? 'Đơn hàng đã được xác nhận' :
-                                               i.status == 2 ? 'Đơn hàng đang được chuẩn bị' :
-                                               i.status == 3 ? 'Đơn hàng đang được giao đến bạn' :
-                                               i.status == 4 ? 'Đơn hàng đã được giao đến bạn' :
-                                               i.status == 5 ? 'Đơn hàng đã bị hủy' : ''}
-										</span>
-									</p>
-								</div>
-								<div class="d-none">
-									<input type="hidden" name="orderID" value="${i.orderID}">
-									<input type="hidden" name="sellerID" value="${i.sellerID}">
-									<input type="hidden" name="shipperID" value="${i.shipperID}">
-								</div>
-								<div class="col-md-12 order-details-container">
-									<form action="itemRating" method="post"
-										enctype="multipart/form-data">
-										<c:if test="${i.customerConfirmation == 1}">
-											<c:forEach var="j" items="${i.details}">
-												<c:if test="${j != null }">
-													<div class="product-item">
-														<input type="hidden" name="itemID"
-															value="${j.item.itemID}"> <input type="hidden"
-															name="orderID" value="${i.orderID}">
-														<div class="product-image w-50 h-50">
-															<img src="${j.item.image}" alt="" width="150"
-																height="150">
-														</div>
-														<div class="product-info">
-															<h5 class="text-truncate font-size-20">
-																<a href="#" class="text-dark">
-																	${j.product.productName}</a>
-															</h5>
-															<p class="mb-0 mt-1">${j.product.description}</p>
-															<p class="mb-0 mt-1">
-																Màu sắc: <span class="fw-medium"> ${j.item.color}</span>
-															</p>
-															<p class="mb-0 mt-1">
-																Size: <span class="fw-medium"> ${j.item.size}</span>
-															</p>
-															<p class="mb-0 mt-1">
-																<span class="fw-medium"> x${j.quantity}</span>
-															</p>
-														</div>
-														<div class="price-info font-size-20" style="color: orange">
-															<c:choose>
-																<c:when test="${j.item.promotionPrice == 0}">
-																	<fmt:formatNumber type="currency"
-																		value="${j.item.originalPrice * j.quantity}"
-																		currencyCode="VND" pattern="#,##0 VND"
-																		var="formattedPrice" />
-										            ${formattedPrice}
-										        </c:when>
-																<c:otherwise>
-																	<fmt:formatNumber type="currency"
-																		value="${j.item.promotionPrice * j.quantity}"
-																		currencyCode="VND" pattern="#,##0 VND"
-																		var="formattedPrice" />
-									            ${formattedPrice}
-									        </c:otherwise>
-															</c:choose>
-															<a
-																href="${pageContext.request.contextPath}/itemRating?orderID=${i.orderID}&itemID=${j.itemID}"
-																class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-																Đánh giá </a>
-														</div>
-													</div>
-												</c:if>
-											</c:forEach>
-										</c:if>
-										<c:if test="${i.customerConfirmation == 0}">
-											<c:forEach var="j" items="${i.details}">
-												<c:if test="${j != null }">
-													<div class="product-item">
-														<div class="product-image w-50 h-50">
-															<img src="${j.item.image}" alt="" width="150"
-																height="150">
-														</div>
-														<div class="product-info">
-															<h5 class="text-truncate font-size-20">
-																<a href="#" class="text-dark">
-																	${j.product.productName}</a>
-															</h5>
-															<p class="mb-0 mt-1">${j.product.description}</p>
-															<p class="mb-0 mt-1">
-																Màu sắc: <span class="fw-medium"> ${j.item.color}</span>
-															</p>
-															<p class="mb-0 mt-1">
-																Size: <span class="fw-medium"> ${j.item.size}</span>
-															</p>
-															<p class="mb-0 mt-1">
-																<span class="fw-medium"> x${j.quantity}</span>
-															</p>
-														</div>
-														<div class="price-info font-size-20" style="color: orange">
-															<c:choose>
-																<c:when test="${j.item.promotionPrice == 0}">
-																	<fmt:formatNumber type="currency"
-																		value="${j.item.originalPrice * j.quantity}"
-																		currencyCode="VND" pattern="#,##0 VND"
-																		var="formattedPrice" />
-										            ${formattedPrice}
-										        </c:when>
-																<c:otherwise>
-																	<fmt:formatNumber type="currency"
-																		value="${j.item.promotionPrice * j.quantity}"
-																		currencyCode="VND" pattern="#,##0 VND"
-																		var="formattedPrice" />
-									            ${formattedPrice}
-									        </c:otherwise>
-															</c:choose>
-														</div>
-													</div>
-												</c:if>
-											</c:forEach>
-										</c:if>
-									</form>
-									<hr>
-								</div>
-								<!-- Actions and Total -->
+								<div class="col-lg-12">
+									<div class="user-card">
+										<div class="table-responsive">
+											<table class="table table-borderless text-nowrap">
+												<thead>
+													<tr>
+														<th>ID</th>
+														<th>Purchased Date</th>
+														<th>Delivery Time</th>
+														<th class="text-center">Action</th>
+													</tr>
+												</thead>
+												<tbody>
+													<c:forEach var="order" items="${listOrder}">
+														<tr>
+															<td>${order.orderID}</td>
+															<td>${order.orderDate}</td>
+															<td>${order.deliveryTime}</td>
+															<td class="text-center"><a
+																href="<c:url value='/userdetailOrder?id=${order.orderID}'/>"
+																class="btn btn-outline-secondary btn-sm rounded-2"
+																data-tooltip="tooltip" title="Details"> <i
+																	class="far fa-eye"></i>
+															</a> <a
+																href="<c:url value='/usertrack'>
+    <c:param name="id" value="${order.orderID}"/>
+</c:url>"
+																class="btn btn-outline-secondary btn-sm rounded-2"
+																title="Track"> <i class="far fa-map-location-dot"></i>
+															</a></td>
+														</tr>
+													</c:forEach>
+												</tbody>
+											</table>
+										</div>
 
-								<div class="col-md-12">
-									<div class="row">
-										<div class="ms-auto" style="margin-left: auto">
-											<form action="customerConfirm" method="post"
-												enctype="multipart/form-data">
-												<a
-													href="${pageContext.request.contextPath}/detailOrder?orderID=${i.orderID}"
-													class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-													Chi tiết </a> <input type="hidden" name="orderID"
-													value="${i.orderID}">
-												<c:choose>
-													<c:when test="${i.status <= 2 }">
-														<input type="hidden" name="action" value="cancelOrder">
-														<button type="submit"
-															class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-															Hủy đơn</button>
-													</c:when>
-													<c:when
-														test="${i.status == 4 && i.customerConfirmation != 1 }">
-														<input type="hidden" name="action" value="confirmOrder">
-														<button type="submit"
-															class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-															Xác nhận</button>
-													</c:when>
-												</c:choose>
-											</form>
-										</div>
-										<div class="col-md-3 text-end ">
-											<p class="text-muted mb-2">Thành tiền</p>
-											<h5 class="font-size-20" style="color: orange">
-												<fmt:formatNumber type="currency" value="${i.totalMoney}"
-													currencyCode="VND" pattern="#,##0 VND" var="formattedPrice" />
-												${formattedPrice}
-											</h5>
-										</div>
+										<!-- pagination -->
+										<!-- ví dụ phân trang đơn giản -->
+										<ul class="pagination">
+											<li
+												class="page-item <c:if test="${currentPage == 1}">disabled</c:if>">
+												<a class="page-link" href="?page=${currentPage - 1}"
+												aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+											</a>
+											</li>
+											<c:forEach var="i" begin="1" end="${totalPages}">
+												<li
+													class="page-item <c:if test="${i == currentPage}">active</c:if>">
+													<a class="page-link" href="?page=${i}">${i}</a>
+												</li>
+											</c:forEach>
+											<li
+												class="page-item <c:if test="${currentPage == totalPages}">disabled</c:if>">
+												<a class="page-link" href="?page=${currentPage + 1}"
+												aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+											</a>
+											</li>
+										</ul>
+
+										<!-- pagination end -->
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</c:forEach>
+
+
+				</div>
 			</div>
 		</div>
-	</div>
-</section>
+	</main>
+	<a href="#" id="scroll-top"><i class="far fa-arrow-up-from-arc"></i></a>
+
+</body>
+</html>

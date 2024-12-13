@@ -13,4 +13,7 @@ public interface IDetailService {
 	public List<DetailModel> listDetail(int orderID);
 	public List<Map<String, Object>> listBestSeller();
 	void insertDetail(List<CartModel> listCart, int orderID);
+	List<DetailModel> listDetailsByOrderID(int orderID);
+	boolean hasReviewed(int orderID, int itemID);
+	boolean addReview(DetailModel review);
 }

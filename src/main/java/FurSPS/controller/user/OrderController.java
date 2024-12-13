@@ -1,12 +1,12 @@
 package FurSPS.controller.user;
 
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import FurSPS.models.OrderModel;
-import FurSPS.models.UserModel;
+import com.google.gson.internal.bind.DefaultDateTypeAdapter.DateType;
+
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -16,27 +16,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import FurSPS.models.CartModel;
 import FurSPS.models.DetailModel;
 import FurSPS.models.OrderModel;
-import FurSPS.models.PaymentModel;
 import FurSPS.models.UserModel;
-import FurSPS.models.VoucherModel;
-import FurSPS.service.ICartService;
+import FurSPS.service.IDetailService;
 import FurSPS.service.IOrderService;
 import FurSPS.service.IPaymentService;
-import FurSPS.service.IVoucherCustomerService;
-import FurSPS.service.IVoucherService;
-import FurSPS.service.IDetailService;
-import FurSPS.service.impl.CartServiceImpl;
+import FurSPS.service.impl.DetailServiceImpl;
 import FurSPS.service.impl.OrderServiceImpl;
 import FurSPS.service.impl.PaymentServiceImpl;
-import FurSPS.service.impl.VoucherCustomerServiceImpl;
-import FurSPS.service.impl.VoucherServiceImpl;
-import FurSPS.service.impl.DetailServiceImpl;
 
-
-@WebServlet(urlPatterns = { "/listOrder", "/customerConfirm", "/detailOrder", "/itemRating" }) //giu nguyen anotation dung sua
+@WebServlet(urlPatterns = { "/userlistOrder", "/usercustomerConfirm", "/userdetailOrder", "/useritemRating",
+		"/usertrack" })
 @MultipartConfig
 public class OrderController extends HttpServlet {
 
@@ -50,12 +41,12 @@ public class OrderController extends HttpServlet {
 		HttpSession session = req.getSession(false);
 		if (session != null && session.getAttribute("user") != null) {
 			String url = req.getRequestURI().toString();
-			if (url.contains("listOrder")) {
+			if (url.contains("userlistOrder")) {
 				listOrder(req, resp);
-			} else if (url.contains("detailOrder")) {
+			} else if (url.contains("userdetailOrder")) {
 				detailOrder(req, resp);
-			} else if (url.contains("itemRating")) {
-				itemRating(req, resp);
+			} else if (url.contains("usertrack")) {
+				track(req, resp);
 			}
 		} else {
 			resp.sendRedirect(req.getContextPath() + "/login");
@@ -64,89 +55,102 @@ public class OrderController extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String url = req.getRequestURI().toString();
-		if (url.contains("customerConfirm")) {
-			String act = req.getParameter("action");
-			String conf = req.getParameter("confirm");
-			int orderID = Integer.parseInt(req.getParameter("orderID"));
-			if ("cancelOrder".equals(act)) {
-				orderService.updateStatusOrder(orderID, 5);
-				listOrder(req, resp);
-			} else if ("confirmOrder".equals(act)) {
-				orderService.confirmOrder(orderID, 1);
-				listOrder(req, resp);
-			} else if ("confirmDetailOrder".equals(act)) {
-				orderService.confirmOrder(orderID, 1);
-				detailOrder(req, resp);
-			} else if ("cancelDetailOrder".equals(act)) {
-				orderService.updateStatusOrder(orderID, 5);
-				detailOrder(req, resp);
-			} 
+		String action = req.getRequestURI().toString();
+		if (action.contains("/useritemRating")) {
+			rating(req, resp);
+		} else {
+			resp.sendError(HttpServletResponse.SC_NOT_FOUND, "URL không được hỗ trợ");
 		}
 	}
 
 	private void listOrder(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession(false);
 		UserModel user = (UserModel) session.getAttribute("user");
-		List<OrderModel> listOrder = orderService.listOrderByCustomerID(user.getUserID());
 
+		// Lấy tham số trang từ request, nếu không có thì mặc định là trang 1
+		int page = 1;
+		try {
+			page = Integer.parseInt(req.getParameter("page"));
+		} catch (NumberFormatException e) {
+			page = 1;
+		}
+		// Gọi service để lấy danh sách đơn hàng phân trang
+		List<OrderModel> listOrder = orderService.listOrderByCustomerID(user.getUserID(), page);
 		req.setAttribute("listOrder", listOrder);
+
+		// Tính tổng số trang
+		int totalOrders = orderService.countOrdersByCustomerID(user.getUserID());
+		int pageSize = 5; // Mỗi trang 5 đơn hàng
+		int totalPages = (int) Math.ceil((double) totalOrders / pageSize);
+
+		// Set các attribute cho JSP sử dụng
+		req.setAttribute("currentPage", page);
+		req.setAttribute("totalPages", totalPages);
+
 		RequestDispatcher rd = req.getRequestDispatcher("/views/user/order/listOrder.jsp");
+		rd.forward(req, resp);
+	}
+
+	private void track(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		int orderID = Integer.parseInt(req.getParameter("id"));
+		OrderModel order = orderService.getOrderByOrderID(orderID);
+		List<DetailModel> details = detailService.listDetailsByOrderID(orderID);
+		req.setAttribute("details", details);
+		req.setAttribute("order", order);
+		RequestDispatcher rd = req.getRequestDispatcher("/views/user/order/track.jsp");
 		rd.forward(req, resp);
 	}
 
 	private void detailOrder(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		int orderID = Integer.parseInt(req.getParameter("orderID"));
-		
-		HttpSession session = req.getSession();
-		
-		UserModel user =(UserModel)session.getAttribute("user");
-
-		OrderModel order = orderService.getOrderByID(orderID);
-		List<DetailModel> listDetail = order.getDetails();
-		double totalCost = 0.0;
-		for (DetailModel detail : listDetail) {
-			if (detail.getItem().getPromotionPrice() == 0) {
-				totalCost += detail.getItem().getOriginalPrice() * detail.getQuantity();
-			} else {
-				totalCost += detail.getItem().getPromotionPrice() * detail.getQuantity();
-			}
-		}
-		PaymentModel payment = paymentService.findPaymentByID(orderID);
-		req.setAttribute("payment", payment);
-		req.setAttribute("rawPrice", totalCost);
+		OrderModel order = orderService.getOrderByOrderID(orderID);
+		List<DetailModel> details = detailService.listDetailsByOrderID(orderID);
 		req.setAttribute("order", order);
-		
-		req.setAttribute("user", user);
-		
-		session.removeAttribute("city");
-		session.removeAttribute("address");
-		session.removeAttribute("note");
-		session.removeAttribute("payMethod");
-		session.removeAttribute("voucherId");
-		session.removeAttribute("discount");
-		session.removeAttribute("totalCost");
-		session.removeAttribute("shippingMethod");
-		session.removeAttribute("transportFee");
-		session.removeAttribute("deliveryTime");
-		session.removeAttribute("listCart");
-//		session.removeAttribute("user");
-		
+		req.setAttribute("details", details);
 		RequestDispatcher rd = req.getRequestDispatcher("/views/user/order/detailOrder.jsp");
 		rd.forward(req, resp);
 	}
 
-	private void itemRating(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		int orderID = Integer.parseInt(req.getParameter("orderID"));
-		int itemID = Integer.parseInt(req.getParameter("itemID"));
+	private void rating(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		try {
 
-		DetailModel detail = detailService.findDetailByItemID(orderID, itemID);
-		OrderModel order = orderService.getOrderByOrderID(orderID);
+			String orderIDParam = req.getParameter("orderID");
+			String itemIDParam = req.getParameter("itemID");
+			String ratingParam = req.getParameter("rating");
+			String quantityParam = req.getParameter("quantity");
 
-		req.setAttribute("detail", detail);
-		req.setAttribute("order", order);
-		RequestDispatcher rd = req.getRequestDispatcher("/views/user/order/rating.jsp");
-		rd.forward(req, resp);
+			int itemID = Integer.parseInt(itemIDParam);
+			int orderID = Integer.parseInt(orderIDParam);
+			int quantity = Integer.parseInt(quantityParam);
+			String reviewImage = req.getParameter("reviewImage");
+			String reviewText = req.getParameter("reviewText");
+			java.sql.Date evaluationDate = java.sql.Date.valueOf(LocalDate.now()); 
+			int rating = Integer.parseInt(ratingParam);
+
+			boolean hasReviewed = detailService.hasReviewed(orderID, itemID);
+
+	        if (hasReviewed) {
+	            resp.sendRedirect(req.getContextPath() + "/usertrack?id=" + orderID);
+	            return;
+	        }
+			
+			// Tạo đối tượng ReviewModel
+			DetailModel review = new DetailModel();
+			review.setItemID(itemID);
+	        review.setOrderID(orderID);
+	        review.setQuantity(quantity);
+	        review.setLink(reviewImage);
+	        review.setContent(reviewText);
+	        review.setEvaluationDate(evaluationDate);
+	        review.setRating(rating);
+			boolean isAdded = detailService.addReview(review);
+			if (isAdded) {
+				resp.sendRedirect(req.getContextPath() + "/usertrack?id=" + orderID);
+			} else {
+				resp.sendRedirect(req.getContextPath() + "/usertrack?id=" + orderID);
+			}
+		} catch (Exception e) {
+			resp.sendRedirect(req.getContextPath() + "/usertrack");
+		}
 	}
-
 }

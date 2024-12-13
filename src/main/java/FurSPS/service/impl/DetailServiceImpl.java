@@ -38,4 +38,17 @@ public class DetailServiceImpl implements IDetailService {
 	public void insertDetail(List<CartModel> listCart, int orderID) {
 		detailDAO.insertDetail(listCart, orderID);
 	}
+
+	@Override
+	public List<DetailModel> listDetailsByOrderID(int orderID) {
+		return detailDAO.listDetailsByOrderID(orderID);
+	}
+	
+	public boolean hasReviewed(int orderID, int itemID) {
+		return detailDAO.hasReviewed(orderID, itemID);
+	}
+	
+	public boolean addReview(DetailModel review) {
+		return detailDAO.addReview(review);
+	}
 }

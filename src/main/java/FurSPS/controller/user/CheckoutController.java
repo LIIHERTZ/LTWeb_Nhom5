@@ -117,7 +117,7 @@ public class CheckoutController extends HttpServlet {
 
 		String city = req.getParameter("city");
 
-		String address = req.getParameter("detail");
+		String address = req.getParameter("detail") +", "+  req.getParameter("city") ;
 
 		String note = req.getParameter("note");
 		int payMethod = Integer.parseInt(req.getParameter("paymentMethod"));
@@ -195,7 +195,7 @@ public class CheckoutController extends HttpServlet {
 			paymentService.insertPayment(payment);
 			cartService.deleteAllByCustomerID(user.getUserID());
 			req.setAttribute("payment", payment);
-			resp.sendRedirect(req.getContextPath() + "/detailOrder?orderID=" + createdOrder.getOrderID());
+			resp.sendRedirect(req.getContextPath() + "/userdetailOrder?orderID=" + createdOrder.getOrderID());
 		} else if (payMethod == 1) {
 			// Thanh toán qua VNPay - Tạo URL thanh toán và chuyển hướng
 			String vnp_Version = "2.1.0";
@@ -265,44 +265,6 @@ public class CheckoutController extends HttpServlet {
 			job.addProperty("message", "success");
 			job.addProperty("data", paymentUrl);
 			Gson gson = new Gson();
-			
-			OrderModel newOrder = new OrderModel();
-			newOrder.setOrderDate(new Date());
-			newOrder.setAddress(address);
-			newOrder.setCity(city);
-			newOrder.setStatus(0);
-			newOrder.setTransportFee(shippingFee);
-			newOrder.setDiscount(discount);
-			newOrder.setTotalMoney(totalCost);
-			newOrder.setNote(note);
-			newOrder.setDeliveryTime(deliveryTime);
-			newOrder.setCustomerConfirmation(0);
-			newOrder.setCustomerID(user.getUserID());
-
-			OrderModel createdOrder = orderService.insertOrder(newOrder);
-
-			// Phuc
-			detailService.insertDetail(listCart, createdOrder.getOrderID());
-
-			if (voucherIdString != null) {
-				int voucherID = Integer.parseInt(voucherIdString);
-				voucherCustomerService.insertVoucherCustomer(voucherID, user.getUserID());
-			}
-			// *INFO: CREATE PAYMENT
-			PaymentModel payment = new PaymentModel();
-			payment.setMethod(payMethod);
-			payment.setOrderID(createdOrder.getOrderID());
-			payment.setBank("VNPAY");
-			payment.setCardOwner(user.getLastName() + user.getFirstName());
-			payment.setAccountNumber("9704198526191432198");
-
-			// *INFO: SET DEFAULT STATUS = 0 (NOT CHECKOUT). UPDATE LATER
-			payment.setStatus(1);
-			Timestamp now = Timestamp.from(Instant.now());
-			payment.setTime(now);
-			paymentService.insertPayment(payment);
-			cartService.deleteAllByCustomerID(user.getUserID());
-			req.setAttribute("payment", payment);
 			resp.sendRedirect(paymentUrl);
 		}
 	}

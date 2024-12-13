@@ -22,4 +22,6 @@ public interface IOrderDAO {
 	public List<OrderModel> findShipingByShipperID(int ShipperID);
 	public List<OrderModel> findHisDeliveryByShipperID(int ShipperID);
 	public OrderModel findShipByID(int OrderID);
+	int countOrdersByCustomerID(int customerID);
+	List<OrderModel> listOrderByCustomerID(int customerID, int page);
 }
