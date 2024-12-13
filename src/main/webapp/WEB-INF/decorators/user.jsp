@@ -16,18 +16,25 @@
 <meta name="description" content="">
 <meta name="keywords" content="">
 <!-- favicon -->
-<link rel="icon" type="image/x-icon" href="/FurSPS_Nhom5/assets/img/logo/favicon.png">
+<link rel="icon" type="image/x-icon"
+	href="/FurSPS_Nhom5/assets/img/logo/favicon.png">
 
 <!-- css -->
 <link rel="stylesheet" href="/FurSPS_Nhom5/assets/css/bootstrap.min.css">
-<link rel="stylesheet" href="/FurSPS_Nhom5/assets/css/all-fontawesome.min.css">
+<link rel="stylesheet"
+	href="/FurSPS_Nhom5/assets/css/all-fontawesome.min.css">
 <link rel="stylesheet" href="/FurSPS_Nhom5/assets/css/animate.min.css">
-<link rel="stylesheet" href="/FurSPS_Nhom5/assets/css/magnific-popup.min.css">
-<link rel="stylesheet" href="/FurSPS_Nhom5/assets/css/owl.carousel.min.css">
+<link rel="stylesheet"
+	href="/FurSPS_Nhom5/assets/css/magnific-popup.min.css">
+<link rel="stylesheet"
+	href="/FurSPS_Nhom5/assets/css/owl.carousel.min.css">
 <link rel="stylesheet" href="/FurSPS_Nhom5/assets/css/jquery-ui.min.css">
-<link rel="stylesheet" href="/FurSPS_Nhom5/assets/css/nice-select.min.css">
-<link rel="stylesheet" href="/FurSPS_Nhom5/assets/css/flex-slider.min.css">
+<link rel="stylesheet"
+	href="/FurSPS_Nhom5/assets/css/nice-select.min.css">
+<link rel="stylesheet"
+	href="/FurSPS_Nhom5/assets/css/flex-slider.min.css">
 <link rel="stylesheet" href="/FurSPS_Nhom5/assets/css/style.css">
+
 
 </head>
 
@@ -69,6 +76,4 @@
 	<script src="/FurSPS_Nhom5/assets/js/main.js"></script>
 
 </body>
-
-
 </html>

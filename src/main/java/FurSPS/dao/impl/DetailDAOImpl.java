@@ -3,12 +3,14 @@ package FurSPS.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import FurSPS.dao.IDetailDAO;
+import FurSPS.models.CartModel;
 import FurSPS.models.DetailModel;
 
 import FurSPS.configs.DBConnection;
@@ -47,9 +49,11 @@ public class DetailDAOImpl implements IDetailDAO {
 		return listDetail;
 	}
 
+	
+	//Phuc
 	@Override
 	public void updateDetail(DetailModel detail) {
-		String sql = "UPDATE `DETAIL` SET Rating = ?, Content = ?, EvaluationDate = ? WHERE ItemID = ? AND OrderID = ?";
+		String sql = "UPDATE [DETAIL] SET Rating = ?, Content = ?, EvaluationDate = ? WHERE ItemID = ? AND OrderID = ?";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();
@@ -66,16 +70,18 @@ public class DetailDAOImpl implements IDetailDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	//Phuc
 	@Override
 	public List<DetailModel> listDetail(int orderID) {
 		List<DetailModel> listDetail = new ArrayList<DetailModel>();
 		String sql =  "SELECT  P.ProductID,P.Description, I.ItemID, O.OrderID, P.ProductName, I.Color, I.Size, D.Quantity, I.OriginalPrice, I.PromotionPrice, IM.Image\r\n"
 					+ "FROM PRODUCT AS P \r\n"
-					+ "			INNER JOIN ITEM I ON P.ProductID = I.ProductID \r\n"
-					+ "			INNER JOIN DETAIL D on I.ItemID = D.ItemID\r\n"
-					+ "			INNER JOIN `ORDER` O on O.OrderID = D.OrderID\r\n"
+					+ "			INNER JOIN [ITEM] I ON P.ProductID = I.ProductID \r\n"
+					+ "			INNER JOIN [DETAIL] D on I.ItemID = D.ItemID\r\n"
+					+ "			INNER JOIN [ORDER] O on O.OrderID = D.OrderID\r\n"
 					+ "    		INNER JOIN (SELECT MIN(II.ItemImageID) AS ItemImageID, II.ItemID, MIN(II.Image) AS Image\r\n"
-					+ "						FROM ITEMIMAGE II, ITEM IT\r\n"
+					+ "						FROM [ITEMIMAGE] II, [ITEM] IT\r\n"
 					+ "						WHERE II.ItemID = IT.ItemID\r\n"
 					+ "						GROUP BY II.ItemID) IM ON IM.ItemID = I.ItemID \r\n"
 					+ "WHERE O.OrderID = ?";
@@ -108,14 +114,15 @@ public class DetailDAOImpl implements IDetailDAO {
 		return listDetail;
 	}
 
+	//Phuc
 	@Override
 	public DetailModel findDetailByItemID(int orderID, int itemID) {
 		String sql = "SELECT  P.ProductID, P.Description, I.ItemID, O.OrderID, P.ProductName, I.Color, I.Size, D.Quantity, I.OriginalPrice, I.PromotionPrice, IM.Image \r\n"
-				+ "FROM PRODUCT AS P  INNER JOIN ITEM I ON P.ProductID = I.ProductID \r\n"
-				+ "				   INNER JOIN DETAIL D on I.ItemID = D.ItemID \r\n"
-				+ "				   INNER JOIN `ORDER` O on O.OrderID = D.OrderID \r\n"
+				+ "FROM [PRODUCT] AS P  INNER JOIN ITEM I ON P.ProductID = I.ProductID \r\n"
+				+ "				   INNER JOIN [DETAIL] D on I.ItemID = D.ItemID \r\n"
+				+ "				   INNER JOIN [ORDER] O on O.OrderID = D.OrderID \r\n"
 				+ "				   INNER JOIN (SELECT MIN(II.ItemImageID) AS ItemImageID, II.ItemID, MIN(II.Image) AS Image \r\n"
-				+ "								FROM ITEMIMAGE II, ITEM IT WHERE II.ItemID = IT.ItemID \r\n"
+				+ "								FROM [ITEMIMAGE] II, [ITEM] IT WHERE II.ItemID = IT.ItemID \r\n"
 				+ "								GROUP BY II.ItemID) IM ON IM.ItemID = I.ItemID \r\n"
 				+ "WHERE O.OrderID = ? and I.ItemID = ? ";
 		DetailModel detail = new DetailModel();
@@ -178,4 +185,27 @@ public class DetailDAOImpl implements IDetailDAO {
 		}
 		return listBestSeller;
 	}
+
+	//Phuc
+	@Override
+	public void insertDetail(List<CartModel> listCart, int orderID) {
+		String sql = "INSERT INTO DETAIL (ItemID, Quantity, OrderID) VALUES (?, ?, ?)";
+		try (Connection conn = DBConnection.getConnection();
+		     PreparedStatement ps = conn.prepareStatement(sql)) {
+		    
+		    // Duyệt qua từng sản phẩm trong giỏ hàng
+		    for (CartModel cart : listCart) {
+		        ps.setInt(1, cart.getItemID());       
+		        ps.setInt(2, cart.getQuantity());    
+		        ps.setInt(3, orderID);               
+		        ps.addBatch();                       
+		    }
+		    
+		    // Thực thi batch
+		    ps.executeBatch();
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		}
+	}
+	
 }

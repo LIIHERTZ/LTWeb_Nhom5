@@ -3,6 +3,7 @@ package FurSPS.dao;
 import java.util.List;
 import java.util.Map;
 
+import FurSPS.models.CartModel;
 import FurSPS.models.DetailModel;
 
 public interface IDetailDAO {
@@ -11,4 +12,6 @@ public interface IDetailDAO {
 	public List<DetailModel> listDetail(int orderID);
 	DetailModel findDetailByItemID(int orderID, int itemID);
 	public List<Map<String, Object>> listBestSeller();
+	//phuc
+	void insertDetail(List<CartModel> listCart, int orderID);
 }

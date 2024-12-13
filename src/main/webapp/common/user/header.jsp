@@ -152,7 +152,7 @@
 										<div class="dropdown-cart-total">
 											<span>Total</span> <span class="total-amount">${subTotal} VNĐ</span>
 										</div>
-										<a href="shop-checkout.html" class="theme-btn">Checkout</a>
+										<a href="/FurSPS_Nhom5/checkout" class="theme-btn">Checkout</a>
 									</div>
 								</div></li>
 						</ul>
