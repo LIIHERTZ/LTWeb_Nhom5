@@ -20,7 +20,7 @@ import FurSPS.service.IVoucherService;
 import FurSPS.service.impl.VoucherServiceImpl;
 import FurSPS.utils.MessageUtil;
 
-@WebServlet(urlPatterns = { "/adminVoucher", "/adminInsertVoucher", "/adminUpdateVoucher" })
+@WebServlet(urlPatterns = { "/adminVoucher", "/adminInsertVoucher", "/adminUpdateVoucher" , "/adminDeleteVoucher"})
 public class VoucherController extends HttpServlet {
 	IVoucherService voucherService = new VoucherServiceImpl();
 	private static final long serialVersionUID = 1L;
@@ -39,6 +39,8 @@ public class VoucherController extends HttpServlet {
 					rd.forward(req, resp);
 				} else if (url.contains("adminUpdateVoucher")) {
 					getInforVoucher(req, resp);
+				} else if (url.contains("adminDeleteVoucher")) {
+					deleteVoucher(req, resp);
 				}
 			} else {
 				resp.sendRedirect(req.getContextPath() + "/login");
@@ -163,5 +165,19 @@ public class VoucherController extends HttpServlet {
 			MessageUtil.showMessage(req, "addFail");
 		}
 		findAllVoucher(req, resp);
+	}
+	
+	private void deleteVoucher(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+		try {
+			int id = Integer.parseInt(req.getParameter("voucherID"));
+			voucherService.deleteVoucher(id);
+			MessageUtil.showMessage(req, "delSuccess");
+		} catch (Exception ex) {
+			// In lỗi ra console để kiểm tra
+	        System.out.println("Error while deleting customer: " + ex.getMessage());
+			MessageUtil.showMessage(req, "delFail");
+		}
+		RequestDispatcher rd = req.getRequestDispatcher("adminVoucher");
+		rd.forward(req, resp);
 	}
 }

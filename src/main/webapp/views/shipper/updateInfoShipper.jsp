@@ -24,19 +24,19 @@
 									<input type="hidden" name="userID" value="${shipper.userID}" />
 									<div class="form-floating mb-3">
 										<input class="form-control" type="text" name="firstName"
-											value="${shipper.firstName}" /> <label>Tên</label>
+											value="${shipper.firstName}" required /> <label>Tên</label>
 									</div>
 									<div class="form-floating mb-3">
 										<input class="form-control" type="text" name="lastName"
-											value="${shipper.lastName}" /> <label>Họ</label>
+											value="${shipper.lastName}" required/> <label>Họ</label>
 									</div>
 									<div class="form-floating mb-3">
 										<input class="form-control" type="text" name="address"
-											value="${shipper.address}" /> <label>Địa chỉ</label>
+											value="${shipper.address}" required/> <label>Địa chỉ</label>
 									</div>
 									<div class="form-floating mb-3">
 										<input class="form-control" type="email" name="email"
-											value="${shipper.email}" /> <label>Email</label>
+											value="${shipper.email}" required/> <label>Email</label>
 									</div>
 									<div class="form-floating mb-3">
 										<select class="form-control" name="gender"
@@ -58,19 +58,19 @@
 									<div class="form-floating mb-3">
 										<input class="form-control" type="tel" name="phone"
 											value="${shipper.phone}" pattern="^[0-9]{10}$"
-											title="Số điện thoại phải là 10 chữ số" /> <label>SĐT</label>
+											title="Số điện thoại phải là 10 chữ số" required/> <label>SĐT</label>
 									</div>
 									<div class="form-floating mb-3">
 										<input class="form-control" type="date" name="dob"
-											value="${shipper.dob}" /> <label>Ngày sinh</label>
+											value="${shipper.dob}" required/> <label>Ngày sinh</label>
 									</div>
 									<div class="form-floating mb-3">
 										<input class="form-control" type="text" name="cid"
 											value="${shipper.cid}" pattern="^\d{12}$"
-											title="Căn cước công dân phải gồm 12 chữ số" /> <label>CCCD</label>
+											title="Căn cước công dân phải gồm 12 chữ số" required /> <label>CCCD</label>
 									</div>
 									<div class="form-floating mb-3">
-										<input class="form-control" name="area"
+										<input class="form-control" name="area" readonly
 											value="${shipper.area}" list="listlist" id="fruitsInput">
 										<datalist id="listlist">
 											<c:forEach var="city" items="${listAssign}">

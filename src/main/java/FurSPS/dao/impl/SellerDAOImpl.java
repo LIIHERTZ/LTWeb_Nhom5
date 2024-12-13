@@ -111,25 +111,90 @@ public class SellerDAOImpl implements ISellerDAO {
 
 	@Override
 	public void deleteSeller(int id) {
+//		Connection conn = null;
+//
+//	    // 1. Xóa các bản ghi trong bảng ACCOUNT có liên quan đến UserID của seller
+//	    String deleteAccountSQL = "DELETE FROM [Account] WHERE UserID = ?";
+//	    try {
+//	        conn = DBConnection.getConnection(); // kết nối cơ sở dữ liệu
+//
+//	        // Xóa tài khoản trong bảng Account
+//	        PreparedStatement psAccount = conn.prepareStatement(deleteAccountSQL);
+//	        psAccount.setInt(1, id);
+//	        psAccount.executeUpdate();  // Xóa tài khoản trong bảng Account
+//
+//	        // 2. Xóa seller trong bảng USER
+//	        String deleteUserSQL = "DELETE FROM [USER] WHERE UserID = ?";
+//	        PreparedStatement psUser = conn.prepareStatement(deleteUserSQL);
+//	        psUser.setInt(1, id);
+//	        psUser.executeUpdate();  // Xóa seller trong bảng USER
+//
+//	        conn.close(); // đóng kết nối
+//	    } catch (Exception e) {
+//	        e.printStackTrace(); // In ra lỗi nếu có
+//	    }
+		
 		Connection conn = null;
 
-	    // 1. Xóa các bản ghi trong bảng ACCOUNT có liên quan đến UserID của seller
-	    String deleteAccountSQL = "DELETE FROM [Account] WHERE UserID = ?";
 	    try {
-	        conn = DBConnection.getConnection(); // kết nối cơ sở dữ liệu
+	        conn = DBConnection.getConnection(); // Kết nối cơ sở dữ liệu
 
-	        // Xóa tài khoản trong bảng Account
+	        String deleteSearchHistorySQL = "DELETE FROM [SearchHistory] WHERE CustomerID = ?";
+	        PreparedStatement psSearchHistory = conn.prepareStatement(deleteSearchHistorySQL);
+	        psSearchHistory.setInt(1, id);
+	        psSearchHistory.executeUpdate();
+
+	        
+	        // 1. Xóa các bản ghi trong bảng Detail liên quan đến Order của SellerID
+	        String deleteDetailSQL = "DELETE FROM [Detail] WHERE OrderID IN (SELECT OrderID FROM [Order] WHERE SellerID = ?)";
+	        PreparedStatement psDetail = conn.prepareStatement(deleteDetailSQL);
+	        psDetail.setInt(1, id);
+	        psDetail.executeUpdate();
+
+	        // 2. Xóa các bản ghi trong bảng Payment liên quan đến các Order của SellerID
+	        String deletePaymentSQL = "DELETE FROM [Payment] WHERE OrderID IN (SELECT OrderID FROM [Order] WHERE SellerID = ?)";
+	        PreparedStatement psPayment = conn.prepareStatement(deletePaymentSQL);
+	        psPayment.setInt(1, id);
+	        psPayment.executeUpdate();
+
+	        // 3. Xóa các bản ghi trong bảng Order liên quan đến SellerID
+	        String deleteOrderSQL = "DELETE FROM [Order] WHERE SellerID = ?";
+	        PreparedStatement psOrder = conn.prepareStatement(deleteOrderSQL);
+	        psOrder.setInt(1, id);
+	        psOrder.executeUpdate();
+	        
+	        
+	        // 4. Xóa các bản ghi trong bảng Order liên quan đến CustomerID
+	        String deleteOrderByCustomerSQL = "DELETE FROM [Order] WHERE CustomerID = ?";
+	        PreparedStatement psOrderByCustomer = conn.prepareStatement(deleteOrderByCustomerSQL);
+	        psOrderByCustomer.setInt(1, id);
+	        psOrderByCustomer.executeUpdate();
+
+	        // 5. Xóa các bản ghi trong bảng Cart liên quan đến CustomerID
+	        String deleteCartSQL = "DELETE FROM [Cart] WHERE CustomerID = ?";
+	        PreparedStatement psCart = conn.prepareStatement(deleteCartSQL);
+	        psCart.setInt(1, id);
+	        psCart.executeUpdate();
+
+	        // 4. Xóa các bản ghi trong bảng Account liên quan đến SellerID
+	        String deleteAccountSQL = "DELETE FROM [Account] WHERE UserID = ?";
 	        PreparedStatement psAccount = conn.prepareStatement(deleteAccountSQL);
 	        psAccount.setInt(1, id);
-	        psAccount.executeUpdate();  // Xóa tài khoản trong bảng Account
+	        psAccount.executeUpdate();
 
-	        // 2. Xóa seller trong bảng USER
+	        // 5. Xóa các bản ghi trong bảng Vouchercustomer nếu seller có liên quan
+	        String deleteVoucherCustomerSQL = "DELETE FROM [Vouchercustomer] WHERE CustomerID = ?";
+	        PreparedStatement psVoucher = conn.prepareStatement(deleteVoucherCustomerSQL);
+	        psVoucher.setInt(1, id);
+	        psVoucher.executeUpdate();
+
+	        // 6. Xóa seller trong bảng USER
 	        String deleteUserSQL = "DELETE FROM [USER] WHERE UserID = ?";
 	        PreparedStatement psUser = conn.prepareStatement(deleteUserSQL);
 	        psUser.setInt(1, id);
-	        psUser.executeUpdate();  // Xóa seller trong bảng USER
+	        psUser.executeUpdate();
 
-	        conn.close(); // đóng kết nối
+	        conn.close(); // Đóng kết nối
 	    } catch (Exception e) {
 	        e.printStackTrace(); // In ra lỗi nếu có
 	    }

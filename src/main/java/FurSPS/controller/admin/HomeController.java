@@ -60,13 +60,9 @@ public class HomeController extends HttpServlet {
 					List<List<Object>> listOrder2 = new ArrayList<>();
 					List<List<Object>> listOrderSta = new ArrayList<>();
 					List<List<Object>> listTotal = reportService.reportTotalMoneyInMonth();
-					
-					
+
 					req.setAttribute("productrating", prod.ProductRating());
-					
-									
-					
-									
+
 					int sumTotal = 0;
 					int sumOrder = 0;
 					int countPaymentCard = 0;
@@ -74,15 +70,18 @@ public class HomeController extends HttpServlet {
 					int totalPaymentCard = 0;
 					int totalPayMentNormal = 0;
 					int countNoPay = 0;
-					
-					
+
 					session = req.getSession(true);
-					
-					
+
 					Date currentDate = new Date();
-					int monthNow = currentDate.getMonth() + 1;
-					
-//					// Thay vì sử dụng Date, ta sử dụng LocalDate để lấy tháng hiện tại
+//					int monthNow = monthNow + 1;
+
+					Calendar currentCalendar = Calendar.getInstance();
+					currentCalendar.setTime(currentDate);
+					int monthNow = currentCalendar.get(Calendar.MONTH) + 1; // Tháng hiện tại
+					int yearNow = currentCalendar.get(Calendar.YEAR);
+//					
+					// Thay vì sử dụng Date, ta sử dụng LocalDate để lấy tháng hiện tại
 //	                LocalDate currentDate = LocalDate.now();
 //	                int monthNow = currentDate.getMonthValue(); // Trả về tháng từ 1-12
 
@@ -98,10 +97,7 @@ public class HomeController extends HttpServlet {
 					calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 					calendar.add(Calendar.DATE, -calendar.get(Calendar.DAY_OF_WEEK)); // Lấy ngày đầu tiên của tuần
 					Date firstDayOfWeek = calendar.getTime();
-					
-					
-					
-					
+
 					for (OrderModel list : listOrder) {
 						//////////////////////////////////////////
 						// Chuyển java.sql.Date sang LocalDate
@@ -120,12 +116,17 @@ public class HomeController extends HttpServlet {
 //					    // Lấy tháng và năm từ LocalDate
 //					    int orderMonth = orderLocalDate.getMonthValue();  // Tháng từ 1 đến 12
 //					    int orderYear = orderLocalDate.getYear();         // Năm
-						
+
 						///////////////////////////////////////////
-					    
-					    if (list.getOrderDate().compareTo(firstDayOfWeek) > 0)
-						//////////////////////////////////////////
-						// Chuyển java.sql.Date sang LocalDate
+						Calendar orderCalendar = Calendar.getInstance();
+				        orderCalendar.setTime(list.getOrderDate());
+				        int orderMonth = orderCalendar.get(Calendar.MONTH); // Tháng của đơn hàng
+				        int orderYear = orderCalendar.get(Calendar.YEAR); // Năm của đơn hàng
+						
+						
+						if (list.getOrderDate().compareTo(firstDayOfWeek) > 0)
+							//////////////////////////////////////////
+							// Chuyển java.sql.Date sang LocalDate
 //					    LocalDate orderLocalDate = new java.sql.Date(list.getOrderDate().getTime()).toInstant()
 //					                                      .atZone(ZoneId.systemDefault())
 //					                                      .toLocalDate();
@@ -141,23 +142,27 @@ public class HomeController extends HttpServlet {
 //					    // Lấy tháng và năm từ LocalDate
 //					    int orderMonth = orderLocalDate.getMonthValue();  // Tháng từ 1 đến 12
 //					    int orderYear = orderLocalDate.getYear();         // Năm
+
+							///////////////////////////////////////////
+
 						
-						///////////////////////////////////////////
-					    
-					    if (list.getOrderDate().compareTo(firstDayOfWeek) > 0)
-							listOrder1.add(list);
+							
 						
-						
-						if (list.getOrderDate().getMonth() > currentDate.getMonth() - 6
-								&& list.getOrderDate().getYear() == currentDate.getYear()) {
+						if (list.getOrderDate().compareTo(firstDayOfWeek) > 0)
+								listOrder1.add(list);
+
+						if (orderMonth > monthNow - 6
+								&& orderYear == yearNow) {
 							List<Object> row = new ArrayList<>();
-							row.add((list.getOrderDate().getMonth()) + 1); // Ban đầu là (list.getOrderDate().getMonth()) + 1
-							row.add((list.getOrderDate().getMonth()) + 1); // Ban đầu là (list.getOrderDate().getMonth()) + 1
+							row.add((orderMonth) + 1); // Ban đầu là
+																			// (orderMonth) + 1
+							row.add((orderMonth) + 1); // Ban đầu là
+																			// (orderMonth) + 1
 							row.add(list.getStatus());
 							listOrder2.add(row);
 						}
-						if (list.getOrderDate().getMonth() == currentDate.getMonth()
-								&& list.getOrderDate().getYear() == currentDate.getYear()) {
+						if (orderMonth == monthNow
+								&& orderYear == yearNow) {
 							if (list.getPayment().getStatus() == 1) {
 								if (list.getPayment().getMethod() == 1) {
 									countPaymentCard += 1;
