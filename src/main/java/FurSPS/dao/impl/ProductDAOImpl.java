@@ -255,19 +255,20 @@ public class ProductDAOImpl implements IProductDAO {
 
 	public List<ProductModel> searchProductByName(String key) {
 		List<ProductModel> listPro = new ArrayList<ProductModel>();
-		String sql = "SELECT p.*,\r\n"
-				+ "       SUBSTRING_INDEX(GROUP_CONCAT(ii.Image ORDER BY ii.ItemImageID), ',', 1) AS FirstImage,\r\n"
-				+ "       (SELECT MIN(i.PromotionPrice) FROM ITEM i WHERE i.ProductID = p.ProductID) AS MinPromotionPrice,\r\n"
-				+ "       (SELECT MIN(i.OriginalPrice) FROM ITEM i WHERE i.ProductID = p.ProductID) AS MinOriginalPrice\r\n"
-				+ "FROM CATEGORY c\r\n" + "JOIN PRODUCT p ON c.CategoryID = p.CategoryID\r\n"
-				+ "JOIN ITEM i ON p.ProductID = i.ProductID\r\n" + "JOIN ITEMIMAGE ii ON ii.ItemID = i.ItemID\r\n"
-				+ "WHERE p.ProductName LIKE ? OR p.Description LIKE ? \r\n" + "GROUP BY p.ProductID";
+		String sql = "SELECT p.*, fi.Image AS FirstImage, " +
+	             "(SELECT MIN(i.PromotionPrice) FROM ITEM i WHERE i.ProductID = p.ProductID) AS MinPromotionPrice, " +
+	             "(SELECT MIN(i.OriginalPrice) FROM ITEM i WHERE i.ProductID = p.ProductID) AS MinOriginalPrice " +
+	             "FROM CATEGORY c JOIN PRODUCT p ON c.CategoryID = p.CategoryID " +
+	             "JOIN ITEM i ON p.ProductID = i.ProductID " +
+	             "LEFT JOIN (SELECT ii.ItemID, ii.Image FROM ITEMIMAGE ii) fi ON i.ItemID = fi.ItemID " +
+	             "WHERE p.ProductName LIKE ? OR p.Description LIKE ? " +
+	             "GROUP BY p.ProductID, fi.Image, p.ProductName, p.CategoryID, p.Description, p.Origin, p.SupplierID, p.Material;";
 		try {
 			new DBConnection();
 			conn = DBConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, "%" + key + "%");
-			ps.setString(2, key + "%");
+			ps.setString(2, "%"+ key + "%");
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				ProductModel model = new ProductModel();
