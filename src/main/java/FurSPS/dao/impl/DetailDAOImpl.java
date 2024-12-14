@@ -30,6 +30,7 @@ public class DetailDAOImpl implements IDetailDAO {
 	             "d.Content, " +
 	             "d.Rating, " +
 	             "d.EvaluationDate, " +
+	             "d.Link," +
 	             "u.Avatar, " +
 	             "CONCAT(u.FirstName, ' ', u.LastName) AS Name " +
 	             "FROM DETAIL d " +
@@ -50,6 +51,7 @@ public class DetailDAOImpl implements IDetailDAO {
 				Detail.setAvatar(rs.getString("Avatar"));
 				Detail.setContent(rs.getString("Content"));
 				Detail.setEvaluationDate(rs.getDate("EvaluationDate"));
+				Detail.setLink(rs.getString("Link"));
 				Detail.setItemID(rs.getInt("ItemID"));
 				Detail.setRating(rs.getInt("Rating"));
 				Detail.setName(rs.getString("Name"));
@@ -73,8 +75,9 @@ public class DetailDAOImpl implements IDetailDAO {
 			ps.setInt(1, detail.getRating());
 			ps.setString(2, detail.getContent());
 			ps.setDate(3, new java.sql.Date(detail.getEvaluationDate().getTime()));
-			ps.setInt(4, detail.getItemID());
-			ps.setInt(5, detail.getOrderID());
+			ps.setString(4,detail.getLink());
+			ps.setInt(5, detail.getItemID());
+			ps.setInt(6, detail.getOrderID());
 
 			ps.executeUpdate();
 		} catch (Exception e) {

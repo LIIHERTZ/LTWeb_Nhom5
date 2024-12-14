@@ -14,7 +14,7 @@ public class RatingDAOImpl implements IRatingDAO {
 
 	@Override
 	public List<RatingModel> findRatinglByProductID(int productID) {
-		String sql  = "SELECT Rating, COUNT(*) AS RatingCount FROM DETAIL d JOIN ITEM i ON i.ItemID = d.ItemID WHERE Rating IN (1, 2, 3, 4, 5) AND i.ProductID = ? GROUP BY Rating ORDER BY Rating DESC;";
+		String sql  = "SELECT Rating, Link, COUNT(*) AS RatingCount FROM DETAIL d JOIN ITEM i ON i.ItemID = d.ItemID WHERE Rating IN (1, 2, 3, 4, 5) AND i.ProductID = ? GROUP BY Rating,Link ORDER BY Rating DESC;";
 
 		List<RatingModel> listRating = new ArrayList<>();
 		try {
@@ -27,7 +27,10 @@ public class RatingDAOImpl implements IRatingDAO {
 				RatingModel rating = new RatingModel();
 				rating.setNumOfStar(rs.getInt("Rating"));
 				rating.setNumOfRating(rs.getInt("RatingCount"));
+				rating.setLink(rs.getString("Link"));
+				
 				listRating.add(rating);
+				
 			}
 			conn.close();
 		} catch (Exception e) {

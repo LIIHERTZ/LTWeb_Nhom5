@@ -15,7 +15,7 @@
 			<div class="site-breadcrumb-wrap">
 				<h4 class="breadcrumb-title">Shop Single</h4>
 				<ul class="breadcrumb-menu">
-					<li><a href="/FurSPS_Nhom5/user/home"><i
+					<li><a href="/FurSPS_Nhom5/home"><i
 							class="far fa-home"></i> Home</a></li>
 					<li class="active">Shop Single</li>
 				</ul>
@@ -132,7 +132,7 @@
 							<div class="row align-items-center">
 								<div class="col-md-6 col-lg-12 col-xl-6">
 									<div class="shop-single-btn">
-										<a href="javascript:void(0);"
+										<a href="/FurSPS_Nhom5/login"
 											class="theme-btn add-to-cart-btn"> <span
 											class="far fa-shopping-bag"></span>Add To Cart
 										</a>
@@ -188,18 +188,16 @@
 										</c:forEach>
 										<c:forEach items="${detailList}" var="item" varStatus="loop">
 											<div class="blog-comments-item">
-												<img src="${item.avatar}" alt="thumb" class="avatar-img"
-													style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
-
+												<img src="${item.avatar}" alt="thumb" class="avatar-img" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+												
 												<div class="blog-comments-content">
 													<h5>${item.name}</h5>
 													<span><i class="far fa-clock"></i> <fmt:formatDate
 															value="${item.evaluationDate}" pattern="dd/MM/yyyy" /> </span>
 													<p>${item.content}</p>
-
-
-													<img src="${item.link}" alt=""
-														style="width: 200px; height: 200px; object-fit: cover; border-radius: 0; margin-left: 50px;">
+													
+													
+													<img src="${item.link}" alt="" style="width: 200px; height: 200px; object-fit: cover; border-radius: 0; margin-left: 50px;">
 
 													<div class="review-rating">
 														<span class="stext-105 cl3"> <i class="fas fa-star"
@@ -242,17 +240,16 @@
 							<div class="col-md-6 col-lg-3">
 								<div class="product-item">
 									<div class="product-img">
-										<a href='<c:url value="/user/products?id=${item.productID}"/>'><img
+										<a href='<c:url value="/products?id=${item.productID}"/>'><img
 											src="${item.displayedImage}" alt=""></a>
 										<div class="product-action-wrap">
 											<div class="product-action">
-												<a
-													href='<c:url value="/user/products?id=${item.productID}"/>'
+												<a href='<c:url value="/products?id=${item.productID}"/>'
 													data-bs-toggle="modal"
 													data-bs-target="#quickview-${item.productID}"
 													data-tooltip="tooltip" title="Quick View"><i
 													class="far fa-eye"></i></a> <a
-													href='<c:url value="/user/products?id=${item.productID}"/>'
+													href='<c:url value="/products?id=${item.productID}"/>'
 													data-tooltip="tooltip" title="View detail"><i
 													class="far fa-search"></i></a>
 											</div>
@@ -261,7 +258,7 @@
 									<div class="product-content">
 										<h3 class="product-title">
 											<a
-												href="<c:url value='/user/products?id=${item.productID}' />">${item.productName}</a>
+												href="<c:url value='/products?id=${item.productID}' />">${item.productName}</a>
 										</h3>
 										<p>${item.description}</p>
 										<span class="stext-105 cl3"> <i class="fas fa-star"
@@ -282,7 +279,7 @@
 														pattern="#,##0 VND" var="formattedPrice" />
 													${formattedPrice}</span>
 											</div>
-											<a href='<c:url value="/user/products?id=${item.productID}"/>' class="product-cart-btn-link">
+											<a href='<c:url value="/products?id=${item.productID}"/>' class="product-cart-btn-link">
 												<button type="button" class="product-cart-btn"
 													data-bs-placement="left" data-tooltip="tooltip"
 													title="Add To Cart">
@@ -356,8 +353,7 @@
 															<li><strong>Xuất xứ:</strong> ${item.origin}</li>
 														</ul>
 														<div class="quickview-cart">
-															<a
-																href='<c:url value="/user/products?id=${item.productID}"/>'
+															<a href='<c:url value="/products?id=${item.productID}"/>'
 																class="theme-btn">Add to cart</a>
 														</div>
 														<div class="quickview-social">
@@ -394,17 +390,16 @@
 							<div class="col-md-6 col-lg-3">
 								<div class="product-item">
 									<div class="product-img">
-										<a href='<c:url value="/user/products?id=${item.productID}"/>'><img
+										<a href='<c:url value="/products?id=${item.productID}"/>'><img
 											src="${item.displayedImage}" alt=""></a>
 										<div class="product-action-wrap">
 											<div class="product-action">
-												<a
-													href='<c:url value="/user/products?id=${item.productID}"/>'
+												<a href='<c:url value="/products?id=${item.productID}"/>'
 													data-bs-toggle="modal"
 													data-bs-target="#quickview-${item.productID}"
 													data-tooltip="tooltip" title="Quick View"><i
 													class="far fa-eye"></i></a> <a
-													href='<c:url value="/user/products?id=${item.productID}"/>'
+													href='<c:url value="/products?id=${item.productID}"/>'
 													data-tooltip="tooltip" title="View detail"><i
 													class="far fa-search"></i></a>
 											</div>
@@ -413,7 +408,7 @@
 									<div class="product-content">
 										<h3 class="product-title">
 											<a
-												href="<c:url value='/user/products?id=${item.productID}' />">${item.productName}</a>
+												href="<c:url value='/products?id=${item.productID}' />">${item.productName}</a>
 										</h3>
 										<p>${item.description}</p>
 										<span class="stext-105 cl3"> <i class="fas fa-star"
@@ -506,13 +501,13 @@
 															<li><strong>Xuất xứ:</strong> ${item.origin}</li>
 														</ul>
 														<div class="quickview-cart">
-															<a
-																href='<c:url value="/user/products?id=${item.productID}"/>'
+															<a href='<c:url value="/products?id=${item.productID}"/>'
 																class="theme-btn">Add to cart</a>
 														</div>
 														<div class="quickview-social">
-															<span>Share:</span> <a><i class="fab fa-facebook-f"></i></a>
-															<a><i class="fab fa-x-twitter"></i></a> <a><i
+															<span>Share:</span> <a ><i
+																class="fab fa-facebook-f"></i></a> <a><i
+																class="fab fa-x-twitter"></i></a> <a><i
 																class="fab fa-pinterest-p"></i></a> <a><i
 																class="fab fa-instagram"></i></a> <a><i
 																class="fab fa-linkedin-in"></i></a>
@@ -563,72 +558,7 @@
 															});
 										});
 
-						// Hàm xử lý khi nhấn "Add To Cart"
-						document
-								.querySelectorAll('.add-to-cart-btn')
-								.forEach(
-										function(button) {
-											button
-													.addEventListener(
-															'click',
-															function(e) {
-																e
-																		.preventDefault(); // Ngăn hành vi mặc định của nút
-
-																// Lấy giá trị Quantity
-																const quantityInput = document
-																		.querySelector('.quantity');
-																const selectedQuantity = quantityInput ? quantityInput.value
-																		: 1;
-
-																// Lấy giá trị Item ID từ radio button được chọn
-																const selectedColorRadio = document
-																		.querySelector('input[name="color"]:checked');
-																const selectedItemID = selectedColorRadio ? selectedColorRadio.value
-																		: null;
-																const urlParams = new URLSearchParams(
-																		window.location.search);
-																const productID = urlParams
-																		.get('id');
-
-																if (!selectedItemID) {
-																	alert('Vui lòng chọn màu!');
-																	return;
-																}
-																$
-																		.ajax({
-																			url : '/FurSPS_Nhom5/userAddToCart',
-																			type : 'POST',
-																			data : {
-																				selectedItemID : selectedItemID,
-																				selectedQuantity : selectedQuantity,
-																				productID : productID
-																			},
-																			success : function(
-																					response) {
-																				if (response.success) {
-																					alert('Thêm vào giỏ hàng thành công!!!');
-																					window.location.href = response.redirect; // Chuyển hướng
-																				} else {
-																					alert(response.message); // Hiển thị thông báo lỗi
-																				}
-																			},
-																			error : function(
-																					xhr,
-																					status,
-																					error) {
-																				console
-																						.error(
-																								'Error:',
-																								error);
-																				console
-																						.log(
-																								'Response:',
-																								xhr.responseText);
-																			},
-																		});
-															});
-										});
+						
 						const minusBtn = document.querySelector('.minus-btn');
 						const plusBtn = document.querySelector('.plus-btn');
 						const quantityInput = document

@@ -1,4 +1,4 @@
-package FurSPS.controller.user;
+package FurSPS.controller.web;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -41,7 +41,7 @@ import FurSPS.service.impl.ProductServiceImpl;
 import FurSPS.service.impl.RatingServiceImpl;
 import FurSPS.service.impl.SearchHistoryServiceImpl;
 
-@WebServlet(urlPatterns = { "/user/products", "/user/search" })
+@WebServlet(urlPatterns = { "/products", "/search" })
 @MultipartConfig
 public class ProductController extends HttpServlet {
 
@@ -62,24 +62,8 @@ public class ProductController extends HttpServlet {
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");
-		showHistorySearch(req, resp);
 		String url = req.getRequestURI().toString();
 		if (url.contains("products")) {
-			HttpSession session = req.getSession(true);
-			if (session.getAttribute("user") != null) {
-				UserModel user = (UserModel) session.getAttribute("user");
-				List<CartModel> listCart = cartService.findByCustomerId(user.getUserID());
-				int quantity =0;
-				int subTotal = 0;
-				for (CartModel cart : listCart) {
-					subTotal += cart.getTotalPrice();
-					quantity += 1;
-				}
-				getServletContext().setAttribute("totalQuantity", quantity);
-				getServletContext().setAttribute("carts", listCart);
-				getServletContext().setAttribute("subTotal", subTotal);
-			}
-
 			String idString = req.getParameter("id");
 			if (idString != null) {
 				int id = Integer.parseInt(req.getParameter("id"));
@@ -96,7 +80,7 @@ public class ProductController extends HttpServlet {
 				req.setAttribute("supProList", supProList);
 				req.setAttribute("product", productModel);
 
-				rd = req.getRequestDispatcher("/views/user/products/productdetail.jsp");
+				rd = req.getRequestDispatcher("/views/web/products/productdetail.jsp");
 			} else {
 				String cateIdString = req.getParameter("cateId");
 				String pageString = req.getParameter("page");
@@ -141,25 +125,15 @@ public class ProductController extends HttpServlet {
 				req.setAttribute("rootCategories", listRootCategory);
 				req.setAttribute("levelCategories", listCategoryLevel);
 
-				rd = req.getRequestDispatcher("/views/user/products/products.jsp");
+				rd = req.getRequestDispatcher("/views/web/products/products.jsp");
 			}
 
 			rd.forward(req, resp);
 		} else if (url.contains("/search")) {
 			List<ProductModel> listProduct = new ArrayList<ProductModel>();
 			String keyword = req.getParameter("keyword");
-			HttpSession session = req.getSession();
 			if (keyword != null) {
-				if (session != null && session.getAttribute("user") != null) {
-					UserModel user = (UserModel) session.getAttribute("user");
-					SearchHistoryModel historySearch = new SearchHistoryModel();
-					historySearch.setCustomerID(user.getUserID());
-					historySearch.setCreatedAt(new Timestamp(new Date().getTime()));
-					historySearch.setHistory(keyword);
-					searchHistoryService.insertSearchHistory(historySearch);
-				}
 				listProduct = productService.searchProductByName(keyword);
-
 			}
 			String filterPrice = req.getParameter("price");
 			String filterRating = req.getParameter("rating");
@@ -171,19 +145,10 @@ public class ProductController extends HttpServlet {
 			req.setAttribute("sort", sortProduct);
 			req.setAttribute("rating", filterRating);
 			req.setAttribute("products", listProduct);
-			req.getRequestDispatcher("/views/user/products/products.jsp").forward(req, resp);
+			req.getRequestDispatcher("/views/web/products/products.jsp").forward(req, resp);
 		}
 	}
 
-	private void showHistorySearch(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		HttpSession session = req.getSession();
-		if (session != null && session.getAttribute("user") != null) {
-			UserModel user = (UserModel) session.getAttribute("user");
-			List<SearchHistoryModel> searchHistory = searchHistoryService.getHistorySearchByCID(user.getUserID());
-			req.setAttribute("history", searchHistory);
-		}
-	}
 
 	private List<ProductModel> filterAndSortProduct(List<ProductModel> listProduct, String filterPrice, String rating,
 			String sortProduct) {

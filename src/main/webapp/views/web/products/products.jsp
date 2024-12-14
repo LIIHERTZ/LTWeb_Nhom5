@@ -5,7 +5,9 @@
 <html lang="en">
 
 <script src="/FurSPS_Nhom5/assets/js/jquery-3.7.1.min.js"></script>
+
 <script src="/FurSPS_Nhom5/assets/js/jquery-ui.min.js"></script>
+
 <!-- breadcrumb -->
 <div class="site-breadcrumb">
 	<div class="site-breadcrumb-bg"
@@ -14,7 +16,7 @@
 		<div class="site-breadcrumb-wrap">
 			<h4 class="breadcrumb-title">Sản phẩm</h4>
 			<ul class="breadcrumb-menu">
-				<li><a href="/FurSPS_Nhom5/user/home"><i
+				<li><a href="/FurSPS_Nhom5/home"><i
 						class="far fa-home"></i> Home</a></li>
 				<li class="active">Sản phẩm</li>
 			</ul>
@@ -57,7 +59,7 @@
 							<ul class="shop-category-list">
 								<!-- Liên kết "Tất cả sản phẩm" -->
 								<li class="${rootcategory.categoryID == null ? 'active' : ''}">
-									<a href="/FurSPS_Nhom5/user/products" data-filter="*">Tất
+									<a href="/FurSPS_Nhom5/products" data-filter="*">Tất
 										cả sản phẩm</a>
 								</li>
 
@@ -65,7 +67,7 @@
 								<c:forEach items="${levelCategories}" var="item">
 									<li class="nav-item dropdown">
 										<!-- Danh mục cha --> <a class="nav-link dropdown-toggle"
-										href="<c:url value='/user/products?cateId=${item.categoryID}'/>"
+										href="<c:url value='/products?cateId=${item.categoryID}'/>"
 										id="navbarDropdown${item.categoryID}" role="button"
 										data-bs-toggle="dropdown" aria-expanded="false">
 											${item.categoryName} </a> <!-- Nếu có danh mục con, hiển thị menu dropdown -->
@@ -75,13 +77,13 @@
 
 												<!-- Mục "Tất cả" cho danh mục con -->
 												<li><a class="dropdown-item"
-													href="<c:url value='/user/products?cateId=${item.categoryID}'/>">
+													href="<c:url value='/products?cateId=${item.categoryID}'/>">
 														Tất cả ${item.categoryName}</a></li>
 
 												<!-- Duyệt qua các danh mục con -->
 												<c:forEach items="${item.childrens}" var="subItem">
 													<li><a class="dropdown-item"
-														href="<c:url value='/user/products?cateId=${subItem.categoryID}'/>">
+														href="<c:url value='/products?cateId=${subItem.categoryID}'/>">
 															${subItem.categoryName}</a></li>
 												</c:forEach>
 											</ul>
@@ -198,16 +200,16 @@
 									<div class="product-item">
 										<div class="product-img">
 											<a
-												href='<c:url value="/user/products?id=${item.productID}"/>'><img
+												href='<c:url value="/products?id=${item.productID}"/>'><img
 												src="${item.displayedImage}" alt="IMG-PRODUCT"></a>
 											<div class="product-action-wrap">
 												<div class="product-action">
-													<a href='<c:url value="/user/products?id=${item.productID}"/>'
+													<a href='<c:url value="/products?id=${item.productID}"/>'
 														data-bs-toggle="modal"
 														data-bs-target="#quickview-${item.productID}"
 														data-tooltip="tooltip" title="Quick View"><i
 														class="far fa-eye"></i></a> <a
-														href='<c:url value="/user/products?id=${item.productID}"/>'
+														href='<c:url value="/products?id=${item.productID}"/>'
 														data-tooltip="tooltip" title="View detail"><i
 														class="far fa-search"></i></a>
 												</div>
@@ -216,7 +218,7 @@
 										<div class="product-content">
 											<h3 class="product-title">
 												<a
-													href='<c:url value="/user/products?id=${item.productID}"/>'>${item.productName}</a>
+													href='<c:url value="/products?id=${item.productID}"/>'>${item.productName}</a>
 											</h3>
 											<p>${item.description}</p>
 											<span class="stext-105 cl3"> <i class="fas fa-star"
@@ -238,7 +240,7 @@
 															var="formattedPrice" /> ${formattedPrice}</span>
 												</div>
 												<a class="product-cart"
-													href="<c:url value='/user/products?id=${item.productID}' />"
+													href="<c:url value='/products?id=${item.productID}' />"
 													data-bs-placement="left" data-tooltip="tooltip"
 													title="Add To Cart"> <i class="far fa-shopping-bag"></i>
 												</a>
@@ -310,7 +312,7 @@
 																<li><strong>Xuất xứ:</strong> ${item.origin}</li>
 															</ul>
 															<div class="quickview-cart">
-																<a href="<c:url value='/user/products?id=${item.productID}' />" class="theme-btn">Buy This Product</a>
+																<a href="<c:url value='/products?id=${item.productID}' />" class="theme-btn">Buy This Product</a>
 															</div>
 															<div class="quickview-social">
 																<span>Share:</span> <a ><i

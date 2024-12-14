@@ -53,7 +53,7 @@
 }
 </style>
 								</div>
-								<h5>${user.firstName}${user.lastName}</h5>
+								<h5>${user.firstName} ${user.lastName}</h5>
 							</div>
 							<ul class="sidebar-list">
 
@@ -141,7 +141,18 @@
 													<tbody>
 														<c:forEach var="detail" items="${details}">
 															<tr>
-																<td><h6>${detail.product.productName}</h6></td>
+																<td>
+																<div class="table-list-info">
+																	<a>
+																		<div class="table-list-img">
+																			<img src="${detail.itm.image}" alt="eee">
+																		</div>
+																		<div class="table-list-content">
+																			<h6>${detail.product.productName}</h6>
+																		</div>
+																	</a>
+																</div>
+															</td>
 																<td>${detail.category.categoryName}</td>
 																<td>${detail.item.color}</td>
 																<td

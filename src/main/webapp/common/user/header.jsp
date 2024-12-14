@@ -53,21 +53,9 @@
 									<li>
 									<li><a href="<c:url value='/logout'/>"><i
 											class="far fa-sign-in"></i> Đăng xuất</a></li>
-									<li>
-										<div class="dropdown">
-											<a href="#" class="dropdown-toggle" data-bs-toggle="dropdown"
-												aria-expanded="false"> <i class="far fa-globe-americas"></i>
-												EN
-											</a>
-											<div class="dropdown-menu">
-												<a class="dropdown-item" href="#">EN</a> <a
-													class="dropdown-item" href="#">VI</a>
-											</div>
-										</div>
-									</li>
 									<li class="social">
 										<div class="header-top-social">
-											<span>Follow Us: </span> <a href="#"><i
+											<span>Follow Us: </span> <a><i
 												class="fab fa-facebook"></i></a> <a ><i
 												class="fab fa-x-twitter"></i></a> <a ><i
 												class="fab fa-instagram"></i></a> <a ><i
@@ -114,23 +102,15 @@
 									class="nav-link<c:if test='${fn:contains(pageContext.request.requestURI, "products")}'>active</c:if>"
 									href="<c:url value='/user/products'/>">Sản phẩm</a></li>
 								<li class="nav-item dropdown"><a
-									class="nav-link dropdown-toggle" href="#"
+									class="nav-link dropdown-toggle"
 									data-bs-toggle="dropdown">Hồ sơ,${user.lastName} ${user.firstName}</a>
 									<ul class="dropdown-menu fade-down">
 										<li><a class="dropdown-item"
 											href="<c:url value='/user/infoUser'/>">Thông tin cá nhân</a></li>
-										<li class="dropdown-submenu"><a
-											class="dropdown-item dropdown-toggle" href="#">Đơn hàng</a>
-											<ul class="dropdown-menu">
-												<li><a class="dropdown-item" href="order-list.html">Danh
-														sách dơn</a></li>
-												<li><a class="dropdown-item" href="order-detail.html">Chi
-														tiết đơn</a></li>
-											</ul></li>
+											<li><a class="dropdown-item"
+											href="<c:url value='/userlistOrder'/>">Danh sách đơn</a></li>
 										<li><a class="dropdown-item"
 											href="<c:url value='/userCarts'/>">Giỏ hàng</a></li>
-										<li><a class="dropdown-item" href="track-order.html">Theo
-												dõi đơn hàng</a></li>
 										<li><a class="dropdown-item"
 											href="<c:url value='/logout'/>">Đăng xuất</a></li>
 									</ul></li>
