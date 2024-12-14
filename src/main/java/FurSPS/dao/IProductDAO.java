@@ -14,7 +14,6 @@ public interface IProductDAO {
 	List<ProductModel> findWithCount(int count);
 
 	ProductModel findOne(int id);
-	
 	ProductModel findOneProduct(int id);
 	void insertProduct (ProductModel model);
 	void deleteProduct (int ProId);
@@ -29,4 +28,7 @@ public interface IProductDAO {
 
 	List<ProductModel> findBySupplierID(int supplier);
 	List<List<Object>> ProductRating();
+	
+	
+	int getMaxProductID();
 }

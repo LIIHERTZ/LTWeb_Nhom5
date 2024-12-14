@@ -43,5 +43,9 @@ public class VoucherServiceImpl implements IVoucherService{
 		}
 		return false;
 	}
+	@Override
+	public void deleteVoucher(int id) {
+		voucherDAO.deleteVoucher(id);
+	}
 
 }

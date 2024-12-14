@@ -16,4 +16,6 @@ public interface IItemDAO {
 	int findDisplayedPromotionPrice(int productID);
 	int findDisplayedOriginalPrice(int productID);
 	
+	
+	int getMaxItemID();
 }

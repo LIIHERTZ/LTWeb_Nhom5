@@ -88,4 +88,23 @@ public class ItemImageDAOImpl implements IItemImageDAO {
 		}
 	}
 
+
+	@Override
+	public int CreateItemimageID(int Id) {
+		String sql = "SELECT MAX(ItemImageID) FROM ITEMIMAGE";
+	    try {
+	        new DBConnection();
+	        conn = DBConnection.getConnection();
+	        PreparedStatement ps = conn.prepareStatement(sql);
+	        ResultSet rs = ps.executeQuery();
+	        if (rs.next()) {
+	            int maxId = rs.getInt(1);
+	            return maxId + 1;  // Trả về ID tiếp theo
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return Id * 100 + 1; // Trường hợp không có dữ liệu, trả về giá trị mặc định
+	}
+
 }

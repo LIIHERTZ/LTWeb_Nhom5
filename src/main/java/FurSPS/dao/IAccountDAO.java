@@ -14,4 +14,8 @@ public interface IAccountDAO {
 	AccountModel findByUsernameAndPass(String username,String password);
 	AccountModel findByUsername(String username);
 	AccountModel findByEmail(String email);
+	
+	
+	boolean isUserExist(int userID);
+	boolean isUserExistInAccount(int userID);
 }

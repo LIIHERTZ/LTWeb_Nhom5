@@ -57,7 +57,8 @@ public class OrderDAOImpl implements IOrderDAO {
 
 	@Override
 	public List<OrderModel> findAllOrder() {
-		List<OrderModel> listOrder = new ArrayList<OrderModel>();	
+		List<OrderModel> listOrder = new ArrayList<OrderModel>();
+		
 		String sql = "SELECT DISTINCT k.*, " 
 	            + "p.Method AS Method, " 
 	            + "p.Time AS TimePay, " 
@@ -121,9 +122,7 @@ public class OrderDAOImpl implements IOrderDAO {
 	            + "        INNER JOIN [USER] ON [ORDER].ShipperID = [USER].UserID " 
 	            + "    ) AS sh ON o.ShipperID = sh.UserID " 
 	            + ") AS k ON p.OrderID = k.OrderID;";
-		
-		
-		
+		//Where Year(OrderDate)= Year(GETDATE()) ;	
 		try {
 			new DBConnection();
 			conn = DBConnection.getConnection();
@@ -191,7 +190,7 @@ public class OrderDAOImpl implements IOrderDAO {
 
 	@Override
 	public void deleteOrder(int orderID) {
-		String sql = "DELETE FROM `FurSPS`.`ORDER` WHERE (`OrderID` = ? )";
+		String sql = "DELETE FROM ORDER WHERE (OrderID = ? )";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();
@@ -205,7 +204,6 @@ public class OrderDAOImpl implements IOrderDAO {
 	}
 
 	@Override
-	//Phuc
 	public void updateStatusOrder(int orderID, int status) {
 		String sql = "UPDATE [ORDER] SET Status = ? WHERE OrderID = ?";
 		try {
@@ -225,7 +223,7 @@ public class OrderDAOImpl implements IOrderDAO {
 	public List<OrderModel> listOrderByCustomerID(int customerID) {
 		List<OrderModel> listOrder = new ArrayList<OrderModel>();
 		String sql = "SELECT O.OrderID, O.CustomerID, O.OrderDate, O.Status, O.Discount, O.TotalMoney, O.SellerID, O.ShipperID, O.CustomerConfirmation "
-				+ "FROM [ORDER] O " + "WHERE O.CustomerID = ?";
+				+ "FROM ORDER O " + "WHERE O.CustomerID = ?";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();
@@ -253,10 +251,9 @@ public class OrderDAOImpl implements IOrderDAO {
 		return listOrder;
 	}
 
-	//phuc
 	@Override
 	public void confirmOrder(int orderID, int confirm) {
-		String sql = "UPDATE [ORDER] SET CustomerConfirmation = ? WHERE OrderID = ?";
+		String sql = "UPDATE ORDER SET CustomerConfirmation = ? WHERE OrderID = ?";
 		try {
 			new DBConnection();
 			conn = DBConnection.getConnection();
@@ -271,11 +268,10 @@ public class OrderDAOImpl implements IOrderDAO {
 
 	}
 
-	//Phuc
 	@Override
 	public OrderModel getOrderByOrderID(int orderID) {
 		OrderModel order = new OrderModel();
-		String sql = "SELECT o.*, FirstName, LastName, Phone, p.CardOwner,p.Bank,p.AccountNumber,p.Time as TimePay,	 p.Method, p.Status as PayStatus    "
+		String sql = "SELECT o.*, c.FirstName, c.LastName, c.Phone,c.Email,c.CID, p.CardOwner,p.Bank,p.AccountNumber,p.Time as TimePay,	 p.Method, p.Status as PayStatus    "
 				+ " FROM [ORDER] as o   LEFT JOIN [PAYMENT] as p ON o.OrderID = p.OrderID INNER JOIN [USER] as c ON  o.CustomerID = c.UserID  "
 				+ " WHERE o.OrderID=?";
 		try {
@@ -293,11 +289,14 @@ public class OrderDAOImpl implements IOrderDAO {
 				order.setTotalMoney(rs.getInt("TotalMoney"));
 				order.setNote(rs.getString("Note"));
 				order.setDiscount(rs.getInt("Discount"));
+				// order.setCustomerID(rs.getInt("CustomerID"));
 				order.setSellerID(rs.getInt("SellerID"));
 				order.setShipperID(rs.getInt("ShipperID"));
 				order.getCustomer().setFirstName(rs.getString("FirstName"));
 				order.getCustomer().setLastName(rs.getString("LastName"));
 				order.getCustomer().setPhone(rs.getString("Phone"));
+				order.getCustomer().setEmail(rs.getString("Email"));
+				order.getCustomer().setCid(rs.getString("CID"));
 
 				order.getPayment().setMethod(rs.getInt("Method"));
 				order.getPayment().setStatus(rs.getInt("PayStatus"));
@@ -315,8 +314,8 @@ public class OrderDAOImpl implements IOrderDAO {
 	public List<OrderModel> findHisOrder(int sellerID) {
 		List<OrderModel> listOrder = new ArrayList<OrderModel>();
 		String sql = "SELECT o.*, FirstName, LastName, Phone, " + "	   p.Method, p.Status as PayStatus "
-				+ "	   FROM FurSPS.ORDER as o " + "    LEFT JOIN PAYMENT as p ON o.OrderID = p.OrderID "
-				+ "    INNER JOIN USER as c ON  o.CustomerID = c.UserID " + "WHERE o.Status <> 0 AND SellerID=?;";
+				+ "	   FROM [ORDER] as o " + "    LEFT JOIN [PAYMENT] as p ON o.OrderID = p.OrderID "
+				+ "    INNER JOIN [USER] as c ON  o.CustomerID = c.UserID " + "WHERE o.Status <> 0 AND SellerID=?;";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();
@@ -333,10 +332,13 @@ public class OrderDAOImpl implements IOrderDAO {
 				order.setTransportFee(rs.getInt("TransportFee"));
 				order.setTotalMoney(rs.getInt("TotalMoney"));
 				order.setNote(rs.getString("Note"));
+				// order.setDiscount(rs.getInt("Discount"));
+				// order.setCustomerID(rs.getInt("CustomerID"));
 				order.setSellerID(rs.getInt("SellerID"));
 				order.setShipperID(rs.getInt("ShipperID"));
 				order.getCustomer().setFirstName(rs.getString("FirstName"));
 				order.getCustomer().setLastName(rs.getString("LastName"));
+				order.getCustomer().setPhone(rs.getString("Phone"));
 				order.getPayment().setMethod(rs.getInt("Method"));
 				order.getPayment().setStatus(rs.getInt("PayStatus"));
 				listOrder.add(order);
@@ -352,8 +354,8 @@ public class OrderDAOImpl implements IOrderDAO {
 	public List<OrderModel> findOrderBySeller() {
 		List<OrderModel> listOrder = new ArrayList<OrderModel>();
 		String sql = "SELECT o.*, FirstName, LastName, Phone, " + "	   p.Method, p.Status as PayStatus "
-				+ "	   FROM FurSPS.ORDER as o " + "    LEFT JOIN PAYMENT as p ON o.OrderID = p.OrderID "
-				+ "    INNER JOIN USER as c ON  o.CustomerID = c.UserID " + "WHERE o.Status = 0 or o.Status=1;";
+				+ "	   FROM [ORDER] as o " + "    LEFT JOIN [PAYMENT] as p ON o.OrderID = p.OrderID "
+				+ "    INNER JOIN [USER] as c ON  o.CustomerID = c.UserID " + "WHERE o.Status = 0 or o.Status=1;";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();
@@ -376,7 +378,7 @@ public class OrderDAOImpl implements IOrderDAO {
 				order.setShipperID(rs.getInt("ShipperID"));
 				order.getCustomer().setFirstName(rs.getString("FirstName"));
 				order.getCustomer().setLastName(rs.getString("LastName"));
-				// order.getCustomer().setPhone(rs.getString("Phone"));
+				order.getCustomer().setPhone(rs.getString("Phone"));
 				order.getPayment().setMethod(rs.getInt("Method"));
 				order.getPayment().setStatus(rs.getInt("PayStatus"));
 				listOrder.add(order);
@@ -390,7 +392,7 @@ public class OrderDAOImpl implements IOrderDAO {
 
 	@Override
 	public void updateStatusOrder(int OrderID, int sellerID, int status) {
-		String sql = "update `ORDER` set status=? , SellerID=? where OrderID= ?";
+		String sql = "update [ORDER] set Status=? , SellerID=? where OrderID= ?";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();
@@ -406,7 +408,7 @@ public class OrderDAOImpl implements IOrderDAO {
 
 	@Override
 	public OrderModel findByOrderID(int orderID) {
-		String sql = "SELECT * FROM FurSPS.`ORDER` where orderID = ? ";
+		String sql = "SELECT * FROM ORDER where orderID = ? ";
 		OrderModel order = new OrderModel();
 		try {
 			new DBConnection();
@@ -435,12 +437,12 @@ public class OrderDAOImpl implements IOrderDAO {
 		return order;
 	}
 
-	//phuc
 	@Override
 	public OrderModel getOrderByID(int orderID) {
 		OrderModel order = new OrderModel();
-		String sql = "SELECT O.OrderID, O.CustomerID, O.OrderDate, O.Status, O.CustomerConfirmation, O.Discount, O.TotalMoney, O.SellerID, O.ShipperID, O.TransportFee "
-				+ "FROM [ORDER] O " + "WHERE O.OrderID = ?";
+		String sql =  "SELECT O.OrderID, O.CustomerID, O.OrderDate, O.Status, O.CustomerConfirmation, O.Discount, O.TotalMoney, O.SellerID, O.ShipperID, O.TransportFee "
+					+ "FROM ORDER O "
+					+ "WHERE O.OrderID = ?";
 		try {
 			new DBConnection();
 			conn = DBConnection.getConnection();
@@ -467,7 +469,7 @@ public class OrderDAOImpl implements IOrderDAO {
 
 	@Override
 	public OrderModel insertOrder(OrderModel order) {
-		String sql = "INSERT INTO [ORDER] " + "(OrderDate, Address, City, Status, TransportFee, "
+		String sql = "INSERT INTO ORDER " + "(OrderDate, Address, City, Status, TransportFee, "
 				+ "Discount, TotalMoney, Note, DeliveryTime, CustomerConfirmation, CustomerID) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
 		try {
@@ -545,11 +547,9 @@ public class OrderDAOImpl implements IOrderDAO {
 
 	@Override
 	public OrderModel findShipByID(int OrderID) {
-
 		String condition = "	WHERE o.OrderID = " + OrderID;
 		return findDeliveryByCondition(condition, null).get(0);
 	}
-
 
 	private final String sqltemp = "SELECT o.*, c.FirstName, c.LastName, c.Phone, "
 			+ "       p.Method, p.Status AS PayStatus " + "FROM [ORDER] AS o "
@@ -691,7 +691,7 @@ public class OrderDAOImpl implements IOrderDAO {
 
 		List<Integer> datesInMonth = new ArrayList<>();
 		Calendar calendar = Calendar.getInstance();
-		calendar.set(date.getYear(), date.getMonth(), 1); 
+		calendar.set(date.getYear(), date.getMonth(), 1); // Tháng trong Java bắt đầu từ 0
 		while (calendar.get(Calendar.MONTH) == (date.getMonth())) {
 			datesInMonth.add(calendar.getTime().getDate());
 			calendar.add(Calendar.DAY_OF_MONTH, 1);

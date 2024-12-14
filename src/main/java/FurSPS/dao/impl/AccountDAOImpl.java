@@ -1,4 +1,4 @@
-package FurSPS.dao.impl;
+	package FurSPS.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -99,7 +99,7 @@ public class AccountDAOImpl implements IAccountDAO{
 
 	@Override
 	public boolean deleteAccount(AccountModel account) {
-		String sql = "DELETE FROM ACCOUNT WHERE (`UserID` = ?)";
+		String sql = "DELETE FROM ACCOUNT WHERE (UserID = ?)";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();
@@ -202,6 +202,53 @@ public class AccountDAOImpl implements IAccountDAO{
 			System.out.println(e);
 		}
 		return account;
+	}
+
+	@Override
+	public boolean isUserExist(int userID) {
+		// Truy vấn kiểm tra sự tồn tại của userID trong bảng User
+	    String sql = "SELECT COUNT(*) FROM [USER] WHERE UserID = ?";
+	    try {
+	        // Tạo kết nối cơ sở dữ liệu
+	        new DBConnection();
+	        Connection conn = DBConnection.getConnection();
+	        PreparedStatement ps = conn.prepareStatement(sql);
+	        ps.setInt(1, userID);  // Gắn giá trị cho tham số
+	        ResultSet rs = ps.executeQuery();
+
+	        if (rs.next()) {
+	            // Kiểm tra nếu số lượng người dùng tìm thấy lớn hơn 0
+	            return rs.getInt(1) > 0;
+	        }
+
+	        conn.close();
+	    } catch (Exception e) {
+	        System.out.println("Error in isUserExist: " + e.getMessage());
+	    }
+	    return false;
+	}
+
+	@Override
+	public boolean isUserExistInAccount(int userID) {
+		String sql = "SELECT COUNT(*) FROM ACCOUNT JOIN [USER] ON ACCOUNT.UserID = [USER].UserID WHERE [USER].UserID = ?";
+	    try {
+	        // Tạo kết nối cơ sở dữ liệu
+	        new DBConnection();
+	        Connection conn = DBConnection.getConnection();
+	        PreparedStatement ps = conn.prepareStatement(sql);
+	        ps.setInt(1, userID);  // Gắn giá trị cho tham số
+	        ResultSet rs = ps.executeQuery();
+
+	        if (rs.next()) {
+	            // Kiểm tra nếu số lượng người dùng tìm thấy lớn hơn 0
+	            return rs.getInt(1) > 0;
+	        }
+
+	        conn.close();
+	    } catch (Exception e) {
+	        System.out.println("Error in isUserExist: " + e.getMessage());
+	    }
+	    return false;
 	}
 	
 

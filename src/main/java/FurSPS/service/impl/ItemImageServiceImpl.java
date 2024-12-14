@@ -33,13 +33,7 @@ public class ItemImageServiceImpl implements IItemImageService {
 
 	@Override
 	public int CreateItemimageID(int Id) {
-		List<ItemImageModel> model = itemImage.findByProductID(Id);
-		if (model.isEmpty() == false) {
-			int id = model.get(model.size() - 1).getItemimageID();
-			return id + 1;
-		} else {
-			return Id*100 + 1;
-		}
+		return itemImage.CreateItemimageID(Id);
 	}
 
 }

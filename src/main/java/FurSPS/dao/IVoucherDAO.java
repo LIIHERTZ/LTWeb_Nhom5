@@ -11,4 +11,5 @@ public interface IVoucherDAO {
 	VoucherModel findOneByCustomerID(int voucherID, int customerID);
 	void insertVoucher(VoucherModel model);
 	void updateVoucher(VoucherModel model);
+	void deleteVoucher(int id);
 }

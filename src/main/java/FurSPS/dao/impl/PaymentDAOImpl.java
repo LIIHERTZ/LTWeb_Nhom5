@@ -15,7 +15,7 @@ public class PaymentDAOImpl implements IPaymentDAO {
 	@Override
 	public List<PaymentModel> findAllPayment() {
 		List<PaymentModel> listPayment = new ArrayList<PaymentModel>();
-		String sql = "SELECT * FROM FurSPS.PAYMENT";
+		String sql = "SELECT * FROM [PAYMENT]";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();
@@ -113,7 +113,7 @@ public class PaymentDAOImpl implements IPaymentDAO {
 
 	@Override
 	public boolean deletePayment(int orderID) {
-		String sql = "DELETE FROM `FurSPS`.`PAYMENT` WHERE (`OrderID` = ? );";
+		String sql = "DELETE FROM [PAYMENT] WHERE (OrderID = ? );";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();

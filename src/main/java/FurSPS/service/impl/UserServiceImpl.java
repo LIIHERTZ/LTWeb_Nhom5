@@ -1,5 +1,7 @@
 package FurSPS.service.impl;
 
+import java.util.List;
+
 import FurSPS.dao.IUserDAO;
 import FurSPS.dao.impl.UserDAOImpl;
 import FurSPS.models.AccountModel;
@@ -39,6 +41,11 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public void updateAvatar(int userID, String avatar) {
 		userDAO.updateAvatar(userID, avatar);
+	}
+
+	@Override
+	public List<UserModel> findAllUser() {
+		return userDAO.findAllUser();
 	}
 
 	

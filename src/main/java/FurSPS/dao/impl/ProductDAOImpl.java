@@ -166,7 +166,6 @@ public class ProductDAOImpl implements IProductDAO {
 		return list;
 	}
 
-
 	@Override
 	public void insertProduct(ProductModel model) {
 		String sql = "Insert into PRODUCT values (?,?,?,?,?,?,?)";
@@ -190,17 +189,56 @@ public class ProductDAOImpl implements IProductDAO {
 
 	@Override
 	public void deleteProduct(int ProId) {
-		String sql = "Delete from PRODUCT where ProductID=?";
-		try {
-			new DBConnection();
-			conn = DBConnection.getConnection();
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, ProId);
-			ps.executeUpdate();
-			conn.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		// Các câu lệnh xóa cho từng bảng
+		String deleteDetailSql = "DELETE FROM DETAIL WHERE ItemID IN (SELECT ItemID FROM ITEM WHERE ProductID = ?)";
+	    String deleteItemImageSql = "DELETE FROM ItemImage WHERE ItemID IN (SELECT ItemID FROM ITEM WHERE ProductID = ?)";
+	    String deleteItemSql = "DELETE FROM ITEM WHERE ProductID = ?";
+	    String deleteCartSql = "DELETE FROM Cart WHERE ItemID IN (SELECT ItemID FROM ITEM WHERE ProductID = ?)";
+	    String deleteProductSql = "DELETE FROM PRODUCT WHERE ProductID = ?";
+
+	    try {
+	        new DBConnection();
+	        conn = DBConnection.getConnection();
+	        conn.setAutoCommit(false); // Bắt đầu giao dịch
+	        
+	     // Xóa các bản ghi trong bảng Cart có liên kết với ProductID
+	        PreparedStatement psCart = conn.prepareStatement(deleteCartSql);
+	        psCart.setInt(1, ProId);
+	        psCart.executeUpdate();
+
+	        // Xóa các bản ghi trong bảng DETAIL liên quan đến ProductID
+	        PreparedStatement psDetail = conn.prepareStatement(deleteDetailSql);
+	        psDetail.setInt(1, ProId);
+	        psDetail.executeUpdate();
+	        
+	        // Xóa các bản ghi trong bảng ItemImage liên quan đến ProductID
+	        PreparedStatement psItemImage = conn.prepareStatement(deleteItemImageSql);
+	        psItemImage.setInt(1, ProId);
+	        psItemImage.executeUpdate();
+
+	        // Xóa các bản ghi trong bảng ITEM có ProductID tương ứng
+	        PreparedStatement psItem = conn.prepareStatement(deleteItemSql);
+	        psItem.setInt(1, ProId);
+	        psItem.executeUpdate();
+	        
+	        // Xóa sản phẩm trong bảng PRODUCT
+	        PreparedStatement psProduct = conn.prepareStatement(deleteProductSql);
+	        psProduct.setInt(1, ProId);
+	        psProduct.executeUpdate();
+
+	        // Commit giao dịch
+	        conn.commit();
+	        conn.close();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        try {
+	            if (conn != null) {
+	                conn.rollback(); // Rollback nếu có lỗi xảy ra
+	            }
+	        } catch (Exception se) {
+	            se.printStackTrace();
+	        }
+	    }
 	}
 
 	@Override
@@ -448,7 +486,7 @@ public class ProductDAOImpl implements IProductDAO {
 			new DBConnection();
 			conn = DBConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery(sql);
+			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				ProductModel model = new ProductModel();
 
@@ -548,25 +586,66 @@ public class ProductDAOImpl implements IProductDAO {
 
 	@Override
 	public List<List<Object>> ProductRating() {
-		List <List<Object>> list = new ArrayList<List<Object>>();
-		String sql = "select pr.ProductID, ProductName, round(avg(rating), 1)rate from (select ProductID, dt.ItemID, round(avg(Rating),1) as rating from DETAIL dt join ITEM it on dt.ItemID = it.ItemID group by dt.ItemID) q join PRODUCT pr on q.ProductID = pr.ProductID group by pr.ProductID having rate is not null order by rate desc limit 5";
-		try {
-			new DBConnection();
-			conn = DBConnection.getConnection();
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery(sql);
-			while (rs.next())
-			{
-				List<Object> model = new ArrayList<Object>();
-				model.add(rs.getInt("pr.ProductID"));
-				model.add(rs.getString("ProductName"));
-				model.add(rs.getBigDecimal("rate"));
-				list.add(model);
-			}
-			conn.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return list;
+		List<List<Object>> list = new ArrayList<List<Object>>();
+	    String sql = "select top 5 pr.ProductID, " + 
+	                 "pr.ProductName, " + 
+	                 "round(avg(q.rating), 1) as rate " + 
+	                 "from ( " + 
+	                 "   select it.ProductID, " + 
+	                 "          dt.ItemID, " + 
+	                 "          round(avg(dt.Rating), 1) as rating " + 
+	                 "   from DETAIL dt " + 
+	                 "   join ITEM it on dt.ItemID = it.ItemID " + 
+	                 "   group by it.ProductID, dt.ItemID " + 
+	                 ") q " + 
+	                 "join PRODUCT pr on q.ProductID = pr.ProductID " + 
+	                 "group by pr.ProductID, pr.ProductName " + 
+	                 "having avg(q.rating) is not null " + 
+	                 "order by rate desc";
+
+	    try {
+	        // Thiết lập kết nối với database
+	        conn = DBConnection.getConnection();
+	        
+	        // Chuẩn bị câu lệnh SQL
+	        PreparedStatement ps = conn.prepareStatement(sql);
+	        
+	        // Thực thi câu lệnh và lấy kết quả
+	        ResultSet rs = ps.executeQuery();
+
+	        // Duyệt qua kết quả trả về
+	        while (rs.next()) {
+	            List<Object> model = new ArrayList<Object>();
+	            model.add(rs.getInt("ProductID"));
+	            model.add(rs.getString("ProductName"));
+	            model.add(rs.getBigDecimal("rate"));
+	            list.add(model);
+	        }
+
+	        // Đóng kết nối
+	        conn.close();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return list;
+	}
+
+	@Override
+	public int getMaxProductID() {
+		String sql = "SELECT MAX(ProductID) FROM PRODUCT";
+	    int maxProductID = 0;
+	    try {
+	        new DBConnection();
+	        conn = DBConnection.getConnection();
+	        PreparedStatement ps = conn.prepareStatement(sql);
+	        ResultSet rs = ps.executeQuery();
+	        if (rs.next()) {
+	            maxProductID = rs.getInt(1); // Lấy giá trị MAX của ProductID
+	        }
+	        conn.close();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return maxProductID;
 	}
 }

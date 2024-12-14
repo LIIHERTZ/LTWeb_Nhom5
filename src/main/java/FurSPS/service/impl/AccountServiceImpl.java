@@ -79,6 +79,16 @@ public class AccountServiceImpl implements IAccountService {
 		}
 		return false;
 	}
+
+	@Override
+	public boolean isUserExist(int userID) {
+		return accountDao.isUserExist(userID); 
+	}
+
+	@Override
+	public boolean isUserExistInAccount(int userID) {
+		return accountDao.isUserExistInAccount(userID); 
+	}
 	
 	
 }

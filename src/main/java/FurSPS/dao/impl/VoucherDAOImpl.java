@@ -167,7 +167,7 @@ public class VoucherDAOImpl implements IVoucherDAO {
 				voucher.setDiscount(rs.getInt("Discount"));
 				voucher.setMinimumPrice(rs.getInt("MinimumPrice"));
 				voucher.setQuantity(rs.getInt("Quantity"));
-				voucher.setMfg(rs.getDate("Mfg"));
+				voucher.setMfg(rs.getDate("Mfg"));	
 				voucher.setExp(rs.getDate("Exp"));
 			}
 			conn.close();
@@ -175,6 +175,32 @@ public class VoucherDAOImpl implements IVoucherDAO {
 			e.printStackTrace();
 		}
 		return voucher;
+	}
+
+	@Override
+	public void deleteVoucher(int id) {		
+		Connection conn = null;
+
+	    try {
+	        conn = DBConnection.getConnection(); // Kết nối cơ sở dữ liệu
+
+	        // 1. Xóa các bản ghi trong bảng Vouchercustomer liên quan đến VoucherID
+	        String deleteVoucherCustomerSQL = "DELETE FROM [Vouchercustomer] WHERE VoucherID = ?";
+	        PreparedStatement psVoucherCustomer = conn.prepareStatement(deleteVoucherCustomerSQL);
+	        psVoucherCustomer.setInt(1, id);
+	        psVoucherCustomer.executeUpdate();
+
+	        // 2. Xóa bản ghi trong bảng Voucher
+	        String deleteVoucherSQL = "DELETE FROM [Voucher] WHERE VoucherID = ?";
+	        PreparedStatement psVoucher = conn.prepareStatement(deleteVoucherSQL);
+	        psVoucher.setInt(1, id);
+	        psVoucher.executeUpdate();
+
+	        conn.close(); // Đóng kết nối
+	    } catch (Exception e) {
+	        e.printStackTrace(); // In ra lỗi nếu có
+	    }
+		
 	}
 
 }

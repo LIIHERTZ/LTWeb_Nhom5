@@ -47,9 +47,8 @@ public class ItemServiceImpl implements IItemService{
 
 	@Override
 	public int CreateItemID(int Id) {
-		List<ItemModel> Item = itemDAO.findAllByProductID(Id);
-		int itemId = Item.get(Item.size()-1).getItemID();
-		return itemId +1;
+	    int maxItemID = itemDAO.getMaxItemID();
+	    return maxItemID + 1;
 	}
 
 	@Override
