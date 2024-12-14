@@ -64,7 +64,7 @@ public class DetailDAOImpl implements IDetailDAO {
 
 	@Override
 	public void updateDetail(DetailModel detail) {
-		String sql = "UPDATE [DETAIL] SET Rating = ?, Content = ?, EvaluationDate = ? WHERE ItemID = ? AND OrderID = ?";
+		String sql = "UPDATE [DETAIL] SET Rating = ?, Content = ?, EvaluationDate = ?, Link = ? WHERE ItemID = ? AND OrderID = ?";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();
