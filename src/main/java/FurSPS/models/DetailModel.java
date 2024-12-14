@@ -22,6 +22,7 @@ public class DetailModel {
 	private ProductModel product = new ProductModel();
 	private OrderModel order = new OrderModel();
 	private CategoryModel category = new CategoryModel();
+	private ItemImageModel itm = new ItemImageModel();
 	
 	public DetailModel(int itemID, int orderID, int quantity, String link, String content, Date evaluationDate,
 			int rating, String avatar, String name) {
@@ -37,6 +38,14 @@ public class DetailModel {
 		this.name = name;
 	}
 	
+	public ItemImageModel getItm() {
+		return itm;
+	}
+
+	public void setItm(ItemImageModel itm) {
+		this.itm = itm;
+	}
+
 	public int getItemID() {
 		return itemID;
 	}
@@ -117,9 +126,7 @@ public class DetailModel {
 	
 	@Override
 	public String toString() {
-		return "DetailModel [itemID=" + itemID + ", orderID=" + orderID + ", quantity=" + quantity + ", link=" + link
-				+ ", content=" + content + ", evaluationDate=" + evaluationDate + ", rating=" + rating + ",avatar="
-				+ avatar + " name, " + name + "]";
+		return "DetailModel [item=" + item + "]";
 	}
 
 	public String getAvatar() {

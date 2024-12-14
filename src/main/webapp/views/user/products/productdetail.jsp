@@ -200,7 +200,7 @@
 													<span><i class="far fa-clock"></i> <fmt:formatDate
 															value="${item.evaluationDate}" pattern="dd/MM/yyyy" /> </span>
 													<p>${item.content}</p>
-													<a href="#"><i class="far fa-reply"></i> Reply</a>
+													<a><i class="far fa-reply"></i> Reply</a>
 													<div class="review-rating">
 														<span class="stext-105 cl3"> <i class="fas fa-star"
 															style="${item.rating >= 1 ? 'color: gold;' : ''}"></i> <i

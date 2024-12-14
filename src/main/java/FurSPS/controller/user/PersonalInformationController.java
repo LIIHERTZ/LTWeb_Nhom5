@@ -22,7 +22,6 @@ import FurSPS.service.IUserService;
 import FurSPS.service.impl.UserServiceImpl;
 import FurSPS.utils.MessageUtil;
 import FurSPS.other.ImageUploader;
-import FurSPS.other.UploadImage;
 
 @WebServlet(urlPatterns = { "/user/infoUser", "/user/updateUser", "/user/updateAccount", "/user/updateAvatar" })
 @MultipartConfig

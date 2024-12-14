@@ -52,7 +52,7 @@
 }
 </style>
 								</div>
-								<h5>${user.firstName}${user.lastName}</h5>
+								<h5>${user.firstName} ${user.lastName}</h5>
 							</div>
 							<ul class="sidebar-list">
 								<li><a href="/FurSPS_Nhom5/user/infoUser"><i

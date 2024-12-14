@@ -88,13 +88,23 @@
 												<tbody>
 													<c:forEach var="detail" items="${details}">
 														<tr>
-															<td><h6>${detail.product.productName}</h6></td>
+															<td>
+																<div class="table-list-info">
+																	<a>
+																		<div class="table-list-img">
+																			<img src="${detail.itm.image}" alt="eee">
+																		</div>
+																		<div class="table-list-content">
+																			<h6>${detail.product.productName}</h6>
+																		</div>
+																	</a>
+																</div>
+															</td>
 															<td>${detail.category.categoryName}</td>
 															<td>${detail.item.color}</td>
 															<td>${detail.quantity}</td>
 															<td>${detail.product.material}</td>
-															<td><fmt:formatNumber
-																	value="${detail.order.totalMoney}" pattern="#,###" /></td>
+															<td> <fmt:formatNumber value="${detail.quantity * detail.item.promotionPrice}" pattern="#,### VNĐ" /></td>
 														</tr>
 													</c:forEach>
 												</tbody>
@@ -114,14 +124,14 @@
 													<h5>Order Summary</h5>
 													<ul>
 														<li>Subtotal<span><fmt:formatNumber
-																	value="${order.totalMoney}" pattern="#,###" /></span></li>
+																	value="${order.totalMoney + order.discount - order.transportFee}" pattern="#,### VNĐ" /></span></li>
 														<li>Shipping<span><fmt:formatNumber
-																	value="${order.transportFee}" pattern="#,###" /></span></li>
+																	value="${order.transportFee}" pattern="#,### VNĐ" /></span></li>
 														<li>Discount<span><fmt:formatNumber
-																	value="${order.discount}" pattern="#,###" /></span></li>
+																	value="${order.discount}" pattern="- #,### VNĐ" /></span></li>
 														<li>Total <span><fmt:formatNumber
-																	value="${order.totalMoney - order.transportFee - order.discount}"
-																	pattern="#,###" /></span></li>
+																	value="${order.totalMoney}"
+																	pattern="#,### VNĐ" /></span></li>
 													</ul>
 												</div>
 											</div>

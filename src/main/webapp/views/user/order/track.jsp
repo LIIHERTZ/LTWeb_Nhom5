@@ -56,11 +56,11 @@
 								<h5>${user.firstName}${user.lastName}</h5>
 							</div>
 							<ul class="sidebar-list">
-	
-								<li><a class="active"><i
-										class="far fa-shopping-bag"></i> Track Order <span
-										class="badge badge-danger"></span></a></li>
-								<li><a href="/FurSPS_Nhom5/userlistOrder"><i class="far fa-sign-out"></i>Back</a></li>
+
+								<li><a class="active"><i class="far fa-shopping-bag"></i>
+										Track Order <span class="badge badge-danger"></span></a></li>
+								<li><a href="/FurSPS_Nhom5/userlistOrder"><i
+										class="far fa-sign-out"></i>Back</a></li>
 							</ul>
 						</div>
 					</div>
@@ -146,23 +146,31 @@
 																<td>${detail.item.color}</td>
 																<td
 																	style="display: flex; justify-content: center; align-items: center;">
-																	<!-- Nút hiển thị/ẩn form -->
-																	<button class="btn btn-warning"
-																		style="background-color: #FFDA74;font-weight: bold;"
-																		onclick="this.parentElement.parentElement.nextElementSibling.style.display = this.parentElement.parentElement.nextElementSibling.style.display === 'none' ? 'table-row' : 'none';">
-																		Review</button>
+																	<c:choose>
+																		<c:when test="${detail.rating == 0}">
+																			<button class="btn btn-warning"
+																				style="background-color: #FFDA74; font-weight: bold;"
+																				onclick="this.parentElement.parentElement.nextElementSibling.style.display = 
+                             													this.parentElement.parentElement.nextElementSibling.style.display === 'none' ? 'table-row' : 'none';">
+																				Review</button>
+																		</c:when>
+																		<c:otherwise>
+																			<button class="btn btn-warning"
+																				style="font-weight: bold; background-color: #FFDA74;"
+																				disabled>Reviewed</button>
+																		</c:otherwise>
+																	</c:choose>
 																</td>
 															</tr>
 															<tr style="display: none;">
 																<td colspan="4">
-																	<form action="${pageContext.request.contextPath}/useritemRating"
-																		method="post" 
-																		style="margin-top: 20px;">
+																	<form
+																		action="${pageContext.request.contextPath}/useritemRating"
+																		method="post" style="margin-top: 20px;" enctype="multipart/form-data">
 																		<input type="hidden" name="orderID"
-																			value="${detail.orderID}" />
-																		<input type="hidden" name="itemID"
-																			value="${detail.itemID}" />
-																		<input type="hidden" name="quantity"
+																			value="${detail.orderID}" /> <input type="hidden"
+																			name="itemID" value="${detail.itemID}" /> <input
+																			type="hidden" name="quantity"
 																			value="${detail.quantity}" />
 																		<div class="form-group">
 																			<label for="rating"
@@ -193,7 +201,7 @@
 																			<label for="reviewImage"
 																				style="color: black; font-size: 17px;">Hình
 																				ảnh (nếu có):</label> <input type="file" id="reviewImage"
-																				name="reviewImage" class="form-control-file"
+																				name="file" class="form-control-file"
 																				accept="image/*" />
 																		</div>
 
@@ -208,7 +216,7 @@
 														</c:forEach>
 													</tbody>
 												</table>
-											</div>										
+											</div>
 										</c:if>
 
 									</div>

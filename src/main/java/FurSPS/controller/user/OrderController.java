@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpSession;
 import FurSPS.models.DetailModel;
 import FurSPS.models.OrderModel;
 import FurSPS.models.UserModel;
+import FurSPS.other.ImageUploader;
 import FurSPS.service.IDetailService;
 import FurSPS.service.IOrderService;
 import FurSPS.service.IPaymentService;
@@ -112,45 +113,32 @@ public class OrderController extends HttpServlet {
 	}
 
 	private void rating(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		try {
+        try {
 
-			String orderIDParam = req.getParameter("orderID");
-			String itemIDParam = req.getParameter("itemID");
-			String ratingParam = req.getParameter("rating");
-			String quantityParam = req.getParameter("quantity");
+            String orderIDParam = req.getParameter("orderID");
+            String itemIDParam = req.getParameter("itemID");
+            String ratingParam = req.getParameter("rating");
+            String quantityParam = req.getParameter("quantity");
 
-			int itemID = Integer.parseInt(itemIDParam);
-			int orderID = Integer.parseInt(orderIDParam);
-			int quantity = Integer.parseInt(quantityParam);
-			String reviewImage = req.getParameter("reviewImage");
-			String reviewText = req.getParameter("reviewText");
-			java.sql.Date evaluationDate = java.sql.Date.valueOf(LocalDate.now()); 
-			int rating = Integer.parseInt(ratingParam);
-
-			boolean hasReviewed = detailService.hasReviewed(orderID, itemID);
-
-	        if (hasReviewed) {
-	            resp.sendRedirect(req.getContextPath() + "/usertrack?id=" + orderID);
-	            return;
-	        }
-			
-			// Tạo đối tượng ReviewModel
-			DetailModel review = new DetailModel();
-			review.setItemID(itemID);
-	        review.setOrderID(orderID);
-	        review.setQuantity(quantity);
-	        review.setLink(reviewImage);
-	        review.setContent(reviewText);
-	        review.setEvaluationDate(evaluationDate);
-	        review.setRating(rating);
-			boolean isAdded = detailService.addReview(review);
-			if (isAdded) {
-				resp.sendRedirect(req.getContextPath() + "/usertrack?id=" + orderID);
-			} else {
-				resp.sendRedirect(req.getContextPath() + "/usertrack?id=" + orderID);
-			}
-		} catch (Exception e) {
-			resp.sendRedirect(req.getContextPath() + "/usertrack");
-		}
-	}
+            int itemID = Integer.parseInt(itemIDParam);
+            int orderID = Integer.parseInt(orderIDParam);
+            int quantity = Integer.parseInt(quantityParam);
+            String reviewImage = ImageUploader.uploadImage(req);
+            String reviewText = req.getParameter("reviewText");
+            java.sql.Date evaluationDate = java.sql.Date.valueOf(LocalDate.now()); 
+            int rating = Integer.parseInt(ratingParam);
+            DetailModel review = new DetailModel();
+            review.setItemID(itemID);
+            review.setOrderID(orderID);
+            review.setQuantity(quantity);
+            review.setLink(reviewImage);
+            review.setContent(reviewText);
+            review.setEvaluationDate(evaluationDate);
+            review.setRating(rating);
+            detailService.updateDetail(review);
+            resp.sendRedirect(req.getContextPath() + "/usertrack?id=" + orderID);
+        } catch (Exception e) {
+            resp.sendRedirect(req.getContextPath() + "/usertrack");
+        }
+    }
 }
