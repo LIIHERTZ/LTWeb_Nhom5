@@ -376,17 +376,16 @@ input {
 								<b>Khách hàng</b>
 							</h2>
 							<p>
-								<b> Họ tên : </b> ${order.customer.firstName}
-								${order.customer.lastName}
+								<b> Name : </b> ${order.customer.firstName} ${order.customer.lastName}
 							</p>
 							<p>
-								<b> Số điện thoại : </b> ${order.customer.phone}
+								<b> Phone : </b> ${order.customer.phone}
 							</p>
 							<p>
 								<b> Email : </b> ${order.customer.email}
 							</p>
 							<p>
-								<b> Căn cước : </b> ${order.customer.cid}
+								<b> CID : </b> ${order.customer.cid}
 							</p>
 						</div>
 					</div>
@@ -399,16 +398,16 @@ input {
 								<b>Nhân viên</b>
 							</h2>
 							<p>
-								<b> Họ tên : </b> ${user.firstName} ${user.lastName}
+								<b> Name : </b> ${user.firstName} ${user.lastName}
 							</p>
 							<p>
-								<b> Số điện thoại : </b> ${user.phone}
+								<b> Phone : </b> ${user.phone}
 							</p>
 							<p>
 								<b> Email : </b> ${user.email}
 							</p>
 							<p>
-								<b> Căn cước : </b> ${user.cid}
+								<b> CID : </b> ${user.cid}
 							</p>
 						</div>
 					</div>
@@ -564,7 +563,7 @@ input {
 								<p>
 									Chủ thẻ : ${order.payment.cardOwner}<br> Ngân hàng :
 									${order.payment.bank} <br> Thời gian thanh toán :
-									${order.payment.time}
+									<fmt:formatDate value="${order.payment.time}" pattern="yyyy-MM-dd HH:mm" />
 								</p>
 							</div>
 						</div>

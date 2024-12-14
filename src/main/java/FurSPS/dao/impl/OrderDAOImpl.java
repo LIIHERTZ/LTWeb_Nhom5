@@ -271,7 +271,7 @@ public class OrderDAOImpl implements IOrderDAO {
 	@Override
 	public OrderModel getOrderByOrderID(int orderID) {
 		OrderModel order = new OrderModel();
-		String sql = "SELECT o.*, FirstName, LastName, Phone, p.CardOwner,p.Bank,p.AccountNumber,p.Time as TimePay,	 p.Method, p.Status as PayStatus    "
+		String sql = "SELECT o.*, c.FirstName, c.LastName, c.Phone,c.Email,c.CID, p.CardOwner,p.Bank,p.AccountNumber,p.Time as TimePay,	 p.Method, p.Status as PayStatus    "
 				+ " FROM [ORDER] as o   LEFT JOIN [PAYMENT] as p ON o.OrderID = p.OrderID INNER JOIN [USER] as c ON  o.CustomerID = c.UserID  "
 				+ " WHERE o.OrderID=?";
 		try {
@@ -295,6 +295,8 @@ public class OrderDAOImpl implements IOrderDAO {
 				order.getCustomer().setFirstName(rs.getString("FirstName"));
 				order.getCustomer().setLastName(rs.getString("LastName"));
 				order.getCustomer().setPhone(rs.getString("Phone"));
+				order.getCustomer().setEmail(rs.getString("Email"));
+				order.getCustomer().setCid(rs.getString("CID"));
 
 				order.getPayment().setMethod(rs.getInt("Method"));
 				order.getPayment().setStatus(rs.getInt("PayStatus"));
@@ -390,7 +392,7 @@ public class OrderDAOImpl implements IOrderDAO {
 
 	@Override
 	public void updateStatusOrder(int OrderID, int sellerID, int status) {
-		String sql = "update ORDER set status=? , SellerID=? where OrderID= ?";
+		String sql = "update [ORDER] set Status=? , SellerID=? where OrderID= ?";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();

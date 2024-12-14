@@ -51,8 +51,6 @@ public class HomeController extends HttpServlet {
 		
 		List<OrderModel> listOrder1 = orderService.findOrderBySeller();
 		
-		
-		
 		List<List<Object>> listOrderByMonth = reportService.reportSellerOrderByYear(sellerID);
 		
 		for (OrderModel orderModel : listOrder1) {

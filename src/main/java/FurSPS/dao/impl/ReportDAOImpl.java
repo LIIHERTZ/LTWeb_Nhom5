@@ -208,8 +208,6 @@ public class ReportDAOImpl implements IReportDAO {
     public List<List<Object>> reportSellerOrderByYear(int sellerID) {
         String sql
         = "SELECT FORMAT(OrderDate, 'yyyy-MM') AS Thang, SUM(TotalMoney) AS Tong, COUNT(OrderID) AS SL FROM [ORDER] WHERE YEAR(OrderDate) = YEAR(GETDATE()) AND SellerID = ? GROUP BY FORMAT(OrderDate, 'yyyy-MM') ORDER BY FORMAT(OrderDate, 'yyyy-MM')";
-        System.out.println(sql);
-
         List<List<Object>> list = new ArrayList<List<Object>>();
         try {
             new DBConnection();
@@ -230,5 +228,4 @@ public class ReportDAOImpl implements IReportDAO {
         }
         return list;
     }
-
 }
