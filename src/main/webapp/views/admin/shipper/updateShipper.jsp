@@ -86,14 +86,6 @@
 												value="${shipper.cid}" pattern="^\d{12}$"
 												title="Căn cước công dân phải gồm 12 chữ số" required /> <label>CCCD</label>
 										</div>
-										<!-- 										<div class="form-floating mb-3"> -->
-										<!-- 											<input class="form-control" type="text" name="avatar" -->
-										<%-- 												value="${shipper.avatar}" required/> <label>Ảnh đại diện</label> --%>
-										<!-- 										</div> -->
-										<!-- 										<div class="form-floating mb-3"> -->
-										<!-- 											<input class="form-control" type="text" name="area" -->
-										<%-- 												value="${shipper.area}" required/> <label>Khu vực</label> --%>
-										<!-- 										</div> -->
 										<div class="form-floating mb-3">
 											<select class="form-control" name="area" required>
 												<option value="Miền Bắc"

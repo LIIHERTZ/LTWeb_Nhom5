@@ -156,17 +156,7 @@ public class ItemDAOImpl implements IItemDAO {
 
 	@Override
 	public void deleteItem(int ItemId) {
-//		String sql = "Delete from ITEM where ItemID=?";
-//		try {
-//			new DBConnection();
-//			conn = DBConnection.getConnection();
-//			PreparedStatement ps = conn.prepareStatement(sql);
-//			ps.setInt(1, ItemId);
-//			ps.executeUpdate();
-//			conn.close();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+
 		String deleteCartSQL = "DELETE FROM Cart WHERE ItemID = ?";  // Xóa các bản ghi trong bảng Cart
 		String deleteDetailSQL = "DELETE FROM DETAIL WHERE ItemID = ?";  // Xóa các bản ghi trong bảng DETAIL
 	    String deleteItemSQL = "DELETE FROM ITEM WHERE ItemID = ?";  // Xóa bản ghi trong bảng ITEM

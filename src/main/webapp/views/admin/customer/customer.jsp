@@ -191,20 +191,6 @@
 		</div>
 
 	</main>
-	<!-- Thêm đoạn mã JavaScript vào cuối trang -->
-<!-- 	<script> -->
-<!-- // 		// Sự kiện khi nhấn nút xóa -->
-<!-- // 		$(document).on('click', '.trigger-btn', function() { -->
-<!-- // 			var deleteUrl = $(this).data('link'); // Lấy giá trị của data-link -->
-<!-- // 			console.log("Delete URL: " + deleteUrl); // In URL ra console để kiểm tra -->
-<!-- // 			if (deleteUrl) { -->
-<!-- // 				// Nếu giá trị deleteUrl hợp lệ, thực hiện chuyển hướng -->
-<!-- // 				window.location.href = deleteUrl; -->
-<!-- // 			} else { -->
-<!-- // 				alert("URL không hợp lệ!"); // Nếu không có URL hợp lệ -->
-<!-- // 			} -->
-<!-- // 		}); -->
-<!-- 	</script> -->
 <script>
 	// Lưu lại URL xóa vào biến toàn cục khi nhấn nút xóa
 	var deleteUrl = '';

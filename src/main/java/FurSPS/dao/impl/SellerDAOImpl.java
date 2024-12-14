@@ -111,28 +111,6 @@ public class SellerDAOImpl implements ISellerDAO {
 
 	@Override
 	public void deleteSeller(int id) {
-//		Connection conn = null;
-//
-//	    // 1. Xóa các bản ghi trong bảng ACCOUNT có liên quan đến UserID của seller
-//	    String deleteAccountSQL = "DELETE FROM [Account] WHERE UserID = ?";
-//	    try {
-//	        conn = DBConnection.getConnection(); // kết nối cơ sở dữ liệu
-//
-//	        // Xóa tài khoản trong bảng Account
-//	        PreparedStatement psAccount = conn.prepareStatement(deleteAccountSQL);
-//	        psAccount.setInt(1, id);
-//	        psAccount.executeUpdate();  // Xóa tài khoản trong bảng Account
-//
-//	        // 2. Xóa seller trong bảng USER
-//	        String deleteUserSQL = "DELETE FROM [USER] WHERE UserID = ?";
-//	        PreparedStatement psUser = conn.prepareStatement(deleteUserSQL);
-//	        psUser.setInt(1, id);
-//	        psUser.executeUpdate();  // Xóa seller trong bảng USER
-//
-//	        conn.close(); // đóng kết nối
-//	    } catch (Exception e) {
-//	        e.printStackTrace(); // In ra lỗi nếu có
-//	    }
 		
 		Connection conn = null;
 
@@ -235,13 +213,6 @@ public class SellerDAOImpl implements ISellerDAO {
 	@Override
 	public List<UserModel> findBestSeller() {
 		Connection conn = null;
-//		String sql = "Select AZShop.USER.*, count(AZShop.DETAIL.ItemID) as SL\r\n"
-//				+ "from AZShop.USER \r\n"
-//				+ "join AZShop.ORDER on AZShop.USER.UserID = AZShop.ORDER.SellerID\r\n"
-//				+ "join AZShop.DETAIL on AZShop.ORDER.OrderID = AZShop.DETAIL.OrderID\r\n"
-//				+ "where AZShop.USER.Type=1 AND AZShop.ORDER.Status=4\r\n"
-//				+ "GROUP BY AZShop.USER.UserID\r\n"
-//				+ "ORDER BY SL DESC LIMIT 10;";
 		
 		String sql = "SELECT TOP 10 [USER].UserID, [User].FirstName, [user].LastName, [user].Address, [user].Gender, [user].Phone, [user].DoB, [user].cid, [user].Avatar, [user].KPI, [user].Email, COUNT([DETAIL].ItemID) AS SL" +
 				" FROM [USER]" +

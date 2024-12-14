@@ -58,24 +58,6 @@ public class OrderDAOImpl implements IOrderDAO {
 	@Override
 	public List<OrderModel> findAllOrder() {
 		List<OrderModel> listOrder = new ArrayList<OrderModel>();
-//		String sql = "SELECT DISTINCT k.*,p.Method as Method,p.Time as TimePay, p.Bank as Bank, p.CardOwner as CardOwner, p.AccountNumber as AccountNumber, p.Status as StatusPay "
-//				+ "FROM PAYMENT AS p " + "INNER JOIN ( "
-//				+ "    SELECT DISTINCT o.*, c.FirstName AS FirstNameCustomer, c.LastName AS LastNameCustomer, c.Phone AS PhoneCustomer, c.CID AS CIDCustomer, "
-//				+ "		 c.Email AS EmailCustomer,  c.Avatar AS AvatarCustomer, "
-//				+ "        se.FirstName AS FirstNameSeller, se.LastName AS LastNameSeller, se.Phone AS PhoneSeller, se.CID AS CIDSeller, "
-//				+ "		 se.Email AS EmailSeller, se.Avatar as AvatarSeller, "
-//				+ "        sh.FirstName AS FirstNameShipper, sh.LastName AS LastNameShipper, sh.Phone AS PhoneShipper, sh.CID AS CIDShipper, "
-//				+ "		 sh.Email AS EmailShipper, sh.Avatar AS AvatarShipper " + "    FROM FurSPS.`ORDER` o "
-//				+ "    LEFT JOIN ( "
-//				+ "        SELECT DISTINCT USER.UserID, USER.FirstName, USER.LastName , USER.Phone, USER.CID, USER.Email, USER.Avatar "
-//				+ "        FROM FurSPS.`ORDER` " + "        INNER JOIN USER ON `ORDER`.CustomerID = USER.UserID "
-//				+ "    ) AS c ON o.CustomerID = c.UserID " + "    LEFT JOIN ( "
-//				+ "        SELECT DISTINCT USER.UserID, USER.FirstName, USER.LastName, USER.Phone, USER.CID, USER.Email, USER.Avatar "
-//				+ "        FROM FurSPS.`ORDER` " + "        INNER JOIN USER ON `ORDER`.SellerID = USER.UserID "
-//				+ "    ) AS se ON o.SellerID = se.UserID " + "    LEFT JOIN ( "
-//				+ "        SELECT DISTINCT USER.UserID, USER.FirstName, USER.LastName, USER.Phone, USER.CID, USER.Email, USER.Avatar "
-//				+ "        FROM FurSPS.`ORDER` " + "        INNER JOIN USER ON `ORDER`.ShipperID = USER.UserID "
-//				+ "    ) AS sh ON o.ShipperID = sh.UserID " + ") AS k ON p.OrderID = k.OrderID;";
 		
 		String sql = "SELECT DISTINCT k.*, " 
 	            + "p.Method AS Method, " 
@@ -140,11 +122,7 @@ public class OrderDAOImpl implements IOrderDAO {
 	            + "        INNER JOIN [USER] ON [ORDER].ShipperID = [USER].UserID " 
 	            + "    ) AS sh ON o.ShipperID = sh.UserID " 
 	            + ") AS k ON p.OrderID = k.OrderID;";
-		//Where Year(OrderDate)= Year(GETDATE()) ;
-
-		
-		
-		
+		//Where Year(OrderDate)= Year(GETDATE()) ;	
 		try {
 			new DBConnection();
 			conn = DBConnection.getConnection();
@@ -546,12 +524,6 @@ public class OrderDAOImpl implements IOrderDAO {
 
 	@Override
 	public List<OrderModel> findNeedShipByArea(String area) {
-		// Điều kiện SQL
-		// String condition = " WHERE o.Status = 2 AND ShipperID IS NULL AND ?;";
-//		String condition = " WHERE o.Status = 2 AND ?;";
-//		List<String> citys = Assignment.getAssign().get(area);
-//		return findDeliveryByCondition(condition, 1).stream()
-//				.filter(order -> order.getCity().equals("none") || citys.contains(order.getCity())).toList();
 
 		String condition = "	WHERE o.Status = 2 AND ShipperID IS NULL";
 		List<String> citys = Assignment.getAssign().get(area);
@@ -578,20 +550,11 @@ public class OrderDAOImpl implements IOrderDAO {
 		return findDeliveryByCondition(condition, null).get(0);
 	}
 
-//	private final String sqltemp = "SELECT o.*, FirstName, LastName, Phone, \r\n"
-//			+ "	   p.Method, p.Status as PayStatus\r\n" 
-//			+ "	   FROM FurSPS.ORDER as o\r\n"
-//			+ "    LEFT JOIN FurSPS.PAYMENT as p ON o.OrderID = p.OrderID\r\n"
-//			+ "    INNER JOIN USER as c ON  o.CustomerID = c.UserID\r\n";
-
 	private final String sqltemp = "SELECT o.*, c.FirstName, c.LastName, c.Phone, "
 			+ "       p.Method, p.Status AS PayStatus " + "FROM [ORDER] AS o "
 			+ "LEFT JOIN [PAYMENT] AS p ON o.OrderID = p.OrderID "
 			+ "INNER JOIN [USER] AS c ON o.CustomerID = c.UserID";
 
-//	private final String sqltemp = "SELECT o.*, FirstName, LastName, Phone, " + "	   p.Method, p.Status as PayStatus "
-//			+ "	   FROM ORDER as o" + "    LEFT JOIN PAYMENT as p ON o.OrderID = p.OrderID"
-//			+ "    INNER JOIN USER as c ON  o.CustomerID = c.UserID";
 
 	private List<OrderModel> findDeliveryByCondition(String condition, Integer ShipperID) {
 		List<OrderModel> listOrder = new ArrayList<OrderModel>();
@@ -639,15 +602,7 @@ public class OrderDAOImpl implements IOrderDAO {
 	}
 
 	public Object[] findKPIByShipper(int ShipperID) {
-//		String sql = "SELECT o.DeliveryTime, s.KPI,\r\n"
-//				+ "Count(*) as Oall, SUM(o.Status = 4) as Complete, SUM(o.Status = 5) as Cancel, SUM(o.Status  < 4) as Doing\r\n"
-//				+ "	FROM FurSPS.ORDER as o\r\n"
-//				+ "		JOIN (SELECT * FROM FurSPS.USER as u WHERE u.userID = ? ) as s\r\n"
-//				+ "        ON s.UserID = o.ShipperID\r\n" + " WHERE MONTH(o.DeliveryTime) = MONTH(current_date()) \r\n"
-//				+ "		AND YEAR(o.DeliveryTime) = YEAR(current_date()) " + "	GROUP BY o.DeliveryTime "
-//				+ " ORDER BY o.DeliveryTime ASC";
-		
-	
+
 		String sql = "SELECT o.DeliveryTime, s.KPI, " +
                 "COUNT(*) AS Oall, " +
                 "SUM(CASE WHEN o.Status = 4 THEN 1 ELSE 0 END) AS Complete, " +
@@ -745,14 +700,7 @@ public class OrderDAOImpl implements IOrderDAO {
 	}
 
 	public List<Object[]> findCateForShipper(int ShipperID) {
-//		String sql = "SELECT c.CategoryName, Sum(d.Quantity) as Num\r\n" + "	FROM FurSPS.DETAIL as d\r\n"
-//				+ "	JOIN FurSPS.ORDER as o ON d.OrderID = o.OrderID\r\n"
-//				+ "    JOIN FurSPS.ITEM as i ON d.ItemID = i.ItemID\r\n"
-//				+ "    JOIN FurSPS.PRODUCT p ON i.ProductID = p.ProductID\r\n"
-//				+ "    JOIN FurSPS.CATEGORY as c ON p.CategoryID = c.CategoryID\r\n" + "    WHERE o.ShipperID = ? \r\n"
-//				+ "    GROUP BY c.CategoryName";
-		
-		
+
 		String sql = "SELECT c.CategoryName, Sum(d.Quantity) as Num\r\n" + "	FROM [DETAIL] as d\r\n"
 				+ "	JOIN [ORDER] as o ON d.OrderID = o.OrderID\r\n"
 				+ "    JOIN [ITEM] as i ON d.ItemID = i.ItemID\r\n"

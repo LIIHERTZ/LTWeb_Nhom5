@@ -220,27 +220,17 @@ public class ItemController extends HttpServlet {
 		List<Part> parts = (List<Part>) req.getParts();
 		int ItemID = itemModel.getItemID();
 		for (Part part : parts) {
-//			System.out.println("Part name: " + part.getName());
-//		    System.out.println("Part size: " + part.getSize());
+
 			
 			String type = part.getContentType();
 
 			if (type != null) {
-//				Random rnd = new Random();
-//				String rdCode = String.valueOf(rnd.nextInt(100, 999));
 				ItemImageModel itemImageModel = new ItemImageModel();				
 				itemImageModel.setItemID(ItemID);
 				
 				int ImageID = itemImage.CreateItemimageID(ItemID);				
 				itemImageModel.setItemimageID(ImageID);
-//				UploadImage.uploadImage("mysql-web", "web-budget", "Image/Items/" + ImageID + "_" + rdCode + ".jpg",
-//						part.getInputStream());
-//				String image = "https://storage.googleapis.com/web-budget/Image/Items/" + ImageID + "_" + rdCode
-//						+ ".jpg";
-//				itemImageModel.setImage(image);
-//				itemImage.insertItemImage(itemImageModel);
-				
-				// Sử dụng ImageUploader để upload ảnh và nhận về URL ảnh
+
 	            try {
 	                // Upload ảnh và lấy URL ảnh đã upload
 	                String imageUrl = ImageUploader.uploadImage(req);  // Sử dụng ImageUploader mới
@@ -271,12 +261,7 @@ public class ItemController extends HttpServlet {
 	}
 
 	private void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		int itemID = Integer.parseInt(req.getParameter("ItemID"));
-//		int Proid = Integer.parseInt(req.getParameter("ProductID"));
-//		item.deleteItem(itemID);
-//		itemImage.deleteItemImage(itemID);
-////		resp.sendRedirect("adminviewItem?ProductID=" + Proid);
-//		resp.sendRedirect("adminItem");
+
 		try {
 	        // Lấy tham số từ request
 	        int itemID = Integer.parseInt(req.getParameter("ItemID"));
@@ -294,15 +279,11 @@ public class ItemController extends HttpServlet {
 	        ex.printStackTrace();  // In lỗi ra console để dễ dàng kiểm tra
 	    }
 
-//	    // Chuyển hướng về trang quản lý item
-//	    RequestDispatcher rd = req.getRequestDispatcher("adminItem");
-//	    rd.forward(req, resp);
 	    
 	    resp.sendRedirect("adminItem");
 	}
 
 	private void update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		req.setAttribute("ProID", req.getParameter("ProID"));
 		
 		int itemID = Integer.parseInt(req.getParameter("ItemID"));
 		ItemModel model = item.findOne(itemID);

@@ -40,10 +40,6 @@
 							<form action="adminInsertSeller" method="post">
 								<div class="row">
 									<div class="col-md-6">
-										<!-- 										<div class="form-floating mb-3"> -->
-										<!-- 											<input class="form-control" type="text" name="userID" -->
-										<!-- 												readonly="readonly" /> <label>Mã</label> -->
-										<!-- 										</div> -->
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="firstName"
 												value="${firstName != null ? firstName : ''}" required /> <label>Họ</label>
@@ -85,9 +81,6 @@
 												value="${cid != null ? cid : ''}" pattern="^\d{12}$"
 												title="Căn cước công dân phải gồm 12 chữ số" required /> <label>CCCD</label>
 										</div>
-										<!-- 										<div class="form-floating mb-3"> -->
-										<!-- 											<input class="form-control" type="text" name="avatar" value="https://storage.googleapis.com/web-budget/Image/Avatar/first.png"/> <label>Ảnh đại diện</label> -->
-										<!-- 										</div> -->
 										<div class="form-floating mb-3">
 											<input class="form-control" type="text" name="kpi"
 												value="${kpi != null ? kpi : ''}" required /> <label>KPI</label>

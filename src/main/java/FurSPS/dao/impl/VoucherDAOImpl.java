@@ -178,23 +178,7 @@ public class VoucherDAOImpl implements IVoucherDAO {
 	}
 
 	@Override
-	public void deleteVoucher(int id) {
-//		Connection conn = null;
-//
-//	    try {
-//	        conn = DBConnection.getConnection(); // Kết nối cơ sở dữ liệu
-//
-//	        // 8. Xóa user trong bảng USER
-//	        String deleteVoucherSQL = "DELETE FROM [Voucher] WHERE VoucherID = ?";
-//	        PreparedStatement psUser = conn.prepareStatement(deleteVoucherSQL);
-//	        psUser.setInt(1, id);
-//	        psUser.executeUpdate();
-//
-//	        conn.close(); // Đóng kết nối
-//	    } catch (Exception e) {
-//	        e.printStackTrace(); // In ra lỗi nếu có
-//	    }
-		
+	public void deleteVoucher(int id) {		
 		Connection conn = null;
 
 	    try {

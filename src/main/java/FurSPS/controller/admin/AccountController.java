@@ -67,17 +67,7 @@ public class AccountController extends HttpServlet {
 	}
 
 	private void insertAccount(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-//		try {
-//			int userID = Integer.parseInt(req.getParameter("userID"));
-//			String userName = req.getParameter("userName");
-//			String password = req.getParameter("password");
-//			AccountModel account = new AccountModel(userID, userName, password);
-//			accountService.insertAccount(account);
-//			MessageUtil.showMessage(req, "addSuccess");
-//		} catch (Exception ex) {
-//			MessageUtil.showMessage(req, "addFail");
-//		}
-//		getAllAccount(req, resp);
+
 		try {
 	        int userID = Integer.parseInt(req.getParameter("userID"));
 	        String userName = req.getParameter("userName");

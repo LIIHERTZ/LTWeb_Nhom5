@@ -133,19 +133,6 @@ a {
 			<button class="update-pass">Đổi mật khẩu</button>
 		</a>
 	</div>
-	<!-- 	<div class="seller-avt"> -->
-	<%-- 		<img src="${user.avatar}" id="myImage" alt="User Image"> --%>
-	<!-- 		<input class="hind" type="file" id="imageInput" accept="image/*">  -->
-
-	<!-- 	</div> -->
-	<!-- </div> -->
-	<!-- <script> -->
-
-	<!-- // 	function closePage() { -->
-	<!-- // 		// JavaScript để chuyển trang -->
-	<!-- // 		window.location.href = 'adminShipper'; // Thay 'url_moi' bằng URL mới bạn muốn chuyển đến -->
-	<!-- // 	} -->
-	<!-- </script> -->
 	<div class="seller-avt">
 		<img src="${user.avatar}" id="myImage" alt="User Image"> <input
 			class="hind" type="file" id="imageInput" name="file" accept="image/*">

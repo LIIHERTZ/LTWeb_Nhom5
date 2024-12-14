@@ -74,16 +74,12 @@ public class HomeController extends HttpServlet {
 					session = req.getSession(true);
 
 					Date currentDate = new Date();
-//					int monthNow = monthNow + 1;
 
 					Calendar currentCalendar = Calendar.getInstance();
 					currentCalendar.setTime(currentDate);
 					int monthNow = currentCalendar.get(Calendar.MONTH) + 1; // Tháng hiện tại
 					int yearNow = currentCalendar.get(Calendar.YEAR);
-//					
-					// Thay vì sử dụng Date, ta sử dụng LocalDate để lấy tháng hiện tại
-//	                LocalDate currentDate = LocalDate.now();
-//	                int monthNow = currentDate.getMonthValue(); // Trả về tháng từ 1-12
+				
 
 					for (List<Object> list : listTotal) {
 						sumTotal += (long) list.get(1);
@@ -99,55 +95,15 @@ public class HomeController extends HttpServlet {
 					Date firstDayOfWeek = calendar.getTime();
 
 					for (OrderModel list : listOrder) {
-						//////////////////////////////////////////
-						// Chuyển java.sql.Date sang LocalDate
-//					    LocalDate orderLocalDate = new java.sql.Date(list.getOrderDate().getTime()).toInstant()
-//					                                      .atZone(ZoneId.systemDefault())
-//					                                      .toLocalDate();
-//						// Chuyển java.sql.Date sang LocalDate
-//					    java.sql.Date sqlDate = list.getOrderDate(); // Giả sử getOrderDate() trả về java.sql.Date
-//					    Calendar calendar = Calendar.getInstance();
-//					    calendar.setTime(sqlDate); // Chuyển sqlDate thành thời gian Calendar
-//
-//					    // Sau đó chuyển Calendar thành LocalDate
-//					    LocalDate orderLocalDate = calendar.toInstant()
-//					                                      .atZone(ZoneId.systemDefault())
-//					                                      .toLocalDate();
-//					    // Lấy tháng và năm từ LocalDate
-//					    int orderMonth = orderLocalDate.getMonthValue();  // Tháng từ 1 đến 12
-//					    int orderYear = orderLocalDate.getYear();         // Năm
 
-						///////////////////////////////////////////
 						Calendar orderCalendar = Calendar.getInstance();
 				        orderCalendar.setTime(list.getOrderDate());
 				        int orderMonth = orderCalendar.get(Calendar.MONTH); // Tháng của đơn hàng
 				        int orderYear = orderCalendar.get(Calendar.YEAR); // Năm của đơn hàng
 						
 						
-						if (list.getOrderDate().compareTo(firstDayOfWeek) > 0)
-							//////////////////////////////////////////
-							// Chuyển java.sql.Date sang LocalDate
-//					    LocalDate orderLocalDate = new java.sql.Date(list.getOrderDate().getTime()).toInstant()
-//					                                      .atZone(ZoneId.systemDefault())
-//					                                      .toLocalDate();
-//						// Chuyển java.sql.Date sang LocalDate
-//					    java.sql.Date sqlDate = list.getOrderDate(); // Giả sử getOrderDate() trả về java.sql.Date
-//					    Calendar calendar = Calendar.getInstance();
-//					    calendar.setTime(sqlDate); // Chuyển sqlDate thành thời gian Calendar
-//
-//					    // Sau đó chuyển Calendar thành LocalDate
-//					    LocalDate orderLocalDate = calendar.toInstant()
-//					                                      .atZone(ZoneId.systemDefault())
-//					                                      .toLocalDate();
-//					    // Lấy tháng và năm từ LocalDate
-//					    int orderMonth = orderLocalDate.getMonthValue();  // Tháng từ 1 đến 12
-//					    int orderYear = orderLocalDate.getYear();         // Năm
-
-							///////////////////////////////////////////
-
-						
-							
-						
+//						if (list.getOrderDate().compareTo(firstDayOfWeek) > 0)
+				
 						if (list.getOrderDate().compareTo(firstDayOfWeek) > 0)
 								listOrder1.add(list);
 

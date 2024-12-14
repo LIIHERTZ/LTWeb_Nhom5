@@ -84,14 +84,6 @@
 													<i class="ace-icon fa fa-pencil"></i>
 												</button>
 											</a> 
-<!-- 											<a -->
-<%-- 												href="<c:url value='/admindeleteItem?ItemID=${i.itemID}&ProductID=${i.productID}'/>"> --%>
-<!-- 												<button type="button" class="btn btn-xs btn-info btn-sm" -->
-<!-- 													id="liveToastBtn" -->
-<%-- 													onclick="return confirm('Bạn có chắc chắn muốn xóa item có ID là : ${i.itemID} không?')"> --%>
-<!-- 													<i class="ace-icon fa fa-trash"></i> -->
-<!-- 												</button> -->
-<!-- 											</a> -->
 												<!-- Nút xóa -->
 												<a href="#" class="trigger-btn" data-toggle="modal" data-target="#confirmDeleteModal"
 												   data-link="<c:url value='/admindeleteItem?ItemID=${i.itemID}&ProductID=${i.productID}'/>">

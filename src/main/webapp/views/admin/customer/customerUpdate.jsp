@@ -83,10 +83,6 @@
 												title="Căn cước công dân phải gồm 12 chữ số" /> <label>Căn
 												cước công dân</label>
 										</div>
-										<!-- 										<div class="form-floating mb-3"> -->
-										<!-- 											<input class="form-control" type="text" name="avatar" required -->
-										<%-- 												value="${customer.avatar}" /> <label>ảnh đại diện</label> --%>
-										<!-- 										</div>	 -->
 										<div class="form-floating mb-3">
 											<input class="form-control" type="email" name="email"
 												required value="${customer.email}" /> <label>Email</label>

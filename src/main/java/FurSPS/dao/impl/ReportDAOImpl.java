@@ -91,8 +91,7 @@ public class ReportDAOImpl implements IReportDAO {
 	}
 	@Override
 	public List<Top3Customer> reportTop3Customer() {
-//		String sql = "SELECT U.UserID, U.FirstName, U.LastName, Sum(TotalMoney) AS TotalMoney FROM ORDER O, USER U \r\n"
-//				   + "WHERE U.UserID = O.CustomerID GROUP BY CustomerID ORDER BY TotalMoney DESC LIMIT 3 ";
+
 		
 		// Câu lệnh SQL đã được sửa lại cho SQL Server
 	    String sql = "SELECT TOP 3 "
@@ -154,10 +153,6 @@ public class ReportDAOImpl implements IReportDAO {
 	    return formattedDate;
 	}
 	private int countItemByMonth(int year, int month, int id) {
-//		String sql = "SELECT COUNT(*)\r\n"
-//				+ "FROM [ORDER]\r\n"
-//				+ "JOIN [DETAIL] ON [ORDER].OrderID = [DETAIL].OrderID\r\n"
-//				+ "WHERE DATE_FORMAT(OrderDate, '%Y-%m') = ? and SellerID=? and Status=4";
 		String sql = "SELECT COUNT(*)\r\n"
 				+ "FROM [ORDER]\r\n"
 				+ "JOIN [DETAIL] ON [ORDER].OrderID = [DETAIL].OrderID\r\n"

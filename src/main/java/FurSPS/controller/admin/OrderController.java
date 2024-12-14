@@ -148,8 +148,6 @@ public class OrderController extends HttpServlet {
 		HttpSession session = req.getSession(true);
 		Date currentDate = new Date();
 	
-//		int monthNow = currentDate.getMonth() + 1;
-//		int today = currentDate.getDate();
 		
 		 Calendar currentCalendar = Calendar.getInstance();
 		    currentCalendar.setTime(currentDate);
@@ -177,13 +175,6 @@ public class OrderController extends HttpServlet {
 	        int orderMonth = orderCalendar.get(Calendar.MONTH); // Tháng của đơn hàng
 	        int orderYear = orderCalendar.get(Calendar.YEAR); // Năm của đơn hàng
 			
-//			if (list.getOrderDate().getMonth() > currentDate.getMonth() - 6
-//					&& list.getOrderDate().getYear() == currentDate.getYear()) {
-//				List<Object> row = new ArrayList<>();
-//				row.add((list.getOrderDate().getMonth()) + 1);
-//				row.add(list.getStatus());
-//				listOrder2.add(row);
-//			}
 	        
 	        if (orderMonth > (monthNow - 6) && orderYear == yearNow) {
 	            List<Object> row = new ArrayList<>();
@@ -191,24 +182,7 @@ public class OrderController extends HttpServlet {
 	            row.add(list.getStatus());
 	            listOrder2.add(row);
 	        }
-	        
-//			if (list.getOrderDate().getMonth() == currentDate.getMonth()
-//					&& list.getOrderDate().getYear() == currentDate.getYear()) {
-//				if (list.getPayment().getStatus() == 1) {
-//					if (list.getPayment().getMethod() == 1) {
-//						countPaymentCard += 1;
-//						totalPaymentCard += list.getTotalMoney();
-//					} else {
-//						countPaymentNormal += 1;
-//						totalPayMentNormal += list.getTotalMoney();
-//					}
-//				}
-//				if (list.getStatus() != 5 && list.getPayment().getStatus() == 0) {
-//					countNoPay += 1;
-//				}
-//			}
-	        
-	        
+       
 	     // Xử lý đơn hàng trong tháng hiện tại
 	        if (orderMonth == monthNow - 1 && orderYear == yearNow) {
 	            if (list.getPayment().getStatus() == 1) {

@@ -27,13 +27,6 @@
 							Đơn chưa xác nhận
 							<h3>${chXN}</h3>
 						</div>
-<!-- 						<div -->
-<!-- 							class="card-footer d-flex align-items-center justify-content-between"> -->
-<!-- 							<a class="small text-white stretched-link" href="#">Xem chi tiết</a> -->
-<!-- 							<div class="small text-white"> -->
-<!-- 								<i class="fas fa-angle-right"></i> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
 					</div>
 				</div>
 				<div class="col-xl-2 col-md-6">
@@ -43,13 +36,6 @@
 							Đơn đã xác nhận
 							<h3>${daXN}</h3>
 						</div>
-<!-- 						<div -->
-<!-- 							class="card-footer d-flex align-items-center justify-content-between"> -->
-<!-- 							<a class="small text-white stretched-link" href="#">Xem chi tiết</a> -->
-<!-- 							<div class="small text-white"> -->
-<!-- 								<i class="fas fa-angle-right"></i> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
 					</div>
 				</div>
 				<div class="col-xl-2 col-md-6">
@@ -58,13 +44,6 @@
 							Đơn đang chuẩn bị
 							<h3>${chDG}</h3>
 						</div>
-<!-- 						<div -->
-<!-- 							class="card-footer d-flex align-items-center justify-content-between"> -->
-<!-- 							<a class="small text-white stretched-link" href="#">Xem chi tiết</a> -->
-<!-- 							<div class="small text-white"> -->
-<!-- 								<i class="fas fa-angle-right"></i> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
 					</div>
 				</div>
 				<div class="col-xl-2 col-md-6">
@@ -73,13 +52,6 @@
 							Đang vận chuyển
 							<h3>${dVC}</h3>
 						</div>
-<!-- 						<div -->
-<!-- 							class="card-footer d-flex align-items-center justify-content-between"> -->
-<!-- 							<a class="small text-white stretched-link" href="#">Xem chi tiết</a> -->
-<!-- 							<div class="small text-white"> -->
-<!-- 								<i class="fas fa-angle-right"></i> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
 					</div>
 				</div>
 				<div class="col-xl-2 col-md-6">
@@ -88,13 +60,6 @@
 							Đơn thành công
 							<h3>${thCong}</h3>
 						</div>
-<!-- 						<div -->
-<!-- 							class="card-footer d-flex align-items-center justify-content-between"> -->
-<!-- 							<a class="small text-white stretched-link" href="#">Xem chi tiết</a> -->
-<!-- 							<div class="small text-white"> -->
-<!-- 								<i class="fas fa-angle-right"></i> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
 					</div>
 				</div>
 				<div class="col-xl-2 col-md-6">
@@ -103,13 +68,6 @@
 							Đơn đã hủy
 							<h3>${daHuy}
 						</div>
-<!-- 						<div -->
-<!-- 							class="card-footer d-flex align-items-center justify-content-between"> -->
-<!-- 							<a class="small text-white stretched-link" href="#">Xem chi tiết</a> -->
-<!-- 							<div class="small text-white"> -->
-<!-- 								<i class="fas fa-angle-right"></i> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
 					</div>
 				</div>
 			</div>
@@ -487,14 +445,9 @@
 		            }]
 		        }
 		    }
-		});
-							
-		
+		});								
 	</script>
-
 </body>
-
-
 </html>
 
 

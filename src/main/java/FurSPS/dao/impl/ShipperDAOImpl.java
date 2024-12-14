@@ -15,37 +15,6 @@ public class ShipperDAOImpl implements IShipperDAO {
 
 	@Override
 	public List<UserModel> findAllShipper() {
-		//Connection conn = null;
-//		String sql = "Select UserID, FirstName, LastName, Address, Gender, Phone, DoB, CID, Avatar, Area, Email from FurSPS.USER where Type=2";
-//		List<UserModel> listShipper = new ArrayList<UserModel>();
-//		try {
-//			new DBConnection();
-//			conn = DBConnection.getConnection();
-//			PreparedStatement ps = conn.prepareStatement(sql);
-//			ResultSet rs = ps.executeQuery(sql);
-//			while (rs.next()) {
-//				UserModel shipper = new UserModel();
-//
-//				shipper.setUserID(rs.getInt("UserID"));
-//				shipper.setFirstName(rs.getString("FirstName"));
-//				shipper.setLastName(rs.getString("LastName"));
-//				shipper.setAddress(rs.getString("Address"));
-//				shipper.setGender(rs.getInt("Gender"));
-//				shipper.setPhone(rs.getString("Phone"));
-//				shipper.setDob(rs.getDate("DoB"));
-//				shipper.setCid(rs.getString("CID"));
-//				shipper.setAvatar(rs.getString("Avatar"));
-//				shipper.setArea(rs.getString("Area"));
-//				shipper.setEmail(rs.getString("Email"));
-//
-//				listShipper.add(shipper);
-//			}
-//			conn.close();
-//
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return listShipper;
 		String sql = "SELECT * FROM [USER] WHERE Type = 2";
 	    List<UserModel> listShipper = new ArrayList<>();
 
@@ -86,30 +55,6 @@ public class ShipperDAOImpl implements IShipperDAO {
 
 	@Override
 	public void updateShipper(UserModel model) {
-//		Connection conn = null;
-//		String sql = "Update [USER] set FirstName=?, LastName=?, Address=?, Gender=?, Phone=?, DoB=?, CID=?, Area=?, Email=? where UserID=?";
-//		try {
-//			conn = DBConnection.getConnection();
-//			PreparedStatement ps = conn.prepareStatement(sql);
-//			// gan gia tri tham so
-//			ps.setString(1, model.getFirstName());
-//			ps.setString(2, model.getLastName());
-//			ps.setString(3, model.getAddress());
-//			ps.setInt(4, model.getGender());
-//			ps.setString(5, model.getPhone());
-//			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//			ps.setString(6, sdf.format(model.getDob()));
-//			ps.setString(7, model.getCid());
-////			ps.setString(8, model.getAvatar());
-//			ps.setString(8, model.getArea());
-//			ps.setString(9, model.getEmail());
-//			ps.setInt(10, model.getUserID());
-//
-//			ps.executeUpdate();// thuc thi cau query va tra ve Resultset
-//			conn.close();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
 		Connection conn = null;
 		String sql = "Update [USER] set FirstName=?, LastName=?, Address=?, Gender=?, Phone=?, DoB=?, CID=?, Avatar=?, Area=?, Email=? where UserID=?";
 		try {
@@ -170,28 +115,6 @@ public class ShipperDAOImpl implements IShipperDAO {
 
 	@Override
 	public void deleteShipper(int id) {
-//		Connection conn = null;
-//
-//	    // 1. Xóa các bản ghi trong bảng ACCOUNT có liên quan đến UserID của seller
-//	    String deleteAccountSQL = "DELETE FROM [Account] WHERE UserID = ?";
-//	    try {
-//	        conn = DBConnection.getConnection(); // kết nối cơ sở dữ liệu
-//
-//	        // Xóa tài khoản trong bảng Account
-//	        PreparedStatement psAccount = conn.prepareStatement(deleteAccountSQL);
-//	        psAccount.setInt(1, id);
-//	        psAccount.executeUpdate();  // Xóa tài khoản trong bảng Account
-//
-//	        // 2. Xóa seller trong bảng USER
-//	        String deleteUserSQL = "DELETE FROM [USER] WHERE UserID = ?";
-//	        PreparedStatement psUser = conn.prepareStatement(deleteUserSQL);
-//	        psUser.setInt(1, id);
-//	        psUser.executeUpdate();  // Xóa seller trong bảng USER
-//
-//	        conn.close(); // đóng kết nối
-//	    } catch (Exception e) {
-//	        e.printStackTrace(); // In ra lỗi nếu có
-//	    }
 		Connection conn = null;
 
 	    try {
@@ -260,31 +183,6 @@ public class ShipperDAOImpl implements IShipperDAO {
 
 	@Override
 	public boolean insertShipper(UserModel model) {
-//		Connection conn = null;
-//		String sql = "Insert into FurSPS.USER(UserID, FirstName, LastName, Address, Gender, Phone, DoB, CID, Avatar, Area, Email, Type) Values (?,?,?,?,?,?,?,?,?,?,?,2)";
-//		try {
-//			conn = DBConnection.getConnection();// ket noi csdl
-//			PreparedStatement ps = conn.prepareStatement(sql);// nem cau lenh sql bang phat bieu prepare
-//			// gan gia tri tham so
-//
-//			ps.setInt(1, model.getUserID());
-//			ps.setString(2, model.getFirstName());
-//			ps.setString(3, model.getLastName());
-//			ps.setString(4, model.getAddress());
-//			ps.setInt(5, model.getGender());
-//			ps.setString(6, model.getPhone());
-//			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//			ps.setString(7, sdf.format(model.getDob()));
-//			ps.setString(8, model.getCid());
-//			ps.setString(9, model.getAvatar());
-//			ps.setString(10, model.getArea());
-//			ps.setString(11, model.getEmail());
-//
-//			ps.executeUpdate();// thuc thi cau query va tra ve Resultset
-//			conn.close();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
 		String sql = "INSERT INTO [USER] VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , ? , ?)";
 		try {
 			new DBConnection();
