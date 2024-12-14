@@ -180,7 +180,7 @@ a {
 													           ${i.status == 5 ? 'text-danger' : ''}">
 										${i.status == 0 ? 'Đơn hàng chờ xác nhận' :
                                                i.status == 1 ? 'Đơn hàng đã được xác nhận' :
-                                               i.status == 2 ? 'Đơn hàng đang được chuẩn bị' :
+                                               i.status == 2 ? 'Đơn hàng đã được chuẩn bị' :
                                                i.status == 3 ? 'Đơn hàng đang được giao đến bạn' :
                                                i.status == 4 ? 'Đơn hàng đã được giao thành công' :
                                                i.status == 5 ? 'Đơn hàng đã bị hủy' : ''}

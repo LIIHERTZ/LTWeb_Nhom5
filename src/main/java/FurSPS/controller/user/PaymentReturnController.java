@@ -18,10 +18,12 @@ import FurSPS.models.CartModel;
 import FurSPS.models.OrderModel;
 import FurSPS.models.PaymentModel;
 import FurSPS.models.UserModel;
+import FurSPS.service.ICartService;
 import FurSPS.service.IDetailService;
 import FurSPS.service.IOrderService;
 import FurSPS.service.IPaymentService;
 import FurSPS.service.IVoucherCustomerService;
+import FurSPS.service.impl.CartServiceImpl;
 import FurSPS.service.impl.DetailServiceImpl;
 import FurSPS.service.impl.OrderServiceImpl;
 import FurSPS.service.impl.PaymentServiceImpl;
@@ -34,7 +36,7 @@ public class PaymentReturnController extends HttpServlet {
 	IPaymentService paymentService = new PaymentServiceImpl();
 	IOrderService orderService = new OrderServiceImpl();
 	IVoucherCustomerService voucherCustomerService = new VoucherCustomerServiceImpl();
-	
+	ICartService cartService = new CartServiceImpl();
 	IDetailService detailService = new DetailServiceImpl();
 
 	@Override
@@ -83,7 +85,7 @@ public class PaymentReturnController extends HttpServlet {
 
 				if (voucherId != null) {
 					int voucherID = Integer.parseInt(voucherId);
-					voucherCustomerService.insertVoucherCustomer(voucherID, totalCost);
+					voucherCustomerService.insertVoucherCustomer(voucherID, user.getUserID());
 				}
 				// *INFO: CREATE PAYMENT
 				PaymentModel payment = new PaymentModel();
@@ -96,7 +98,10 @@ public class PaymentReturnController extends HttpServlet {
 				// *INFO: SET DEFAULT STATUS = 0 (NOT CHECKOUT). UPDATE LATER
 				payment.setStatus(1);
 				payment.setTime(new Timestamp(new Date().getTime()));
+				
 		        paymentService.insertPayment(payment);
+		        
+		        cartService.deleteAllByCustomerID(user.getUserID());
 		        req.setAttribute("payment", payment);
 				
 		        

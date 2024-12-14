@@ -469,7 +469,7 @@ public class OrderDAOImpl implements IOrderDAO {
 
 	@Override
 	public OrderModel insertOrder(OrderModel order) {
-		String sql = "INSERT INTO ORDER " + "(OrderDate, Address, City, Status, TransportFee, "
+		String sql = "INSERT INTO [ORDER] " + "(OrderDate, Address, City, Status, TransportFee, "
 				+ "Discount, TotalMoney, Note, DeliveryTime, CustomerConfirmation, CustomerID) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
 		try {

@@ -195,6 +195,7 @@ public class CheckoutController extends HttpServlet {
 			paymentService.insertPayment(payment);
 			cartService.deleteAllByCustomerID(user.getUserID());
 			req.setAttribute("payment", payment);
+			
 			resp.sendRedirect(req.getContextPath() + "/userdetailOrder?orderID=" + createdOrder.getOrderID());
 		} else if (payMethod == 1) {
 			// Thanh toán qua VNPay - Tạo URL thanh toán và chuyển hướng

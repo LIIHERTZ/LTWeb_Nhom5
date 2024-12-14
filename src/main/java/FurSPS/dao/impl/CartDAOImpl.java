@@ -15,7 +15,7 @@ public class CartDAOImpl implements ICartDAO {
 
 	@Override
 	public void insert(CartModel model) {
-		String sql = "Insert into CART (CustomerID, ItemID, Quantity) values (?,?,?)";
+		String sql = "Insert into [CART] (CustomerID, ItemID, Quantity) values (?,?,?)";
 		try {
 			new DBConnection();
 			conn = DBConnection.getConnection();
@@ -32,7 +32,7 @@ public class CartDAOImpl implements ICartDAO {
 
 	@Override
 	public void update(CartModel model) {
-		String sql = "Update CART set Quantity = ? where CustomerID=? and ItemID=?";
+		String sql = "Update [CART] set Quantity = ? where CustomerID=? and ItemID=?";
 		try {
 			new DBConnection();
 			conn = DBConnection.getConnection();
@@ -50,7 +50,7 @@ public class CartDAOImpl implements ICartDAO {
 
 	@Override
 	public void delete(int customerID, int itemID) {
-		String sql = "Delete from CART where CustomerID=? and ItemID=?";
+		String sql = "Delete from [CART] where CustomerID=? and ItemID=?";
 		try {
 			new DBConnection();
 			conn = DBConnection.getConnection();
@@ -66,7 +66,7 @@ public class CartDAOImpl implements ICartDAO {
 
 	@Override
 	public void deleteAllByCustomerID(int customerID) {
-		String sql = "Delete from CART where CustomerID=?";
+		String sql = "Delete from [CART] where CustomerID=?";
 		try {
 			new DBConnection();
 			conn = DBConnection.getConnection();
@@ -83,7 +83,7 @@ public class CartDAOImpl implements ICartDAO {
 	@Override
 	public CartModel findOne(int customerID, int itemID) {
 		CartModel cart = new CartModel();
-		String sql = "Select * from CART where CustomerID=? and ItemID=?";
+		String sql = "Select * from [CART] where CustomerID=? and ItemID=?";
 		try {
 			new DBConnection();
 			conn = DBConnection.getConnection();

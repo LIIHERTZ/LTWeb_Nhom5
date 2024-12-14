@@ -165,6 +165,7 @@ a {
 							<div class="col-md-12 mb-2">
 								<div class="row">
 									<div class="col-md-12 w-75">
+										<h6 class="mx=0">Mã đơn: ${i.orderID}</h6>
 										<h6 class="mx=0">Khách hàng: ${i.customer.lastName}
 											${i.customer.firstName}</h6>
 										<p class="mb-0">
@@ -208,8 +209,8 @@ a {
 								<div class="ms-auto" style="margin-left: auto">
 									<a href="shipper-detail-order?orderID=${i.orderID}"
 										class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-										Chi tiết </a>
-									<a href="#" onclick="openModalFromLink('${i.orderID}')"
+										Chi tiết </a> <a href="#"
+										onclick="openModalFromLink('${i.orderID}')"
 										class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5 trigger-btn"
 										data-toggle="modal" data-target="#myModal"> Nhận đơn</a>
 								</div>
@@ -238,9 +239,7 @@ a {
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Không</button>
 				<form class="pb-0" action="shipper-accept" method="post">
 					<input type="hidden" id="orderID" name="orderID" value="${content}">
-					<button type="submit"
-						class="btn btn-success">
-						Có</button>
+					<button type="submit" class="btn btn-success">Có</button>
 				</form>
 			</div>
 		</div>
@@ -249,8 +248,8 @@ a {
 
 
 <script>
-function openModalFromLink(link) {
-    // Get the content attribute from the <a> element
-    document.getElementById("orderID").value=link;
-}
+	function openModalFromLink(link) {
+		// Get the content attribute from the <a> element
+		document.getElementById("orderID").value = link;
+	}
 </script>
