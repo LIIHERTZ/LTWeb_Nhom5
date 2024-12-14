@@ -117,8 +117,7 @@ public class HomeController extends HttpServlet {
 							row.add(list.getStatus());
 							listOrder2.add(row);
 						}
-						if (orderMonth == monthNow
-								&& orderYear == yearNow) {
+						if (orderMonth == monthNow - 1 && orderYear == yearNow) {
 							if (list.getPayment().getStatus() == 1) {
 								if (list.getPayment().getMethod() == 1) {
 									countPaymentCard += 1;

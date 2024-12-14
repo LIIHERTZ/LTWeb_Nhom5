@@ -20,7 +20,7 @@
 		<div class="container-fluid px-4">
 			<h1 class="mt-4">Mặt hàng</h1>
 			<ol class="breadcrumb mb-4">
-				<li class="breadcrumb-item"><a href="index.html">Bảng điều
+				<li class="breadcrumb-item"><a>Bảng điều
 						khiển</a></li>
 				<li class="breadcrumb-item"><a
 					href="<c:url value = "adminProduct"/>">Sản phẩm</a></li>
