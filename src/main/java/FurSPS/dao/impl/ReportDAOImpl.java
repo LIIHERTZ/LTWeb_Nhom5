@@ -205,32 +205,30 @@ public class ReportDAOImpl implements IReportDAO {
 		return list;
 	}
 	@Override
-	public List<List<Object>> reportSellerOrderByYear(int sellerID) {
-		String sql = "SELECT DATE_FORMAT(OrderDate, '%Y-%m') AS Thang, SUM(TotalMoney) AS Tong, COUNT(OrderID) AS SL\r\n"
-				+ "FROM AZShop.`ORDER`\r\n"
-				+ "WHERE YEAR(OrderDate) = YEAR(CURDATE()) AND SellerID = ?\r\n"
-				+ "GROUP BY Thang\r\n"
-				+ "ORDER BY Thang;";
+    public List<List<Object>> reportSellerOrderByYear(int sellerID) {
+        String sql
+        = "SELECT FORMAT(OrderDate, 'yyyy-MM') AS Thang, SUM(TotalMoney) AS Tong, COUNT(OrderID) AS SL FROM [ORDER] WHERE YEAR(OrderDate) = YEAR(GETDATE()) AND SellerID = ? GROUP BY FORMAT(OrderDate, 'yyyy-MM') ORDER BY FORMAT(OrderDate, 'yyyy-MM')";
+        System.out.println(sql);
 
-		List<List<Object>> list = new ArrayList<List<Object>>();
-		try {
-			new DBConnection();
-			Connection conn = DBConnection.getConnection();
-			PreparedStatement ps = conn.prepareStatement(sql);
-	        ps.setInt(1, sellerID);
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				List<Object> row = new ArrayList<Object>();
-				row.add(rs.getString("Thang"));
-				row.add(rs.getLong("Tong"));
-				row.add(rs.getInt("SL"));
-				list.add(row);
-			}
-			conn.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return list;
-	}
+        List<List<Object>> list = new ArrayList<List<Object>>();
+        try {
+            new DBConnection();
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, sellerID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                List<Object> row = new ArrayList<Object>();
+                row.add(rs.getString("Thang"));
+                row.add(rs.getLong("Tong"));
+                row.add(rs.getInt("SL"));
+                list.add(row);
+            }
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
 }

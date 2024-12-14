@@ -272,7 +272,7 @@ public class OrderDAOImpl implements IOrderDAO {
 	public OrderModel getOrderByOrderID(int orderID) {
 		OrderModel order = new OrderModel();
 		String sql = "SELECT o.*, FirstName, LastName, Phone, p.CardOwner,p.Bank,p.AccountNumber,p.Time as TimePay,	 p.Method, p.Status as PayStatus    "
-				+ " FROM ORDER as o   LEFT JOIN PAYMENT as p ON o.OrderID = p.OrderID INNER JOIN USER as c ON  o.CustomerID = c.UserID  "
+				+ " FROM [ORDER] as o   LEFT JOIN [PAYMENT] as p ON o.OrderID = p.OrderID INNER JOIN [USER] as c ON  o.CustomerID = c.UserID  "
 				+ " WHERE o.OrderID=?";
 		try {
 			new DBConnection();
@@ -312,8 +312,8 @@ public class OrderDAOImpl implements IOrderDAO {
 	public List<OrderModel> findHisOrder(int sellerID) {
 		List<OrderModel> listOrder = new ArrayList<OrderModel>();
 		String sql = "SELECT o.*, FirstName, LastName, Phone, " + "	   p.Method, p.Status as PayStatus "
-				+ "	   FROM ORDER as o " + "    LEFT JOIN PAYMENT as p ON o.OrderID = p.OrderID "
-				+ "    INNER JOIN USER as c ON  o.CustomerID = c.UserID " + "WHERE o.Status <> 0 AND SellerID=?;";
+				+ "	   FROM [ORDER] as o " + "    LEFT JOIN [PAYMENT] as p ON o.OrderID = p.OrderID "
+				+ "    INNER JOIN [USER] as c ON  o.CustomerID = c.UserID " + "WHERE o.Status <> 0 AND SellerID=?;";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();
@@ -336,7 +336,7 @@ public class OrderDAOImpl implements IOrderDAO {
 				order.setShipperID(rs.getInt("ShipperID"));
 				order.getCustomer().setFirstName(rs.getString("FirstName"));
 				order.getCustomer().setLastName(rs.getString("LastName"));
-				// order.getCustomer().setPhone(rs.getString("Phone"));
+				order.getCustomer().setPhone(rs.getString("Phone"));
 				order.getPayment().setMethod(rs.getInt("Method"));
 				order.getPayment().setStatus(rs.getInt("PayStatus"));
 				listOrder.add(order);
@@ -352,8 +352,8 @@ public class OrderDAOImpl implements IOrderDAO {
 	public List<OrderModel> findOrderBySeller() {
 		List<OrderModel> listOrder = new ArrayList<OrderModel>();
 		String sql = "SELECT o.*, FirstName, LastName, Phone, " + "	   p.Method, p.Status as PayStatus "
-				+ "	   FROM ORDER as o " + "    LEFT JOIN PAYMENT as p ON o.OrderID = p.OrderID "
-				+ "    INNER JOIN USER as c ON  o.CustomerID = c.UserID " + "WHERE o.Status = 0 or o.Status=1;";
+				+ "	   FROM [ORDER] as o " + "    LEFT JOIN [PAYMENT] as p ON o.OrderID = p.OrderID "
+				+ "    INNER JOIN [USER] as c ON  o.CustomerID = c.UserID " + "WHERE o.Status = 0 or o.Status=1;";
 		try {
 			new DBConnection();
 			Connection conn = DBConnection.getConnection();
@@ -376,7 +376,7 @@ public class OrderDAOImpl implements IOrderDAO {
 				order.setShipperID(rs.getInt("ShipperID"));
 				order.getCustomer().setFirstName(rs.getString("FirstName"));
 				order.getCustomer().setLastName(rs.getString("LastName"));
-				// order.getCustomer().setPhone(rs.getString("Phone"));
+				order.getCustomer().setPhone(rs.getString("Phone"));
 				order.getPayment().setMethod(rs.getInt("Method"));
 				order.getPayment().setStatus(rs.getInt("PayStatus"));
 				listOrder.add(order);
