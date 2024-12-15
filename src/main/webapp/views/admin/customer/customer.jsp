@@ -50,7 +50,7 @@
 						<div
 							class="card-footer d-flex align-items-center justify-content-between">
 							<a
-								href="/AZShopFurni/adminInformationCustomer?customerID=${list3[1].id}"
+								href="/FurSPS_Nhom5/adminInformationCustomer?customerID=${list3[1].id}"
 								class="small text-white">Xem chi tiết</a>
 							<div class="small text-white">
 								<i class="fas fa-angle-right"> </i>
@@ -71,7 +71,7 @@
 						<div
 							class="card-footer d-flex align-items-center justify-content-between">
 							<a
-								href="/AZShopFurni/adminInformationCustomer?customerID=${list3[2].id}"
+								href="/FurSPS_Nhom5/adminInformationCustomer?customerID=${list3[2].id}"
 								class="small text-white">Xem chi tiết</a>
 							<div class="small text-white">
 								<i class="fas fa-angle-right"> </i>
