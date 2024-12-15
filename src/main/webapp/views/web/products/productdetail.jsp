@@ -260,7 +260,7 @@
 											<a
 												href="<c:url value='/products?id=${item.productID}' />">${item.productName}</a>
 										</h3>
-										<p>${item.description}</p>
+										<p>Chất liệu: ${item.material}</p>
 										<span class="stext-105 cl3"> <i class="fas fa-star"
 											style="${item.avgRating >= 1 ? 'color: gold;' : ''}"></i> <i
 											class="fas fa-star"
@@ -410,7 +410,7 @@
 											<a
 												href="<c:url value='/products?id=${item.productID}' />">${item.productName}</a>
 										</h3>
-										<p>${item.description}</p>
+										<p>Chất liệu: ${item.material}</p>
 										<span class="stext-105 cl3"> <i class="fas fa-star"
 											style="${item.avgRating >= 1 ? 'color: gold;' : ''}"></i> <i
 											class="fas fa-star"

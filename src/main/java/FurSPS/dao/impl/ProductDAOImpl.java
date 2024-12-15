@@ -293,14 +293,33 @@ public class ProductDAOImpl implements IProductDAO {
 
 	public List<ProductModel> searchProductByName(String key) {
 		List<ProductModel> listPro = new ArrayList<ProductModel>();
-		String sql = "SELECT p.*, fi.Image AS FirstImage, " +
-	             "(SELECT MIN(i.PromotionPrice) FROM ITEM i WHERE i.ProductID = p.ProductID) AS MinPromotionPrice, " +
-	             "(SELECT MIN(i.OriginalPrice) FROM ITEM i WHERE i.ProductID = p.ProductID) AS MinOriginalPrice " +
-	             "FROM CATEGORY c JOIN PRODUCT p ON c.CategoryID = p.CategoryID " +
+		String sql = "SELECT p.ProductID, " +
+	             "       p.ProductName, " +
+	             "       p.Description, " +
+	             "       p.Origin, " +
+	             "       p.SupplierID, " +
+	             "       p.CategoryID, " +
+	             "       p.Material, " +
+	             "       COALESCE(AVG(d.Rating), 0) AS Rating, " +
+	             "       fi.Image AS FirstImage, " +
+	             "       MIN(i.PromotionPrice) AS MinPromotionPrice, " +
+	             "       MIN(i.OriginalPrice) AS MinOriginalPrice " +
+	             "FROM PRODUCT p " +
+	             "JOIN CATEGORY c ON c.CategoryID = p.CategoryID " +
 	             "JOIN ITEM i ON p.ProductID = i.ProductID " +
-	             "LEFT JOIN (SELECT ii.ItemID, ii.Image FROM ITEMIMAGE ii) fi ON i.ItemID = fi.ItemID " +
+	             "LEFT JOIN (SELECT ii.ItemID, ii.Image " +
+	             "           FROM ITEMIMAGE ii " +
+	             "           GROUP BY ii.ItemID, ii.Image) fi ON i.ItemID = fi.ItemID " +
+	             "LEFT JOIN DETAIL d ON d.ItemID = i.ItemID " +
 	             "WHERE p.ProductName LIKE ? OR p.Description LIKE ? " +
-	             "GROUP BY p.ProductID, fi.Image, p.ProductName, p.CategoryID, p.Description, p.Origin, p.SupplierID, p.Material;";
+	             "GROUP BY p.ProductID, " +
+	             "         p.ProductName, " +
+	             "         p.Description, " +
+	             "         p.Origin, " +
+	             "         p.SupplierID, " +
+	             "         p.CategoryID, " +
+	             "         p.Material, " +
+	             "         fi.Image;";
 		try {
 			new DBConnection();
 			conn = DBConnection.getConnection();
@@ -309,10 +328,11 @@ public class ProductDAOImpl implements IProductDAO {
 			ps.setString(2, "%"+ key + "%");
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				ProductModel model = new ProductModel();
+				ProductModel model = new ProductModel();		
 				int productID = rs.getInt("ProductID");
 				SupplierModel supplier = supDao.findOne(rs.getInt("SupplierID"));
 				model.setSupplierName(supplier.getSupplierName());
+
 				model.setProductID(productID);
 				model.setProductName(rs.getString("ProductName"));
 				model.setDescription(rs.getString("Description"));
@@ -320,6 +340,7 @@ public class ProductDAOImpl implements IProductDAO {
 				model.setSupplierID(rs.getInt("SupplierID"));
 				model.setCategoryID(rs.getInt("CategoryID"));
 				model.setMaterial(rs.getString("Material"));
+				model.setAvgRating(rs.getFloat("Rating"));
 				model.setDisplayedImage(rs.getString("FirstImage"));
 				model.setDisplayedPromotionPrice(rs.getInt("MinPromotionPrice"));
 				model.setDisplayedOriginalPrice(rs.getInt("MinOriginalPrice"));
