@@ -150,7 +150,7 @@
 								<h3 class="product-title">
 									<a href='<c:url value="/user/products?id=${item.ProductID}"/>'>${item.ProductName}</a>
 								</h3>
-								<p>${item.Description}</p>
+								<p>Chất liệu: ${item.material}</p>
 								<span class="stext-105 cl3"> <i class="fas fa-star"
 									style="${item.Rating >= 1 ? 'color: gold;' : ''}"></i> <i
 									class="fas fa-star"
