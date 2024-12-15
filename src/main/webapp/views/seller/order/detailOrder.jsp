@@ -548,6 +548,7 @@ input {
 						</div>
 					</div>
 					<div class="payment" style="max-width: max content">
+						<c:if test="${order.payment.method != 0}">
 						<div class="top">
 							<h2>Thông tin thanh toán</h2>
 							<div class="img">
@@ -567,6 +568,7 @@ input {
 								</p>
 							</div>
 						</div>
+						</c:if>
 						<div class="bottom">
 							<div class="note">
 								<h3>Ghi chú</h3>

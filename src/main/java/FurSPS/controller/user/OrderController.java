@@ -28,7 +28,7 @@ import FurSPS.service.impl.OrderServiceImpl;
 import FurSPS.service.impl.PaymentServiceImpl;
 
 @WebServlet(urlPatterns = { "/userlistOrder", "/usercustomerConfirm", "/userdetailOrder", "/useritemRating",
-		"/usertrack" })
+		"/usertrack", "/userConfirmDelivery" })
 @MultipartConfig
 public class OrderController extends HttpServlet {
 
@@ -59,6 +59,9 @@ public class OrderController extends HttpServlet {
 		String action = req.getRequestURI().toString();
 		if (action.contains("/useritemRating")) {
 			rating(req, resp);
+		}
+		else if (action.contains("/userConfirmDelivery")) {
+			confirm(req, resp);
 		} else {
 			resp.sendError(HttpServletResponse.SC_NOT_FOUND, "URL không được hỗ trợ");
 		}
@@ -101,6 +104,17 @@ public class OrderController extends HttpServlet {
 		RequestDispatcher rd = req.getRequestDispatcher("/views/user/order/track.jsp");
 		rd.forward(req, resp);
 	}
+	private void confirm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		int orderID = Integer.parseInt(req.getParameter("orderID"));
+		int confirm = 1;
+		orderService.confirmOrder(orderID, confirm);
+		OrderModel order = orderService.getOrderByOrderID(orderID);
+		List<DetailModel> details = detailService.listDetailsByOrderID(orderID);
+		req.setAttribute("details", details);
+		req.setAttribute("order", order);
+		RequestDispatcher rd = req.getRequestDispatcher("/views/user/order/track.jsp");
+		rd.forward(req, resp);
+	}
 
 	private void detailOrder(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		int orderID = Integer.parseInt(req.getParameter("orderID"));
@@ -113,32 +127,32 @@ public class OrderController extends HttpServlet {
 	}
 
 	private void rating(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
+		try {
 
-            String orderIDParam = req.getParameter("orderID");
-            String itemIDParam = req.getParameter("itemID");
-            String ratingParam = req.getParameter("rating");
-            String quantityParam = req.getParameter("quantity");
+			String orderIDParam = req.getParameter("orderID");
+			String itemIDParam = req.getParameter("itemID");
+			String ratingParam = req.getParameter("rating");
+			String quantityParam = req.getParameter("quantity");
 
-            int itemID = Integer.parseInt(itemIDParam);
-            int orderID = Integer.parseInt(orderIDParam);
-            int quantity = Integer.parseInt(quantityParam);
-            String reviewImage = ImageUploader.uploadImage(req);
-            String reviewText = req.getParameter("reviewText");
-            java.sql.Date evaluationDate = java.sql.Date.valueOf(LocalDate.now()); 
-            int rating = Integer.parseInt(ratingParam);
-            DetailModel review = new DetailModel();
-            review.setItemID(itemID);
-            review.setOrderID(orderID);
-            review.setQuantity(quantity);
-            review.setLink(reviewImage);
-            review.setContent(reviewText);
-            review.setEvaluationDate(evaluationDate);
-            review.setRating(rating);
-            detailService.updateDetail(review);
-            resp.sendRedirect(req.getContextPath() + "/usertrack?id=" + orderID);
-        } catch (Exception e) {
-            resp.sendRedirect(req.getContextPath() + "/usertrack");
-        }
-    }
+			int itemID = Integer.parseInt(itemIDParam);
+			int orderID = Integer.parseInt(orderIDParam);
+			int quantity = Integer.parseInt(quantityParam);
+			String reviewImage = ImageUploader.uploadImage(req);
+			String reviewText = req.getParameter("reviewText");
+			java.sql.Date evaluationDate = java.sql.Date.valueOf(LocalDate.now());
+			int rating = Integer.parseInt(ratingParam);
+			DetailModel review = new DetailModel();
+			review.setItemID(itemID);
+			review.setOrderID(orderID);
+			review.setQuantity(quantity);
+			review.setLink(reviewImage);
+			review.setContent(reviewText);
+			review.setEvaluationDate(evaluationDate);
+			review.setRating(rating);
+			detailService.updateDetail(review);
+			resp.sendRedirect(req.getContextPath() + "/usertrack?id=" + orderID);
+		} catch (Exception e) {
+			resp.sendRedirect(req.getContextPath() + "/usertrack");
+		}
+	}
 }

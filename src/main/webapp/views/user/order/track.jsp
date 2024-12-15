@@ -53,7 +53,7 @@
 }
 </style>
 								</div>
-								<h5>${user.firstName} ${user.lastName}</h5>
+								<h5>${user.firstName}${user.lastName}</h5>
 							</div>
 							<ul class="sidebar-list">
 
@@ -69,7 +69,9 @@
 							<div class="row">
 								<div class="col-lg-12">
 									<div class="user-card user-track-order">
-										<h4 class="user-card-title">Track My Order</h4>
+										<h4 class="user-card-title">Track My Order
+										</h4>
+										
 										<div class="track-order-content">
 											<div class="track-order-step">
 												<div
@@ -101,18 +103,25 @@
 													<div class="step-icon">
 														<i class="fal fa-truck-fast"></i>
 													</div>
+													<h6>Delivering</h6>
+												</div>
+												<div
+													class="step-item <c:if test='${order.status >= 4 && order.status != 5 }'>completed</c:if>">
+													<div class="step-icon">
+														<i class="fal fa-truck-fast"></i>
+													</div>
 													<h6>Delivered</h6>
 												</div>
 
 												<div
-													class="step-item <c:if test='${order.status >= 4 && order.status != 5}'>completed</c:if>">
+													class="step-item <c:if test='${order.status >= 4 && order.status != 5 && order.customerConfirmation == 1}'>completed</c:if>">
 													<div class="step-icon">
 														<i class="fal fa-home"></i>
 													</div>
-													<h6>Complete</h6>
+													<h6>Completed</h6>
 												</div>
 
-												<!-- Nếu status == 5 (Cancelled), chỉ đánh dấu bước Canceled thôi -->
+
 												<div
 													class="step-item <c:if test='${order.status == 5}'>completed</c:if>">
 													<div class="step-icon">
@@ -121,11 +130,19 @@
 													<h6>Cancelled</h6>
 												</div>
 											</div>
-
+										<c:if
+											test="${order.status >= 4 && order.status != 5 && order.customerConfirmation == 0}">
+											<form action="userConfirmDelivery" method="post">
+												<input type="hidden" name="orderID" value="${order.orderID}" />
+												<button type="submit" class="theme-btn" style="margin-top: 40px;background-color: #FFDA74; padding: 10px 20px; border-radius: 5px; font-weight: bold;">Xác
+													nhận</button>
+											</form>
+										</c:if>
 										</div>
 
 
-										<c:if test='${order.status == 4}'>
+										<c:if
+											test='${ order.customerConfirmation == 1 && order.status == 4 }'>
 											<h4 class="user-card-title" style="margin-top: 40px;">List
 												Order</h4>
 											<div class="table-responsive">
@@ -142,17 +159,17 @@
 														<c:forEach var="detail" items="${details}">
 															<tr>
 																<td>
-																<div class="table-list-info">
-																	<a>
-																		<div class="table-list-img">
-																			<img src="${detail.itm.image}" alt="eee">
-																		</div>
-																		<div class="table-list-content">
-																			<h6>${detail.product.productName}</h6>
-																		</div>
-																	</a>
-																</div>
-															</td>
+																	<div class="table-list-info">
+																		<a>
+																			<div class="table-list-img">
+																				<img src="${detail.itm.image}" alt="eee">
+																			</div>
+																			<div class="table-list-content">
+																				<h6>${detail.product.productName}</h6>
+																			</div>
+																		</a>
+																	</div>
+																</td>
 																<td>${detail.category.categoryName}</td>
 																<td>${detail.item.color}</td>
 																<td
@@ -177,7 +194,8 @@
 																<td colspan="4">
 																	<form
 																		action="${pageContext.request.contextPath}/useritemRating"
-																		method="post" style="margin-top: 20px;" enctype="multipart/form-data">
+																		method="post" style="margin-top: 20px;"
+																		enctype="multipart/form-data">
 																		<input type="hidden" name="orderID"
 																			value="${detail.orderID}" /> <input type="hidden"
 																			name="itemID" value="${detail.itemID}" /> <input

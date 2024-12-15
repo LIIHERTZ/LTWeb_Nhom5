@@ -253,7 +253,7 @@ public class OrderDAOImpl implements IOrderDAO {
 
 	@Override
 	public void confirmOrder(int orderID, int confirm) {
-		String sql = "UPDATE ORDER SET CustomerConfirmation = ? WHERE OrderID = ?";
+		String sql = "UPDATE [ORDER] SET CustomerConfirmation = ? WHERE OrderID = ?";
 		try {
 			new DBConnection();
 			conn = DBConnection.getConnection();
@@ -290,6 +290,7 @@ public class OrderDAOImpl implements IOrderDAO {
 				order.setNote(rs.getString("Note"));
 				order.setDiscount(rs.getInt("Discount"));
 				// order.setCustomerID(rs.getInt("CustomerID"));
+				order.setCustomerConfirmation(rs.getInt("CustomerConfirmation"));
 				order.setSellerID(rs.getInt("SellerID"));
 				order.setShipperID(rs.getInt("ShipperID"));
 				order.getCustomer().setFirstName(rs.getString("FirstName"));

@@ -157,6 +157,7 @@ a {
 							<div class="col-md-12 mb-2">
 								<div class="row">
 									<div class="col-md-12 w-75">
+										<h6 class="mx=0">Mã đơn: ${i.orderID}</h6>
 										<h6 class="mx=0"><Strong>Khách hàng: ${i.customer.lastName} ${i.customer.firstName}</Strong></h6>
 										<p class="mb-0">Trạng thái đơn hàng:  
 										<strong> 
