@@ -416,7 +416,7 @@
 		var ctx = document.getElementById("myChartDouble").getContext("2d");
 
 		var data = {
-		    labels: [<c:forEach var="item" items="${listOrderSta}">"${item.get(0)}/2023",</c:forEach>],
+		    labels: [<c:forEach var="item" items="${listOrderSta}">"${item.get(0)}/2024",</c:forEach>],
 		    datasets: [
 		        {
 		        	label: 'Thành công',
