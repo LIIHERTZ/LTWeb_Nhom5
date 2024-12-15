@@ -82,4 +82,5 @@ Contributions are welcome! Fork the repository and create a pull request with yo
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the MIT License.  
+See the [MIT License](https://opensource.org/licenses/MIT) for more details.
