@@ -45,7 +45,7 @@ Make sure you have the following installed:
 
 2. Import the project into your IDE.
 
-3. Configure the database connection in `src/main/resources/application.properties`.
+3. Configure the database connection in `src/main/java/FurSPS/configs/DBConnection.java`.
 
 4. Deploy the project to your Tomcat server.
 
@@ -53,7 +53,7 @@ Make sure you have the following installed:
 
 1. Database Configuration:
 
-   - Configure your database connection settings in `src/main/resources/application.properties`.
+   - Configure your database connection settings in `src/main/java/FurSPS/configs/DBConnection.java`.
 
 2. Servlet Mapping:
 
