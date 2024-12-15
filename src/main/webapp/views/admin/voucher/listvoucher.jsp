@@ -96,7 +96,7 @@
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="modal-body">Bạn có chắc chắn muốn xóa khách hàng
+					<div class="modal-body">Bạn có chắc chắn muốn xóa mã giảm giá
 						này không?</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
