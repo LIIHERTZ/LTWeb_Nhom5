@@ -317,7 +317,7 @@ a {
 													           ${order.status == 5 ? 'danger' : ''}">
 												${order.status == 0 ? 'Đơn hàng chờ xác nhận' :
                                                order.status == 1 ? 'Đã xác nhận' :
-                                               order.status == 2 ? 'Đang được chuẩn bị' :
+                                               order.status == 2 ? 'Đã được chuẩn bị' :
                                                order.status == 3 ? 'Đang được giao' :
                                                order.status == 4 ? 'Giao thành công' :
                                                order.status == 5 ? 'Đã bị hủy' : ''}
